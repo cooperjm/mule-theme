@@ -1,0 +1,39 @@
+.header-contact-block {
+    background-color: #FFFFFF;
+    position: absolute;
+    width: 250px;
+    cursor: default;
+    margin-left: -17px;
+    overflow: hidden; 
+    max-height: 0;
+    transition: max-height 0.4s ease;
+}
+
+.header-contact-block.active {
+    max-height: 1000px; 
+}
+
+.header-contact-block p,
+.header-contact-block a {
+    font-family: Roboto, sans-serif;
+    color: #121212;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.header-contact-block .content {
+    padding: 1.5rem;
+}
+
+.header-contact-block .footer {
+    padding: .75rem 1.5rem;
+}
+
+.header-contact-block .content p:not(:last-child),
+.header-contact-block .footer p:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.header-contact-block .footer {
+    background-color: #F4F4F4;
+}

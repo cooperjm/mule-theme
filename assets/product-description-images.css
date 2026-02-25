@@ -1,0 +1,92 @@
+.product-description-images {
+    background-color: #F4F4F4;
+}
+
+.product-description-images .page-width {
+    margin: auto;
+    max-width: 1200px;
+    padding: 50px 20px;
+}
+
+.product-description-images .product-description-images-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.product-description-images .product-description-images-images,
+.product-description-images .product-description-content {
+    width: 45%;
+}
+
+.product-description-images .product-description-images-images img{
+    width: 100%;
+    height: auto;
+}
+
+
+.product-description-images .product-description-bottom-images {
+    display: flex;
+    gap: 5px;
+    margin-top: 1px;
+}
+
+.product-description-images .product-description-title {
+    font-size: 70px;
+    font-weight: 600;
+    line-height: 85px;
+}
+
+.product-description-images .product-description-description {
+    font-size: 30px;
+    line-height: 44.46px;
+    font-weight: 600;
+}
+
+.product-description-images .product-description-description ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.product-description-images .product-description-description li {
+    background: url(/cdn/shop/files/Checkmark.png) no-repeat left center;
+    padding: 5px 5px 5px 35px;
+    margin-top: 10px;
+}
+
+@media screen and (max-width: 767px) {
+    .product-description-images .page-width {
+        padding: 20px 20px 40px;
+    }
+
+    .product-description-images .product-description-title {
+        font-size: 35px;
+        line-height: 47.53px;
+        text-align: center;
+    }
+
+    .product-description-images .product-description-description {
+        font-size: 18px;
+        line-height: 24.44px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .product-description-images .product-description-images-content {
+        flex-direction: column-reverse;
+    }
+
+    .product-description-images .product-description-images-images,
+    .product-description-images .product-description-content {
+        width: 100%;
+    }
+
+    .product-description-images .product-description-description p {
+        text-align: center;
+    }
+
+    .product-description-images .product-description-description {
+        max-width: 400px;
+        margin: auto;
+        padding: 0 10px;
+    }
+}

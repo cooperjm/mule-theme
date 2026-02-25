@@ -1,0 +1,189 @@
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin theme editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
+{
+  "sections": {
+    "main": {
+      "type": "static-cart",
+      "settings": {
+        "hide_total_cart": true,
+        "show_sku": true,
+        "enable_order_notes": false,
+        "enable_shipping_calc": true,
+        "shipping_calc_default_country": "United States"
+      }
+    },
+    "cart_total_with_logos_LqWEmE": {
+      "type": "cart-total-with-logos",
+      "blocks": {
+        "highlight_DUXWRh": {
+          "type": "highlight",
+          "settings": {
+            "icon": "icon-car-2",
+            "title": "Free Shipping",
+            "text": "<p>When you spend $99+<\/p>",
+            "link": ""
+          }
+        },
+        "highlight_7RyATG": {
+          "type": "highlight",
+          "settings": {
+            "icon": "icon-fast-delivery",
+            "title": "Fast Delivery",
+            "text": "<p>All orders ship in 1-2 business days<\/p>",
+            "link": ""
+          }
+        },
+        "highlight_VeAPgJ": {
+          "type": "highlight",
+          "settings": {
+            "icon": "icon-award-trophy",
+            "title": "3-Year Warranty",
+            "text": "<p>Limited warranty on all orders<\/p>",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "highlight_DUXWRh",
+        "highlight_7RyATG",
+        "highlight_VeAPgJ"
+      ],
+      "settings": {
+      }
+    },
+    "dynamic_images_banner_hAHyxe": {
+      "type": "dynamic-images-banner",
+      "blocks": {
+        "image_RrMadM": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Good_Day.png"
+          }
+        },
+        "image_Vnam9r": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/MSN_News.png"
+          }
+        },
+        "image_zAM7cg": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Yahoo_news.png"
+          }
+        },
+        "image_GNaaCm": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/family_handyman_1.png"
+          }
+        },
+        "image_xKRJCj": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/nhshow_1.png"
+          }
+        },
+        "image_A6pNgY": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/toolwife_1.png"
+          }
+        }
+      },
+      "block_order": [
+        "image_RrMadM",
+        "image_Vnam9r",
+        "image_zAM7cg",
+        "image_GNaaCm",
+        "image_xKRJCj",
+        "image_A6pNgY"
+      ],
+      "disabled": true,
+      "settings": {
+        "section_title": "As Seen On:",
+        "section_spacing": false,
+        "section_width": "content-width",
+        "background_color": "#f3f3f3",
+        "mobile_layout": "slider"
+      }
+    },
+    "seen_on_7dAHNk": {
+      "type": "seen-on",
+      "blocks": {
+        "image_jmHywh": {
+          "type": "image",
+          "settings": {
+            "media_logo": "shopify:\/\/shop_images\/GoodDay.png",
+            "logo_alt_text": "Good Day Logo",
+            "media_logo_width": 99.5
+          }
+        },
+        "image_6nyMVa": {
+          "type": "image",
+          "settings": {
+            "media_logo": "shopify:\/\/shop_images\/MSN.png",
+            "logo_alt_text": "MSN News Logo",
+            "media_logo_width": 59.5
+          }
+        },
+        "image_b9B68Y": {
+          "type": "image",
+          "settings": {
+            "media_logo": "shopify:\/\/shop_images\/YahooNews.png",
+            "logo_alt_text": "Yahoo News Logo",
+            "media_logo_width": 82.4
+          }
+        },
+        "image_MXmDBt": {
+          "type": "image",
+          "settings": {
+            "media_logo": "shopify:\/\/shop_images\/familyhandyman.png",
+            "logo_alt_text": "Family Handyman",
+            "media_logo_width": 108
+          }
+        },
+        "image_XKBMiF": {
+          "type": "image",
+          "settings": {
+            "media_logo": "shopify:\/\/shop_images\/nhshow.png",
+            "logo_alt_text": "National Hardware Show",
+            "media_logo_width": 118
+          }
+        },
+        "image_943Kgm": {
+          "type": "image",
+          "settings": {
+            "media_logo": "shopify:\/\/shop_images\/toolwife.png",
+            "logo_alt_text": "Tool Wife Logo",
+            "media_logo_width": 85
+          }
+        }
+      },
+      "block_order": [
+        "image_jmHywh",
+        "image_6nyMVa",
+        "image_b9B68Y",
+        "image_MXmDBt",
+        "image_XKBMiF",
+        "image_943Kgm"
+      ],
+      "settings": {
+        "section_heading": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "cart_total_with_logos_LqWEmE",
+    "dynamic_images_banner_hAHyxe",
+    "seen_on_7dAHNk"
+  ]
+}

@@ -1,0 +1,89 @@
+<section class="product-image-banner">
+  <div class="desktop-image--container {% unless section.settings.full_width %} product__container{% endunless %} product__container--two-columns">
+    <img src="{{ section.settings.desktop_banner |  image_url  }}" alt="Desktop Banner" class="desktop-image-banner">
+  </div>
+
+  {% if section.settings.mobile_banner %}
+    <div class="mobile-image--container">
+      <a href="#product-features" class="scroll-to-cta">
+        <img src="{{ section.settings.mobile_banner |  image_url  }}" alt="Mobile Banner" class="mobile-image-banner">
+      </a>
+    </div>
+  {% endif %}
+</section>
+
+{%  style  %}
+
+.product-image-banner {
+  background-color: #f4f4f4;
+}
+
+.product-image-banner .desktop-image-banner {
+  width: 100%;
+  display: block;
+}
+
+.product-image-banner .desktop-image--container {
+  display: block;
+}
+
+{% if section.settings.mobile_banner %}
+@media (max-width: 530px) {
+  .product-image-banner .desktop-image--container {
+    display: none;
+  }
+}
+{% endif %}
+
+.product-image-banner .mobile-image-banner {
+  width: 100%;
+}
+
+.mobile-image--container {
+  width: 100%;
+  display: none;
+}
+
+@media (max-width: 530px) {
+  .mobile-image--container {
+    display: block;
+  }
+}
+
+.section--canonical:nth-child(2) {
+  margin-top: 0px;
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Product Image Banner",
+  "class": "product-image-banner--section",
+  "settings": [
+    {
+    "type": "image_picker",
+    "id": "desktop_banner",
+    "label": "Desktop Image Banner"
+    },
+    {
+    "type": "image_picker",
+    "id": "mobile_banner",
+    "label": "Mobile Image Banner"
+    },
+    {
+    "type": "checkbox",
+    "id": "full_width",
+    "label": "Full Width",
+    "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Image Banner",
+      "settings": {}
+    }
+  ]
+}
+
+{% endschema %}

@@ -1,0 +1,120 @@
+{{ 'dynamic-images-banner.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #shopify-section-{{- section.id }}.images-banner {
+    background-color: {{ section.settings.background_color }};
+  }
+</style>
+
+<div class="
+  images-banner__{{ section.id }}
+  images-banner__container
+  images-banner__mobile-layout--{{ section.settings.mobile_layout }}
+  {{ section.settings.section_width }}
+  {% if section.settings.section_spacing %}section-spacing{% endif %}"
+>
+  <div class="images-banner__content">
+    {% if section.settings.section_title != blank %}
+      <h2 class="images-banner__title">{{ section.settings.section_title }}</h2>
+    {% endif %}
+    <div class="images-banner__content-blocks">
+      {% for block in section.blocks %}
+        {% if block.settings.image != blank %}
+          <div class="images-banner__icon">
+              {%
+                render 'rimg',
+                class: 'images-banner__custom-icon',
+                img: block.settings.image,
+                size: '150x',
+                focal_point: block.settings.image.presentation.focal_point,
+              %}
+          </div>
+        {% endif %}
+      {% endfor %}
+      </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Dynamic Images Banner",
+  "class": "images-banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title"
+    },
+    {
+      "type": "checkbox",
+      "id": "section_spacing",
+      "label": "Show section spacing"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "content-width",
+          "label": "Content width"
+        },
+        {
+          "value": "full-width",
+          "label": "Full width"
+        }
+      ],
+      "default": "content-width"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f8f8f8"
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "slider",
+          "label": "Slider"
+        }
+      ],
+      "default": "slider"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "50 x 50px recommended."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "Store Information",
+      "name": "Dynamic Images Banner"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["*"]
+  }
+}
+{% endschema %}

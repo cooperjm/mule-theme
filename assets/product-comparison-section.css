@@ -1,0 +1,234 @@
+.product-comparison-section {
+    max-width: 1400px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+.product-comparison-section .title-content { 
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.product-comparison-section .title-content h2 {
+    font-size: 55px;
+    line-height: 74.69px;
+    margin: 0;
+}
+
+.product-comparison-section .title-content p {
+    font-size: 39px;
+    line-height: 55.11px;
+    margin: 0;
+}
+
+.product-comparison-section .product-comparison-tabs {
+    display: none;
+}
+
+.product-comparison-section .product-comparison-block {
+    display: flex;
+    gap: 20px;
+}
+
+.product-comparison-section .product-comparison-block .product-comparison-item {
+    width: 50%;
+    display: grid;
+    justify-items: center;
+    background-color: #F4F4F4;
+}
+
+.product-comparison-section .product-comparison-item .product-comparison-image {
+    padding: 40px 20px;
+}
+
+.product-comparison-section .product-comparison-item .product-comparison-image img {
+    height: 300px;
+    width: auto;
+}
+
+.product-comparison-section .product-comparison-item .product-comparison-title {
+    font-size: 45px;
+    font-style: italic;
+    font-weight: bold;
+    line-height: 61.11px;
+    margin: 15px 0 0;
+    padding: 0 20px;
+    text-transform: uppercase;
+}
+
+.product-comparison-section .product-comparison-item .product-comparison-label {
+    font-size: 20px;
+    line-height: 23px;
+    margin: 15px 0 0;
+    text-align: center;
+}
+
+.product-comparison-section .product-comparison-item .product-comparison-subtitle {
+    font-size: 27px;
+    font-weight: bold;
+    line-height: 36px;
+    padding: 0 20px;
+    margin: 0;
+    text-align: center;
+}
+
+.product-comparison-section .product-comparison-item .product-comparison-description {
+    min-width: 280px;
+    padding: 0 40px;
+}
+
+.product-comparison-section .product-comparison-item .product-comparison-description ul {
+    list-style: none;
+    padding: 0;
+}
+
+.product-comparison-section .product-comparison-item .product-comparison-description li {
+    background: url('https://cdn.shopify.com/s/files/1/0674/5135/5350/files/Checkmark.png') no-repeat left center;
+    padding: 5px 5px 5px 35px;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.product-comparison-section .product-comparison-block .cta-button {
+    background-color: #fdbf06;
+    color: #000;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 5px;
+    padding: 15px 20px;
+    font-size: 18px;
+    min-width: 240px;
+    text-align: center;
+    display: block;
+}
+
+.product-comparison-section .product-comparison-block .product-comparison-bottom-images {
+    display: flex;
+    margin-top: 30px;
+}
+
+.product-comparison-section .product-comparison-bottom-images .product-comparison-bottom-image {
+    border-top: 6px solid white;
+}
+
+.product-comparison-section .product-comparison-bottom-images .product-comparison-bottom-image:first-child {
+    border-right: 6px solid white;
+}
+
+.product-comparison-section .product-comparison-bottom-images .product-comparison-bottom-image img {
+    width: 100%;
+    height: auto;
+}
+
+@media screen and (max-width: 768px) {
+    .product-comparison-section .title-content h2 {
+        font-size: 35px;
+        line-height: 47.53px;
+    }
+    
+    .product-comparison-section .title-content p {
+        font-size: 25px;
+        line-height: 33.95px;
+    }  
+
+    .product-comparison-section .product-comparison-tabs {
+        display: flex;
+        font-size: 18px;
+        font-weight: bold;
+        line-height: 21.09px;
+        text-align: center;
+        gap: 5px;
+    }
+
+    .product-comparison-section .product-comparison-tabs .product-comparison-tab {
+        width: 50%;
+        background-color: #F0B700;
+        padding: 15px 5px;
+        border-radius: 8px 8px 0 0;
+        border-bottom: 5px solid white;
+    }
+
+    .product-comparison-section .product-comparison-tabs .product-comparison-tab.active {
+        background-color: #F4F4F4;
+        border-bottom: none;
+    }
+
+    .product-comparison-section .product-comparison-block .product-comparison-item {
+        width: 100%;
+    }
+
+    .product-comparison-section .product-comparison-block .product-comparison-item {
+        display: none;
+    }
+
+    .product-comparison-section .product-comparison-block .product-comparison-item.active {
+        display: grid;
+        box-shadow: 0px 15px 15px 0px #b5b5b5;
+    }
+
+    .product-comparison-section .product-comparison-item .product-comparison-image {
+        padding: 20px;
+        order: 2;
+    }
+
+    .product-comparison-section .product-comparison-item .product-comparison-title {
+        order: 1;
+        margin: 20px 0 0;
+        font-size: 22px;
+        font-style: italic;
+        line-height: 29.87px;
+    }
+
+    .product-comparison-section .product-comparison-item .product-comparison-label {
+        order: 2;
+        font-size: 16px;
+        line-height: 23px;
+    }
+    
+    .product-comparison-section .product-comparison-item .product-comparison-subtitle { 
+        order: 3;
+        font-size: 18px;
+        line-height: 24px;
+        justify-self: center;
+        margin: 10px 0;
+    }
+
+    .product-comparison-section .product-comparison-item .product-comparison-description {
+        order: 4;
+    }
+
+    .product-comparison-section .product-comparison-item .product-comparison-description ul {
+        margin-top: 0;
+    }
+
+    .product-comparison-section .product-comparison-item .product-comparison-button {
+        order: 5;
+    }
+
+    .product-comparison-section .product-comparison-block .product-comparison-bottom-images {
+        order: 6;
+        gap: 5px;
+        padding: 0 5px 2px;
+    }
+
+    .product-comparison-section .product-comparison-bottom-images .product-comparison-bottom-image {
+        border-top: none;
+    }
+    
+    .product-comparison-section .product-comparison-bottom-images .product-comparison-bottom-image:first-child {
+        border-right: none
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .product-comparison-section .product-comparison-item .product-comparison-image img {
+        height: 160px;
+    }
+}
+
+@media screen and (min-width: 380px) and (max-width: 435px) {
+    .product-comparison-section .title-content h2 {
+        padding: 0 20px;
+    }
+}

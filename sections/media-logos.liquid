@@ -1,0 +1,61 @@
+{{ 'media-logos.css' | asset_url | stylesheet_tag }}
+
+<section id="media-logos" class="product-template-section">
+    <div class="media-logos-container product-template-container">
+      <h2>{{ section.settings.section_heading }}</h2>
+      <div class="media-logos-grid">
+        <div class="media-logos-first-row">
+          {% for block in section.blocks %}
+            {% if forloop.index <= 4 %}
+              <div class="media-logo-box">
+                <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.image.alt | escape }}">
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <div class="media-logos-second-row">
+          {% for block in section.blocks %}
+            {% if forloop.index > 4 %}
+              <div class="media-logo-box">
+                <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.image.alt | escape }}">
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Media Logos",
+    "class": "media-logos--section",
+    "max_blocks": 9,
+    "settings": [
+      {
+        "type": "text",
+        "id": "section_heading",
+        "label": "Insert Section Heading"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Logo",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Media Logos"
+      }
+    ]
+  }
+  {% endschema %}
+  

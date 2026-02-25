@@ -1,0 +1,307 @@
+{{ 'fan-page-main.css' | asset_url | stylesheet_tag }}
+{% if template contains 'mobile-workshop-page' %}
+  {{ 'mobile-workshop.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'mobile-workshop.js' | asset_url }}" defer></script>
+{% endif %}
+
+<div class="fan-page-main-banner">
+    <div class="banner-item">
+        <div class="banner-item-icon">{% render 'icon-library', id: 'icon-car-2' %}</div>
+        <div class="banner-item-text">Free Shipping</div>
+    </div>
+    <div class="banner-item">
+        <div class="banner-item-icon">{% render 'icon-library', id: 'icon-fast-delivery' %}</div>
+        <div class="banner-item-text">Fast Delivery</div>
+    </div>
+    <div class="banner-item">
+        <div class="banner-item-icon">{% render 'icon-library', id: 'icon-award-trophy' %}</div>
+        <div class="banner-item-text">3 Years Warranty</div>
+    </div>
+</div>
+<div class="fan-page-main-section fan-page-main-section-{{ section.id }}">
+    <div class="fan-page-main-container">
+        <div class="fan-page-block">
+            <div class="fan-image">
+              {% if section.settings.main_image %}
+                {{ section.settings.main_image | image_url: width: 450 | image_tag: alt: "Icon Image", loading: 'lazy'}}
+              {% endif %}
+            </div>
+            <div class="text-content">
+                {% if section.settings.highlighted_text != blank %}
+                  {% if template contains 'mobile-workshop-page' %}
+                    {% assign highlighted_text = '<span class="highlighted-text">' | append: section.settings.highlighted_text | append: '</span>' %}    
+                  {% else %}
+                    {% assign highlighted_text = '<br/><span class="highlighted-text">' | append: section.settings.highlighted_text | append: '</span>' %}  
+                  {% endif %} 
+                {% endif %}
+                {% assign heading_text = section.settings.heading_text |  replace: "{highlighted_text}", highlighted_text  %}
+        
+                <h2>{{ heading_text }}</h2>
+            </div>
+            <div class="title-content"> 
+                <h2>{{ section.settings.title }}</h2>
+                <p>{{ section.settings.subtitle }}</p>
+            </div>
+            <div class="buttons-block"> 
+                <a href="{{ section.settings.button_link }}" class="cta-button">
+                    {{ section.settings.button_text }}
+                </a>
+                <a href="{{ section.settings.second_button_link }}" class="cta-secondary-button">
+                    {{ section.settings.second_button_text }}
+                </a>
+            </div>
+            <div class="icon-list-block">
+              {% for block in section.blocks %}
+                  {% if block.type == "icon" %}
+                      <div class="icon-list">
+                          <div class="icon-list-icon">{{ block.settings.icon | image_url: width: 65 | image_tag: alt: "Fan Image", loading: 'lazy'}}</div>
+                          <div class="icon-list-text">{{ block.settings.text }}</div>
+                      </div>
+                  {% endif %}
+              {% endfor %}
+          </div>
+        </div>
+        <div class="banner-image-block">
+            {{ section.settings.desktop_banner_image | image_url: width: nil | image_tag: alt: "Banner Image", loading: 'lazy', class: 'desktop-image'}}
+            {{ section.settings.mobile_banner_image | image_url: width: nil | image_tag: alt: "Mobile Banner Image", loading: 'lazy', class: 'mobile-image'}}
+        </div>
+        <div class="image-slider-block">
+            {% for block in section.blocks %}
+                {% if block.type == "slider_image" %}
+                    <div class="image-slider-block-img {% if section.settings.anchor_images %}anchor-image-slider-block-img{% endif %}">
+                        {{ block.settings.image | image_url: width: nil | image_tag: alt: "Slider Image", loading: 'lazy'}}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            
+        </div>
+    </div>
+</div>
+
+<script>
+// Image Slider
+document.addEventListener('DOMContentLoaded', () => {
+    if ($(window).width() <= 768) {
+        $('.image-slider-block').slick({
+            slidesToShow: 2,
+            slidesToScroll: 1,
+            prevArrow: `<img src="{{ 'slider-arrow-left.svg' | asset_url }}" alt="Prev" class="slick-prev">`,
+            nextArrow: `<img src="{{ 'slider-arrow-right.svg' | asset_url }}" alt="Next" class="slick-next">`,
+            infinite: true,
+            adaptiveHeight: false,
+            dots: false
+        });
+    }
+
+    $(window).resize(function () {
+        if ($(window).width() <= 768) {
+            if (!$('.image-slider-block').hasClass('slick-initialized')) {
+                $('.image-slider-block').slick({
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    prevArrow: `<img src="{{ 'slider-arrow-left.svg' | asset_url }}" alt="Prev" class="slick-prev">`,
+                    nextArrow: `<img src="{{ 'slider-arrow-right.svg' | asset_url }}" alt="Next" class="slick-next">`,
+                    infinite: true,
+                    adaptiveHeight: false,
+                    dots: false
+                });
+            }
+        } else {
+            if ($('.image-slider-block').hasClass('slick-initialized')) {
+                $('.image-slider-block').slick('unslick');
+            }
+        }
+    });
+})
+</script>
+
+<style>
+.fan-page-main-section-{{ section.id }} .text-content h2 {
+  color: {{ section.settings.heading_color }};
+}
+
+.fan-page-main-section-{{ section.id }} .text-content h2 .highlighted-text {
+  color: {{ section.settings.highlighted_color }};
+}
+
+.fan-page-main-section-{{ section.id }} .title-content {
+  color: {{ section.settings.heading_color }};
+}
+
+.fan-page-main-section-{{ section.id }} .cta-button {
+  background-color: {{ section.settings.btn_bg_color }};
+  color: {{ section.settings.btn_text_color }};
+}
+
+.fan-page-main-section-{{ section.id }} .cta-secondary-button {
+  border-color: {{ section.settings.second_btn_color }};
+  color: {{ section.settings.second_btn_color }};
+}
+
+@media (min-width: 769px) {
+    .fan-page-main-section-{{ section.id }} {
+        background-image: url({{ section.settings.desktop_image | image_url }});
+    }
+}
+
+@media (max-width: 768px) {
+    .fan-page-main-section-{{ section.id }} {
+        background-image: url({{ section.settings.mobile_image | image_url }});
+    }
+}
+</style>
+
+{% schema %}
+    {
+      "name": "Fan Page Main Section",
+      "limit": 1,
+      "settings": [
+        {
+          "id": "desktop_image",
+          "type": "image_picker",
+          "label": "Desktop Background Image"
+        },
+        {
+          "id": "mobile_image",
+          "type": "image_picker",
+          "label": "Mobile Background Image"
+        },
+        {
+          "id": "main_image",
+          "type": "image_picker",
+          "label": "Main Image"
+        },
+        {
+          "id": "desktop_banner_image",
+          "type": "image_picker",
+          "label": "Desktop Banner Image"
+        },
+        {
+          "id": "mobile_banner_image",
+          "type": "image_picker",
+          "label": "Mobile Banner Image"
+        },
+        {
+          "id": "heading_text",
+          "type": "text",
+          "label": "Heading Text",
+          "info": "Use {highlighted_text} to include a highlighted text",
+          "default": "MULE WORKS HARD,<br/> {highlighted_text}"
+        },
+        {
+          "id": "highlighted_text",
+          "type": "text",
+          "label": "Highlighted text",
+          "default": "SO YOU CAN WORK EASY."
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "THE ULTIMATE SHOP FAN"
+        },
+        {
+          "id": "subtitle",
+          "type": "text",
+          "label": "Subtitle",
+          "default": "GET YOUR JOBS DONE IN COMFORT, LIKE A PRO"
+        },
+        {
+          "id": "button_text",
+          "type": "text",
+          "label": "Button Text",
+          "default": "Get Your MULE"
+        },
+        {
+          "id": "button_link",
+          "type": "url",
+          "label": "Button URL"
+        },
+        {
+          "id": "second_button_text",
+          "type": "text",
+          "label": "Secondary Button Text",
+          "default": "Learn More"
+        },
+        {
+          "id": "second_button_link",
+          "type": "url",
+          "label": "Secondary Button URL"
+        },
+        {
+          "id": "heading_color",
+          "type": "color",
+          "label": "Heading Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "id": "highlighted_color",
+          "type": "color",
+          "label": "Highlighted Text Color",
+          "default": "#FDBF06"
+        },
+        {
+          "id": "btn_bg_color",
+          "type": "color",
+          "label": "Button Background Color",
+          "default": "#FDBF06"
+        },
+        {
+          "id": "second_btn_color",
+          "type": "color",
+          "label": "Secondary Button Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "id": "btn_text_color",
+          "type": "color",
+          "label": "Button Text Color",
+          "default": "#000000"
+        },
+        {
+          "id": "anchor_images",
+          "type": "checkbox",
+          "label": "Images with anchor",
+          "default": false
+        }
+      ],
+      "blocks": [
+        {
+            "name": "Banner Icon",
+            "type": "icon",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "icon",
+                    "label": "Icon"
+                },
+                {
+                    "type": "text",
+                    "id": "text",
+                    "label": "Icon Text"
+                }
+            ]
+        },
+        {
+            "name": "Slider Image",
+            "type": "slider_image",
+            "limit": 6,
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                }
+            ]
+        }
+      ],
+      "presets": [
+        {
+          "name": "Fan Page Main Section",
+          "category": "Custom"
+        }
+      ]
+    }
+{% endschema %}
+    
+    

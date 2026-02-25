@@ -1,0 +1,308 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "static-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "76060166-2c0b-4544-af8d-2c2739d5a28b": {
+          "type": "sku",
+          "settings": {}
+        },
+        "515e0916-5d17-4a8f-805c-a5a82297d81f": {
+          "type": "shopify://apps/bazaarvoice-reviews-photos/blocks/rating-summary-block/766ed9d3-b120-48f3-8444-448f45152f47",
+          "settings": {}
+        },
+        "vendor": {
+          "type": "vendor",
+          "disabled": true,
+          "settings": {}
+        },
+        "rating": {
+          "type": "rating",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "disabled": true,
+          "settings": {}
+        },
+        "form": {
+          "type": "form",
+          "settings": {
+            "enable_local_pickup": true,
+            "show_gift_card_recipient_form": false,
+            "show_product_form_title": false,
+            "product_form_title": "",
+            "show_product_form_notice": false,
+            "product_form_notice_icon": "",
+            "product_form_notice": "",
+            "show_product_form_tagline": false,
+            "product_form_tagline": ""
+          }
+        },
+        "custom_liquid_KQztG6": {
+          "type": "custom-liquid",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": "<style>\n.suggest-container {\n  margin: 0 0 25px;\n  border-radius: 0;\n  padding: 16px 25px;\n  box-shadow: 0 0 15px #00000026;\n  background-color: #fff;\n  border-top: 4px solid #f7cd46;\n  border-bottom: 4px solid #f7cd46;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  flex-direction: column;\n}\n\n.suggest-container h3,\n.suggest-item--info h4 {\n  font-family: Oswald, sans-serif;\n}\n\n.suggest-item--info h4 {\n  font-weight: 400;\n  font-size: 16px;\n}\n\n.suggest-container h3 {\n  font-size: 20px;\n}\n\n.suggest-item {\n  display: flex;\n  flex-direction: row;\n}\n\n.suggest-item--image img {\n  /*max-width: 100px;*/\n  width: 100%;\n}\n\n.suggest-item--image {\n  padding: 1rem;\n  max-width: 150px;\n}\n\n.suggest-item--button {\n  background-color: #f7cd46;\n  border: 2px solid #fff;\n  border-radius: 50px;\n  color: #181818;\n  text-transform: capitalize;\n  font-size: 16px;\n  font-weight: bold;\n  padding: 15px 80px;\n  max-width: 300px;\n  box-shadow: 0 1px 15px #0000004a;\n  /*width: 100%;*/\n}\n\n.suggest-item--info {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 1rem;\n}\n\n.suggest-item a,\n.suggest-item button {\n  cursor: pointer !important;\n}\n\n@media only screen and (max-width: 764px) {\n  .suggest-item {\n    flex-direction: column !important;\n    align-items: center !important;\n  }\n  \n  .suggest-item--image {\n    padding-bottom: 0;\n  }\n}\n\n</style>\n<div class=\"suggest-container\">\n  <h3>We're currently out of stock on this item. Suggested item below.</h3>\n  <div class=\"suggest-item\">\n    <div class=\"suggest-item--image\">\n      <img src=\"https://muleproducts.com/cdn/shop/files/28723144_51856_2.png?crop=center&height=560&v=1750787302&width=560\" alt=\"\">\n    </div>\n    <div class=\"suggest-item--info\">\n      <h4>54\" Honeywell Port Isle Matte Black Ceiling Fan with Light and Remote\n</h4>\n      <a href=\"https://muleproducts.com/collections/outdoor-fans/products/54-honeywell-port-isle-matte-black-ceiling-fan-with-light-and-remote\">\n        <button class=\"suggest-item--button\">View Product</button>\n      </a>\n    </div>\n\n  </div>\n</div>"
+          }
+        },
+        "custom_liquid_zUt9LK": {
+          "type": "custom-liquid",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": "<div id=\"mc_embed_shell\">\n      <link href=\"//cdn-images.mailchimp.com/embedcode/classic-061523.css\" rel=\"stylesheet\" type=\"text/css\">\n  <style type=\"text/css\">\n        #mc_embed_signup {\n            background: #fff;\n            clear: left;\n            font: 14px Helvetica, Arial, sans-serif;\n            width: 100%;\n            max-width: 600px;\n            margin: auto;\n            padding: 20px;\n            box-sizing: border-box;\n        }\n\n        #mc_embed_signup_scroll {\n            display: flex;\n            flex-direction: column;\n        }\n\n        .mc-field-group {\n            margin-bottom: 15px;\n            width: 100%;\n        }\n\n        .mc-field-group label {\n            display: block;\n            margin-bottom: 5px;\n        }\n\n        .mc-field-group input {\n            width: 100%;\n            padding: 10px;\n            box-sizing: border-box;\n        }\n\n        .clear {\n            text-align: center;\n        }\n\n        .button {\n            background-color: #0073e6;\n            color: #fff;\n            border: none;\n            padding: 10px 20px;\n            cursor: pointer;\n            font-size: 16px;\n        }\n\n        @media (max-width: 600px) {\n            #mc_embed_signup {\n                padding: 10px;\n            }\n\n            .mc-field-group input {\n                padding: 8px;\n            }\n\n            .button {\n                width: 100%;\n                padding: 12px;\n                font-size: 18px;\n            }\n        }\n    </style>\n<div id=\"mc_embed_signup\">\n    <form action=\"https://muleproducts.us18.list-manage.com/subscribe/post?u=06375e67010dbe0ed9aa57153&amp;id=89f15202a3&amp;f_id=00f2a1e6f0\" method=\"post\" id=\"mc-embedded-subscribe-form\" name=\"mc-embedded-subscribe-form\" class=\"validate\" target=\"_blank\">\n        <div id=\"mc_embed_signup_scroll\"><h2>Join the Waitlist to Be Notified When Back in Stock</h2>\n            <div class=\"indicates-required\"><span class=\"asterisk\">*</span> indicates required</div>\n            <div class=\"mc-field-group\"><label for=\"mce-MMERGE1\">First Name <span class=\"asterisk\">*</span></label><input type=\"text\" name=\"MMERGE1\" class=\"required text\" id=\"mce-MMERGE1\" required=\"\" value=\"\"></div><div class=\"mc-field-group\"><label for=\"mce-EMAIL\">Email Address <span class=\"asterisk\">*</span></label><input type=\"email\" name=\"EMAIL\" class=\"required email\" id=\"mce-EMAIL\" required=\"\" value=\"\"></div>\n<div hidden=\"\"><input type=\"hidden\" name=\"tags\" value=\"3004309\"></div>\n        <div id=\"mce-responses\" class=\"clear\">\n            <div class=\"response\" id=\"mce-error-response\" style=\"display: none;\"></div>\n            <div class=\"response\" id=\"mce-success-response\" style=\"display: none;\"></div>\n        </div><div aria-hidden=\"true\" style=\"position: absolute; left: -5000px;\"><input type=\"text\" name=\"b_06375e67010dbe0ed9aa57153_89f15202a3\" tabindex=\"-1\" value=\"\"></div><div class=\"clear\"><input type=\"submit\" name=\"subscribe\" id=\"mc-embedded-subscribe\" class=\"button\" value=\"Subscribe\"></div>\n    </div>\n</form>\n</div>\n<script type=\"text/javascript\" src=\"//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js\"></script><script type=\"text/javascript\">(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]='MMERGE1';ftypes[1]='text';fnames[0]='EMAIL';ftypes[0]='email';fnames[2]='MMERGE2';ftypes[2]='text';fnames[3]='MMERGE3';ftypes[3]='text';fnames[4]='MMERGE4';ftypes[4]='number';fnames[5]='MMERGE5';ftypes[5]='address';}(jQuery));var $mcj = jQuery.noConflict(true);\n    // SMS Phone Multi-Country Functionality\n    if(!window.MC) {\n      window.MC = {};\n    }\n    window.MC.smsPhoneData = {\n      defaultCountryCode: 'US',\n      programs: [],\n      smsProgramDataCountryNames: []\n    };\n\n    function getCountryUnicodeFlag(countryCode) {\n       return countryCode.toUpperCase().replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))\n    };\n\n    // HTML sanitization function to prevent XSS\n    function sanitizeHtml(str) {\n      if (typeof str !== 'string') return '';\n      return str\n        .replace(/&/g, '&amp;')\n        .replace(/</g, '&lt;')\n        .replace(/>/g, '&gt;')\n        .replace(/\"/g, '&quot;')\n        .replace(/'/g, '&#x27;')\n        .replace(/\\//g, '&#x2F;');\n    }\n\n    // URL sanitization function to prevent javascript: and data: URLs\n    function sanitizeUrl(url) {\n      if (typeof url !== 'string') return '';\n      const trimmedUrl = url.trim().toLowerCase();\n      if (trimmedUrl.startsWith('javascript:') || trimmedUrl.startsWith('data:') || trimmedUrl.startsWith('vbscript:')) {\n        return '#';\n      }\n      return url;\n    }\n\n    const getBrowserLanguage = () => {\n      if (!window?.navigator?.language?.split('-')[1]) {\n        return window?.navigator?.language?.toUpperCase();\n      }\n      return window?.navigator?.language?.split('-')[1];\n    };\n\n    function getDefaultCountryProgram(defaultCountryCode, smsProgramData) {\n      if (!smsProgramData || smsProgramData.length === 0) {\n        return null;\n      }\n\n      const browserLanguage = getBrowserLanguage();\n\n      if (browserLanguage) {\n        const foundProgram = smsProgramData.find(\n          (program) => program?.countryCode === browserLanguage,\n        );\n        if (foundProgram) {\n          return foundProgram;\n        }\n      }\n\n      if (defaultCountryCode) {\n        const foundProgram = smsProgramData.find(\n          (program) => program?.countryCode === defaultCountryCode,\n        );\n        if (foundProgram) {\n          return foundProgram;\n        }\n      }\n\n      return smsProgramData[0];\n    }\n\n    function updateSmsLegalText(countryCode, fieldName) {\n      if (!countryCode || !fieldName) {\n        return;\n      }\n      \n      const programs = window?.MC?.smsPhoneData?.programs;\n      if (!programs || !Array.isArray(programs)) {\n        return;\n      }\n      \n      const program = programs.find(program => program?.countryCode === countryCode);\n      if (!program || !program.requiredTemplate) {\n        return;\n      }\n      \n      const legalTextElement = document.querySelector('#legal-text-' + fieldName);\n      if (!legalTextElement) {\n        return;\n      }\n      \n      // Remove HTML tags and clean up the text\n      const divRegex = new RegExp('</?[div][^>]*>', 'gi');\n      const fullAnchorRegex = new RegExp('<a.*?</a>', 'g');\n      const anchorRegex = new RegExp('<a href=\"(.*?)\" target=\"(.*?)\">(.*?)</a>');\n      \n      const requiredLegalText = program.requiredTemplate\n        .replace(divRegex, '')\n        .replace(fullAnchorRegex, '')\n        .slice(0, -1);\n      \n      const anchorMatches = program.requiredTemplate.match(anchorRegex);\n      \n      if (anchorMatches && anchorMatches.length >= 4) {\n        // Create link element safely using DOM methods instead of innerHTML\n        const linkElement = document.createElement('a');\n        linkElement.href = sanitizeUrl(anchorMatches[1]);\n        linkElement.target = sanitizeHtml(anchorMatches[2]);\n        linkElement.textContent = sanitizeHtml(anchorMatches[3]);\n        \n        legalTextElement.textContent = requiredLegalText + ' ';\n        legalTextElement.appendChild(linkElement);\n        legalTextElement.appendChild(document.createTextNode('.'));\n      } else {\n        legalTextElement.textContent = requiredLegalText + '.';\n      }\n    }\n\n    function generateDropdownOptions(smsProgramData) {\n      if (!smsProgramData || smsProgramData.length === 0) {\n        return '';\n      }\n      \n      return smsProgramData.map(program => {\n        const flag = getCountryUnicodeFlag(program.countryCode);\n        const countryName = getCountryName(program.countryCode);\n        const callingCode = program.countryCallingCode || '';\n        // Sanitize all values to prevent XSS\n        const sanitizedCountryCode = sanitizeHtml(program.countryCode || '');\n        const sanitizedCountryName = sanitizeHtml(countryName || '');\n        const sanitizedCallingCode = sanitizeHtml(callingCode || '');\n        return '<option value=\"' + sanitizedCountryCode + '\">' + sanitizedCountryName + ' ' + sanitizedCallingCode + '</option>';\n      }).join('');\n    }\n\n    function getCountryName(countryCode) {\n      if (window.MC?.smsPhoneData?.smsProgramDataCountryNames && Array.isArray(window.MC.smsPhoneData.smsProgramDataCountryNames)) {\n        for (let i = 0; i < window.MC.smsPhoneData.smsProgramDataCountryNames.length; i++) {\n          if (window.MC.smsPhoneData.smsProgramDataCountryNames[i].code === countryCode) {\n            return window.MC.smsPhoneData.smsProgramDataCountryNames[i].name;\n          }\n        }\n      }\n      return countryCode;\n    }\n\n    function getDefaultPlaceholder(countryCode) {\n      if (!countryCode || typeof countryCode !== 'string') {\n        return '+1 000 000 0000'; // Default US placeholder\n      }\n      \n      const mockPlaceholders = [\n        {\n      countryCode: 'US',\n      placeholder: '+1 000 000 0000',\n      helpText: 'Include the US country code +1 before the phone number',\n    },\n    {\n      countryCode: 'GB',\n      placeholder: '+44 0000 000000',\n      helpText: 'Include the GB country code +44 before the phone number',\n    },\n    {\n      countryCode: 'CA',\n      placeholder: '+1 000 000 0000',\n      helpText: 'Include the CA country code +1 before the phone number',\n    },\n    {\n      countryCode: 'AU',\n      placeholder: '+61 000 000 000',\n      helpText: 'Include the AU country code +61 before the phone number',\n    },\n    {\n      countryCode: 'DE',\n      placeholder: '+49 000 0000000',\n      helpText: 'Fügen Sie vor der Telefonnummer die DE-Ländervorwahl +49 ein',\n    },\n    {\n      countryCode: 'FR',\n      placeholder: '+33 0 00 00 00 00',\n      helpText: 'Incluez le code pays FR +33 avant le numéro de téléphone',\n    },\n    {\n      countryCode: 'ES',\n      placeholder: '+34 000 000 000',\n      helpText: 'Incluya el código de país ES +34 antes del número de teléfono',\n    },\n    {\n      countryCode: 'NL',\n      placeholder: '+31 0 00000000',\n      helpText: 'Voeg de NL-landcode +31 toe vóór het telefoonnummer',\n    },\n    {\n      countryCode: 'BE',\n      placeholder: '+32 000 00 00 00',\n      helpText: 'Incluez le code pays BE +32 avant le numéro de téléphone',\n    },\n    {\n      countryCode: 'CH',\n      placeholder: '+41 00 000 00 00',\n      helpText: 'Fügen Sie vor der Telefonnummer die CH-Ländervorwahl +41 ein',\n    },\n    {\n      countryCode: 'AT',\n      placeholder: '+43 000 000 0000',\n      helpText: 'Fügen Sie vor der Telefonnummer die AT-Ländervorwahl +43 ein',\n    },\n    {\n      countryCode: 'IE',\n      placeholder: '+353 00 000 0000',\n      helpText: 'Include the IE country code +353 before the phone number',\n    },\n    {\n      countryCode: 'IT',\n      placeholder: '+39 000 000 0000',\n      helpText:\n        'Includere il prefisso internazionale IT +39 prima del numero di telefono',\n    },\n      ];\n\n      const selectedPlaceholder = mockPlaceholders.find(function(item) {\n        return item && item.countryCode === countryCode;\n      });\n      \n      return selectedPlaceholder ? selectedPlaceholder.placeholder : mockPlaceholders[0].placeholder;\n    }\n\n    function updatePlaceholder(countryCode, fieldName) {\n      if (!countryCode || !fieldName) {\n        return;\n      }\n      \n      const phoneInput = document.querySelector('#mce-' + fieldName);\n      if (!phoneInput) {\n        return;\n      }\n      \n      const placeholder = getDefaultPlaceholder(countryCode);\n      if (placeholder) {\n        phoneInput.placeholder = placeholder;\n      }\n    }\n\n    function updateCountryCodeInstruction(countryCode, fieldName) {\n      updatePlaceholder(countryCode, fieldName);\n      \n    }\n\n    function getDefaultHelpText(countryCode) {\n      const mockPlaceholders = [\n        {\n          countryCode: 'US',\n          placeholder: '+1 000 000 0000',\n          helpText: 'Include the US country code +1 before the phone number',\n        },\n        {\n          countryCode: 'GB',\n          placeholder: '+44 0000 000000',\n          helpText: 'Include the GB country code +44 before the phone number',\n        },\n        {\n          countryCode: 'CA',\n          placeholder: '+1 000 000 0000',\n          helpText: 'Include the CA country code +1 before the phone number',\n        },\n        {\n          countryCode: 'AU',\n          placeholder: '+61 000 000 000',\n          helpText: 'Include the AU country code +61 before the phone number',\n        },\n        {\n          countryCode: 'DE',\n          placeholder: '+49 000 0000000',\n          helpText: 'Fügen Sie vor der Telefonnummer die DE-Ländervorwahl +49 ein',\n        },\n        {\n          countryCode: 'FR',\n          placeholder: '+33 0 00 00 00 00',\n          helpText: 'Incluez le code pays FR +33 avant le numéro de téléphone',\n        },\n        {\n          countryCode: 'ES',\n          placeholder: '+34 000 000 000',\n          helpText: 'Incluya el código de país ES +34 antes del número de teléfono',\n        },\n        {\n          countryCode: 'NL',\n          placeholder: '+31 0 00000000',\n          helpText: 'Voeg de NL-landcode +31 toe vóór het telefoonnummer',\n        },\n        {\n          countryCode: 'BE',\n          placeholder: '+32 000 00 00 00',\n          helpText: 'Incluez le code pays BE +32 avant le numéro de téléphone',\n        },\n        {\n          countryCode: 'CH',\n          placeholder: '+41 00 000 00 00',\n          helpText: 'Fügen Sie vor der Telefonnummer die CH-Ländervorwahl +41 ein',\n        },\n        {\n          countryCode: 'AT',\n          placeholder: '+43 000 000 0000',\n          helpText: 'Fügen Sie vor der Telefonnummer die AT-Ländervorwahl +43 ein',\n        },\n        {\n          countryCode: 'IE',\n          placeholder: '+353 00 000 0000',\n          helpText: 'Include the IE country code +353 before the phone number',\n        },\n        {\n          countryCode: 'IT',\n          placeholder: '+39 000 000 0000',\n          helpText: 'Includere il prefisso internazionale IT +39 prima del numero di telefono',\n        },\n      ];\n      \n      if (!countryCode || typeof countryCode !== 'string') {\n        return mockPlaceholders[0].helpText;\n      }\n      \n      const selectedHelpText = mockPlaceholders.find(function(item) {\n          return item && item.countryCode === countryCode;\n        });\n        \n        return selectedHelpText ? selectedHelpText.helpText : mockPlaceholders[0].helpText;\n    }\n\n    function setDefaultHelpText(countryCode) {\n      const helpTextSpan = document.querySelector('#help-text');\n      if (!helpTextSpan) {\n        return;\n      }\n\n        \n    }\n\n    function updateHelpTextCountryCode(countryCode, fieldName) {\n      if (!countryCode || !fieldName) {\n        return;\n      }\n      \n      setDefaultHelpText(countryCode);\n    }\n\n    function initializeSmsPhoneDropdown(fieldName) {\n      if (!fieldName || typeof fieldName !== 'string') {\n        return;\n      }\n      \n      const dropdown = document.querySelector('#country-select-' + fieldName);\n      const displayFlag = document.querySelector('#flag-display-' + fieldName);\n      \n      if (!dropdown || !displayFlag) {\n        return;\n      }\n\n      const smsPhoneData = window.MC?.smsPhoneData;\n      if (smsPhoneData && smsPhoneData.programs && Array.isArray(smsPhoneData.programs)) {\n        dropdown.innerHTML = generateDropdownOptions(smsPhoneData.programs);\n      }\n\n      const defaultProgram = getDefaultCountryProgram(smsPhoneData?.defaultCountryCode, smsPhoneData?.programs);\n      if (defaultProgram && defaultProgram.countryCode) {\n        dropdown.value = defaultProgram.countryCode;\n        \n        const flagSpan = displayFlag?.querySelector('#flag-emoji-' + fieldName);\n        if (flagSpan) {\n          flagSpan.textContent = getCountryUnicodeFlag(defaultProgram.countryCode);\n          flagSpan.setAttribute('aria-label', sanitizeHtml(defaultProgram.countryCode) + ' flag');\n        }\n        \n        updateSmsLegalText(defaultProgram.countryCode, fieldName);\n        updatePlaceholder(defaultProgram.countryCode, fieldName);\n        updateCountryCodeInstruction(defaultProgram.countryCode, fieldName);\n      }\n\n     \n      var phoneInput = document.querySelector('#mce-' + fieldName);\n      if (phoneInput && defaultProgram.countryCallingCode) {\n        phoneInput.value = defaultProgram.countryCallingCode;\n      }\n      \n\n\n      displayFlag?.addEventListener('click', function(e) {\n        dropdown.focus();\n      });\n\n\n      dropdown?.addEventListener('change', function() {\n        const selectedCountry = this.value;\n        \n        if (!selectedCountry || typeof selectedCountry !== 'string') {\n          return;\n        }\n        \n        const flagSpan = displayFlag?.querySelector('#flag-emoji-' + fieldName);\n        if (flagSpan) {\n          flagSpan.textContent = getCountryUnicodeFlag(selectedCountry);\n          flagSpan.setAttribute('aria-label', sanitizeHtml(selectedCountry) + ' flag');\n        }\n\n         \n        const selectedProgram = window.MC?.smsPhoneData?.programs.find(function(program) {\n          return program && program.countryCode === selectedCountry;\n        });\n        var phoneInput = document.querySelector('#mce-' + fieldName);\n        if (phoneInput && selectedProgram.countryCallingCode) {\n          phoneInput.value = selectedProgram.countryCallingCode;\n        }\n        \n        \n        updateSmsLegalText(selectedCountry, fieldName);\n        updatePlaceholder(selectedCountry, fieldName);\n        updateCountryCodeInstruction(selectedCountry, fieldName);\n      });\n    }\n\n    document.addEventListener('DOMContentLoaded', function() {\n      const smsPhoneFields = document.querySelectorAll('[id^=\"country-select-\"]');\n      \n      smsPhoneFields.forEach(function(dropdown) {\n        const fieldName = dropdown?.id.replace('country-select-', '');\n        initializeSmsPhoneDropdown(fieldName);\n      });\n    });\n    </script></div>"
+          }
+        },
+        "d1c68d7d-8f31-4219-9b48-a4fd9b65b5f4": {
+          "type": "complementary_products",
+          "settings": {
+            "heading": "Add-Ons:",
+            "product_recommendation_limit": 2,
+            "products_per_slide": 2
+          }
+        },
+        "description": {
+          "type": "description",
+          "disabled": true,
+          "settings": {}
+        },
+        "8e8432dd-a95b-4649-94c9-c5caf40e147b": {
+          "type": "tabs",
+          "settings": {
+            "show_product_description": true,
+            "show_tabs_below_product_gallery": false,
+            "tab_heading_1": "Spec",
+            "tab_text_1": "<ul><li><strong>Location - </strong>Wet [plastic blades]</li><li><strong>CFM - </strong>6400 on High setting</li><li><strong>Size - </strong>54\"</li><li><strong>Finish - </strong>Matte Black</li><li><strong>Motor - </strong>6 Speed DC Motor</li><li><strong>Downrod</strong> - 6\" and 12\" included</li><li><strong>Remote - </strong>Yes</li><li><strong>Light - </strong>CCT - 2700 - 6000K</li><li><strong>Light Source - </strong>LED Board 2000 Lumens</li><li><strong>Retail Box Size - </strong>10.2\"H x 28.6\"W x 15\"L [Pallet - 12]</li></ul>",
+            "tab_heading_2": "",
+            "tab_text_2": "",
+            "tab_heading_3": "",
+            "tab_text_3": ""
+          }
+        },
+        "5631435e-ddfa-4c84-8248-005212ac3ffa": {
+          "type": "key_details",
+          "settings": {
+            "icon": "icon-delivery-package",
+            "title": "Looking to place a larger order?",
+            "text": "<p>Use our request a quote form below and our support team will get back to you shortly. </p>",
+            "text_color": "#1d1d1d",
+            "icon_color": "#1d1d1d",
+            "background_color": "#f5f3ed"
+          }
+        },
+        "ebe059f9-2ced-45aa-a235-60ffeb5ed337": {
+          "type": "request_quote",
+          "settings": {
+            "title": "Request A Quote",
+            "show_quantity": true,
+            "show_message": true
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title",
+        "76060166-2c0b-4544-af8d-2c2739d5a28b",
+        "515e0916-5d17-4a8f-805c-a5a82297d81f",
+        "vendor",
+        "rating",
+        "price",
+        "form",
+        "custom_liquid_KQztG6",
+        "custom_liquid_zUt9LK",
+        "d1c68d7d-8f31-4219-9b48-a4fd9b65b5f4",
+        "description",
+        "8e8432dd-a95b-4649-94c9-c5caf40e147b",
+        "5631435e-ddfa-4c84-8248-005212ac3ffa",
+        "ebe059f9-2ced-45aa-a235-60ffeb5ed337",
+        "share"
+      ],
+      "settings": {
+        "landing_mode": false,
+        "gallery_aspect_ratio": "tall",
+        "gallery_image_crop": false,
+        "gallery_thumbnail_position": "left",
+        "gallery_video_autoplay": false,
+        "gallery_video_looping": false,
+        "gallery_hover_zoom": "disabled",
+        "gallery_click_to_zoom": "disabled"
+      }
+    },
+    "fde7db1c-a23e-4e9a-9d3c-58220e2db79f": {
+      "type": "dynamic-highlights-banner",
+      "blocks": {
+        "template--16938711449814__fde7db1c-a23e-4e9a-9d3c-58220e2db79f-highlight-1": {
+          "type": "highlight",
+          "settings": {
+            "icon": "icon-delivery",
+            "title": "Free Shipping",
+            "text": "<p>When you spend $99+</p>",
+            "link": ""
+          }
+        },
+        "template--16938711449814__fde7db1c-a23e-4e9a-9d3c-58220e2db79f-highlight-2": {
+          "type": "highlight",
+          "settings": {
+            "icon": "icon-delivery-door",
+            "title": "Fast delivery",
+            "text": "<p>All orders ship in 1-2 business days</p>",
+            "link": ""
+          }
+        },
+        "template--16938711449814__fde7db1c-a23e-4e9a-9d3c-58220e2db79f-highlight-3": {
+          "type": "highlight",
+          "settings": {
+            "icon": "icon-award-trophy",
+            "title": "Mule Guarantee",
+            "text": "<p>We offer a limited lifetime warranty on all orders</p>",
+            "link": "shopify://pages/warranty"
+          }
+        },
+        "template--16938711449814__fde7db1c-a23e-4e9a-9d3c-58220e2db79f-highlight-4": {
+          "type": "highlight",
+          "settings": {
+            "icon": "icon-chat-alternate",
+            "title": "Support",
+            "text": "<p>Contact our support team with any question</p>",
+            "link": "shopify://pages/contact"
+          }
+        }
+      },
+      "block_order": [
+        "template--16938711449814__fde7db1c-a23e-4e9a-9d3c-58220e2db79f-highlight-1",
+        "template--16938711449814__fde7db1c-a23e-4e9a-9d3c-58220e2db79f-highlight-2",
+        "template--16938711449814__fde7db1c-a23e-4e9a-9d3c-58220e2db79f-highlight-3",
+        "template--16938711449814__fde7db1c-a23e-4e9a-9d3c-58220e2db79f-highlight-4"
+      ],
+      "settings": {
+        "section_spacing": false,
+        "section_width": "full-width",
+        "icon_layout": "left",
+        "color": "#282829",
+        "icon_color": "#282829",
+        "background_color": "#f7cd46",
+        "mobile_layout": "grid"
+      }
+    },
+    "169212539272dfbbfd": {
+      "type": "apps",
+      "blocks": {
+        "152105a1-14ea-4e60-ac41-9d053ff6c90c": {
+          "type": "shopify://apps/bazaarvoice-reviews-photos/blocks/reviews-block/766ed9d3-b120-48f3-8444-448f45152f47",
+          "settings": {}
+        },
+        "aaf69035-3502-48bf-8526-1fb42c2b1d31": {
+          "type": "shopify://apps/bazaarvoice-reviews-photos/blocks/questions_and_answers_block/766ed9d3-b120-48f3-8444-448f45152f47",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "152105a1-14ea-4e60-ac41-9d053ff6c90c",
+        "aaf69035-3502-48bf-8526-1fb42c2b1d31"
+      ],
+      "settings": {
+        "include_padding": true
+      }
+    },
+    "recommendations": {
+      "type": "static-product-recommendations",
+      "disabled": true,
+      "settings": {
+        "show_product_recommendations": true,
+        "product_recommendations_heading": "You may also like"
+      }
+    },
+    "recently-viewed": {
+      "type": "static-recently-viewed",
+      "settings": {
+        "enable_recently_viewed_products": true
+      }
+    },
+    "9cae9486-fbb0-4848-9361-8ffc0aa51252": {
+      "type": "dynamic-promo-mosaic",
+      "blocks": {
+        "template--16938711449814__9cae9486-fbb0-4848-9361-8ffc0aa51252-promotion-1": {
+          "type": "promotion",
+          "settings": {
+            "image": "shopify://shop_images/Mule_fullres_083.jpg",
+            "title": "Workspace Upgrade",
+            "text": "If you are a Pro or a DIY'er the Mobile Workshop is the one tool that can level up your game!",
+            "color": "#ffffff",
+            "block_link": "shopify://products/mobile-workshop",
+            "button_text": "",
+            "button_style": "primary",
+            "show_overlay": true,
+            "background": "#121212",
+            "opacity": 50
+          }
+        },
+        "template--16938711449814__9cae9486-fbb0-4848-9361-8ffc0aa51252-promotion-2": {
+          "type": "promotion",
+          "settings": {
+            "image": "shopify://shop_images/Mule_fullres_040.jpg",
+            "title": "Home Upgrade",
+            "text": "Upgrade your garage or home gym with some powerful airflow to beat the heat.",
+            "color": "#ffffff",
+            "block_link": "shopify://products/garage-fan",
+            "button_text": "",
+            "button_style": "primary",
+            "show_overlay": true,
+            "background": "#121212",
+            "opacity": 50
+          }
+        },
+        "template--16938711449814__9cae9486-fbb0-4848-9361-8ffc0aa51252-promotion-3": {
+          "type": "promotion",
+          "settings": {
+            "image": "shopify://shop_images/Mule_fullres_102.jpg",
+            "title": "Cheers to a job well done!",
+            "text": "When you choose MULE Products, trust in our products to help you get the job done.",
+            "color": "#ffffff",
+            "block_link": "shopify://products/mobile-workshop",
+            "button_text": "",
+            "button_style": "primary",
+            "show_overlay": true,
+            "background": "#121212",
+            "opacity": 50
+          }
+        }
+      },
+      "block_order": [
+        "template--16938711449814__9cae9486-fbb0-4848-9361-8ffc0aa51252-promotion-1",
+        "template--16938711449814__9cae9486-fbb0-4848-9361-8ffc0aa51252-promotion-2",
+        "template--16938711449814__9cae9486-fbb0-4848-9361-8ffc0aa51252-promotion-3"
+      ],
+      "settings": {
+        "title": "#GETTHEMULE",
+        "section_height": "small",
+        "text_alignment": "top-left",
+        "maintain_aspect_ratio": false,
+        "compress_blocks": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "fde7db1c-a23e-4e9a-9d3c-58220e2db79f",
+    "169212539272dfbbfd",
+    "recommendations",
+    "recently-viewed",
+    "9cae9486-fbb0-4848-9361-8ffc0aa51252"
+  ]
+}

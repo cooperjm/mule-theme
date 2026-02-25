@@ -1,0 +1,102 @@
+{{ 'product-mosaic.css' | asset_url | stylesheet_tag }}
+
+<section id="mobile-workshop-gallery" style="background-image: url({{ section.settings.mosaic_section_bg |  image_url }})" class="product-template-section">
+  <div class="mobile-workshop-gallery-container product-template-container">
+      <div class="mobile-workshop-gallery-row">
+          <div class="mobile-workshop-gallery-image width40 width28mobile">
+              <img src="{{ section.settings.mosaic_image_1 |  image_url  }}">
+          </div>
+          <div class="mobile-workshop-gallery-image width30 width21mobile">
+              <img src="{{ section.settings.mosaic_image_2 |  image_url  }}">
+          </div>
+          <div class="mobile-workshop-gallery-text width30 width51mobile">
+            <div class="mobile-workshop-gallery-text-element">
+              <img src="{{ section.settings.icon_bullet_1 |  image_url }}"/><span>{{ section.settings.text_bullet_1 }}</span>
+            </div>
+            <div class="mobile-workshop-gallery-text-element">
+              <img src="{{ section.settings.icon_bullet_2 |  image_url }}"/><span>{{ section.settings.text_bullet_2 }}</span>
+            </div>
+            <div class="mobile-workshop-gallery-text-element">
+              <img src="{{ section.settings.icon_bullet_3 |  image_url }}"/><span>{{ section.settings.text_bullet_3 }}</span>
+            </div>
+          </div>
+      </div>
+      <div class="mobile-workshop-gallery-row">
+          <div class="mobile-workshop-gallery-image width50">
+              <img src="{{ section.settings.mosaic_image_3 |  image_url }}">
+          </div>
+          <div class="mobile-workshop-gallery-image width50">
+            {{ section.settings.mosaic_video_embed }}
+          </div>
+      </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Mosaic",
+  "class": "product-mosaic--section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "mosaic_section_bg",
+      "label": "Section Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "mosaic_image_1",
+      "label": "Mosaic Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "mosaic_image_2",
+      "label": "Mosaic Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "mosaic_image_3",
+      "label": "Mosaic Image 3"
+    },
+    {
+      "type": "html",
+      "id": "mosaic_video_embed",
+      "label": "Mosaic Video embed"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_bullet_1",
+      "label": "Icon Bullet 1"
+    },
+    {
+      "type": "richtext",
+      "id": "text_bullet_1",
+      "label": "Text Bullet 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_bullet_2",
+      "label": "Icon Bullet 2"
+    },
+    {
+      "type": "richtext",
+      "id": "text_bullet_2",
+      "label": "Text Bullet 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_bullet_3",
+      "label": "Icon Bullet 3"
+    },
+    {
+      "type": "richtext",
+      "id": "text_bullet_3",
+      "label": "Text Bullet 3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Mosaic"
+    }
+  ]
+}
+{% endschema %}

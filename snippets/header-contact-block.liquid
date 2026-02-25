@@ -1,0 +1,14 @@
+{{ 'header-contact-block.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'header-contact-block.js' | asset_url }}" defer></script>
+<div id="header-contact-block" class="header-contact-block">
+    <div class="content">
+        <p><a style="display: flex; gap: 5px;" href="/pages/frequently-asked-questions">{% render 'icon-info' %} FAQ</a></p>
+        <p><a style="display: flex; gap: 5px;" href="/account">{% render 'icon-pointer' %} Track Your Order</a></p>
+        <p><a style="display: flex; gap: 5px;" href="/pages/contact">{% render 'icon-email' %} Contact Us</a></p>
+        <p><a style="display: flex; gap: 5px;" href="tel:{{ section.settings.header_contact_phone }}">{% render 'icon-phone' %} {{ section.settings.header_contact_phone }}</a></p>
+    </div>
+    <div class="footer">
+        <p><b>Operating Hours:</b></p>
+        <p>8am - 5pm Mon - Fri (CST)</p>
+    </div>
+</div>

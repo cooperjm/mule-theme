@@ -1,0 +1,329 @@
+{{ 'best-sellers.css' | asset_url | stylesheet_tag }}
+
+<section id="best-sellers" class="best-sellers">
+  <div class="section-container">
+    <h2>{{ section.settings.heading }}</h2>
+    <div class="slider-tabs">
+      <div class="slider-tab tab-1 tab-active">
+        <p class="tab-name">
+          {{ section.settings.custom_name_product_1 }}
+        </p>
+      </div>
+      <div class="slider-tab tab-2">
+        <p class="tab-name">
+          {{ section.settings.custom_name_product_2 }}
+        </p>
+      </div>
+      <div class="slider-tab tab-3">
+        <p class="tab-name">
+          {{ section.settings.custom_name_product_3 }}
+        </p>
+      </div>
+    </div>
+    <div class="product-grid">
+      <div class="product-row product-row-1">
+        <div class="product-image">
+          <img src="{{ section.settings.side_image_1 | img_url: 'master' }}" alt="{{ section.settings.alt_text1 }}">
+        </div>
+        <div class="product-info">
+          <img src="{{ section.settings.product_image_1 | img_url: 'master' }}" alt="{{ section.settings.alt_text1 }}">
+          <h3>
+            {% if section.settings.custom_name_product_1 %}
+              {{ section.settings.custom_name_product_1 }}
+            {% else %}
+              {{ all_products[section.settings.product1].title }}
+            {% endif %}
+          </h3>
+          <p class="rating">{{ all_products[section.settings.product1].rating }}</p>
+          <p class="description">{{ section.settings.description_product_1 }}</p>
+          <p class="price">
+            {% if all_products[section.settings.product1].compare_at_price %}
+              <span class="original-price">{{ all_products[section.settings.product1].compare_at_price | money }}</span>
+            {% endif %}
+            <span class="sale-price">{{ all_products[section.settings.product1].price | money }}</span>
+          </p>
+          <button class="cta cta-primary add-to-cart" data-variant-id="{{ all_products[section.settings.product1].variants.first.id }}">{{ section.settings.button_text1 }}</button>
+        </div>
+      </div>
+      <div class="product-row product-row-2">
+        <div class="product-image">
+          <img src="{{ section.settings.side_image_2 | img_url: 'master' }}" alt="{{ section.settings.alt_text2 }}">
+        </div>
+        <div class="product-info">
+          <img src="{{ section.settings.product_image_2 | img_url: 'master' }}" alt="{{ section.settings.alt_text2 }}">
+          <h3>
+            {% if section.settings.custom_name_product_2 %}
+              {{ section.settings.custom_name_product_2 }}
+            {% else %}
+              {{ all_products[section.settings.product2].title }}
+            {% endif %}
+          </h3>
+          <p class="rating">{{ all_products[section.settings.product2].rating }}</p>
+          <p class="description">{{ section.settings.description_product_2 }}</p>
+          <p class="price">
+            {% if all_products[section.settings.product2].compare_at_price %}
+              <span class="original-price">{{ all_products[section.settings.product2].compare_at_price | money }}</span>
+            {% endif %}
+            <span class="sale-price">{{ all_products[section.settings.product2].price | money }}</span>
+          </p>
+          <button class="cta cta-primary add-to-cart" data-variant-id="{{ all_products[section.settings.product2].variants.first.id }}">{{ section.settings.button_text2 }}</button>
+        </div>
+      </div>
+      <div class="product-row product-row-3">
+        <div class="product-image">
+          <img src="{{ section.settings.side_image_3 | img_url: 'master' }}" alt="{{ section.settings.alt_text3 }}">
+        </div>
+        <div class="product-info">
+          <img src="{{ section.settings.product_image_3 | img_url: 'master' }}" alt="{{ section.settings.alt_text3 }}">
+          <h3>
+            {% if section.settings.custom_name_product_3 %}
+              {{ section.settings.custom_name_product_3 }}
+            {% else %}
+              {{ all_products[section.settings.product3].title }}
+            {% endif %}
+          </h3>
+          <p class="rating">{{ all_products[section.settings.product3].rating }}</p>
+          <p class="description">{{ section.settings.description_product_3 }}</p>
+          <p class="price">
+            {% if all_products[section.settings.product3].compare_at_price %}
+              <span class="original-price">{{ all_products[section.settings.product3].compare_at_price | money }}</span>
+            {% endif %}
+            <span class="sale-price">{{ all_products[section.settings.product3].price | money }}</span>
+          </p>
+          <button class="cta cta-primary add-to-cart" data-variant-id="{{ all_products[section.settings.product3].variants.first.id }}">{{ section.settings.button_text3 }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+
+// Add to Cart Behavior
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var buttons = document.querySelectorAll('#best-sellers .add-to-cart');
+
+    buttons.forEach(function(button) {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        var variantId = button.getAttribute('data-variant-id');
+        addToCart(variantId);
+      });
+    });
+
+    function addToCart(variantId) {
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: variantId,
+          quantity: 1
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        window.location.href = '/cart';
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+  });
+  
+</script>
+
+<script>
+
+//Best Sellers tabs
+
+document.addEventListener('DOMContentLoaded', function () {
+    var slider = document.querySelector('#best-sellers .slick-track');
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.attributeName === 'class') {
+                updateActiveTab();
+            }
+        });
+    });
+
+    document.querySelectorAll('#best-sellers .product-row').forEach(function(row) {
+        observer.observe(row, { attributes: true });
+    });
+
+    function updateActiveTab() {
+        document.querySelectorAll('.slider-tab').forEach(function(tab) {
+            tab.classList.remove('tab-active');
+        });
+
+        if (document.querySelector('.product-row-1:not(.slick-cloned)').classList.contains('slick-active')) {
+            document.querySelector('.tab-1').classList.add('tab-active');
+        } else if (document.querySelector('.product-row-2:not(.slick-cloned)').classList.contains('slick-active')) {
+            document.querySelector('.tab-2').classList.add('tab-active');
+        } else if (document.querySelector('.product-row-3:not(.slick-cloned)').classList.contains('slick-active')) {
+            document.querySelector('.tab-3').classList.add('tab-active');
+        }
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const bestSellers = document.querySelector('#best-sellers');
+
+    function setupTabsAndDots() {
+        const tabs = bestSellers.querySelectorAll('.slider-tab');
+        const dots = bestSellers.querySelectorAll('.slick-dots li');
+
+        if (tabs.length > 0 && dots.length > 0) {
+            tabs.forEach((tab, index) => {
+                tab.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const scrollPosition = window.scrollY;
+                    
+                    if (dots[index]) {
+                        const button = dots[index].querySelector('button');
+                        if (button) {
+                            button.click();
+                            window.scrollTo(0, scrollPosition);
+                        }
+                    }
+                });
+            });
+            clearInterval(checkInterval);
+        }
+    }
+
+    let checkInterval = setInterval(setupTabsAndDots, 100);
+});
+
+</script>
+
+{% schema %}
+{
+  "name": "Best Sellers",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Best Sellers"
+    },
+    {
+      "type": "product",
+      "id": "product1",
+      "label": "Product 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image_1",
+      "label": "Product Image 1"
+    },
+    {
+      "type": "text",
+      "id": "custom_name_product_1",
+      "label": "Custom Name Product 1"
+    },
+    {
+      "type": "text",
+      "id": "description_product_1",
+      "label": "Description Product 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "side_image_1",
+      "label": "Side Image 1"
+    },
+    {
+      "type": "text",
+      "id": "alt_text1",
+      "label": "Alt Text 1"
+    },
+    {
+      "type": "product",
+      "id": "product2",
+      "label": "Product 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image_2",
+      "label": "Product Image 2"
+    },
+    {
+      "type": "text",
+      "id": "custom_name_product_2",
+      "label": "Custom Name Product 2"
+    },
+    {
+      "type": "text",
+      "id": "description_product_2",
+      "label": "Description Product 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "side_image_2",
+      "label": "Side Image 2"
+    },
+    {
+      "type": "text",
+      "id": "alt_text2",
+      "label": "Alt Text 2"
+    },
+    {
+      "type": "product",
+      "id": "product3",
+      "label": "Product 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image_3",
+      "label": "Product Image 3"
+    },
+    {
+      "type": "text",
+      "id": "custom_name_product_3",
+      "label": "Custom Name Product 3"
+    },
+    {
+      "type": "text",
+      "id": "description_product_3",
+      "label": "Description Product 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "side_image_3",
+      "label": "Side Image 3"
+    },
+    {
+      "type": "text",
+      "id": "alt_text3",
+      "label": "Alt Text 3"
+    },
+    {
+      "type": "text",
+      "id": "button_text1",
+      "label": "Button Text 1",
+      "default": "Add to Cart"
+    },
+    {
+      "type": "text",
+      "id": "button_text2",
+      "label": "Button Text 2",
+      "default": "Add to Cart"
+    },
+    {
+      "type": "text",
+      "id": "button_text3",
+      "label": "Button Text 3",
+      "default": "Add to Cart"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best Sellers",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

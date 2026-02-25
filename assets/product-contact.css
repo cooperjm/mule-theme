@@ -1,0 +1,206 @@
+#product-contact {
+  position: relative;
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-color: #f4f4f4;
+  padding-top: 200px;
+}
+
+#product-contact .product-contact-container {
+  max-width: 1008px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+#product-contact h2 {
+  color: #181818;
+  text-align: center;
+  font-size: 34px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin: 0 0 20px;
+}
+
+@media (max-width: 530px) {
+  #product-contact h2 {
+    font-size: 24px;
+  }
+}
+
+#product-contact .product-contact-subtitle {
+  color: #181818;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 43px;
+  letter-spacing: -0.72px;
+  text-transform: capitalize;
+  margin: 0 0 20px;
+}
+
+#product-contact .product-contact-text-contact {
+  width: 70%;
+  color: #181818;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0px;
+}
+
+#product-contact .product-contact-contact {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#product-contact .product-contact-box {
+  border-radius: 4px;
+  border-left: 3px solid #F7CD46;
+  background: #fff;
+  box-shadow: 0 1px 4px #00000040;
+  padding: 40px 80px;
+  width: 100%;
+  margin-bottom: 35px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  display: none;
+}
+
+.product-contact-contact p {
+  color: #181818;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.48px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0px;
+}
+
+#product-contact .product-contact-cta {
+  border-radius: 4px;
+  border: 1px solid #181818;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.10);
+  padding: 10px 40px;
+  color: #181818;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: normal;
+  text-decoration: none;
+}
+
+#product-contact .product-contact-cta:hover {
+  background: #000 !important;
+  color: #fff;
+}
+
+
+#product-contact .product-chat-box {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+#product-contact .product-contact-chat-title {
+  color: #181818;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.48px;
+  text-transform: capitalize;
+  margin: 0px;
+}
+
+#product-contact .product-contact-chat-subtitle {
+  color: #181818;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.48px;
+  margin: 0px;
+}
+
+#product-contact .product-contact-chat-text {
+  color: #181818;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  align-items: flex-start;
+}
+
+#product-contact .product-contact-chat-paragraph {
+  padding: 0;
+  margin: 0;
+}
+
+.product-contact-chat-img img {
+  border-radius: 4px;
+}
+
+@media (max-width: 1010px) {
+  #product-contact .product-contact-box {
+      max-width: fit-content;
+      padding: 45px 40px;
+  }
+  #product-contact .product-contact-text-contact {
+      width: 60%;
+  }
+  #product-contact .product-contact-contact {
+      width: 40%;
+      align-items: flex-end;
+  }
+  #product-contact .product-contact-container:last-child {
+      align-items: flex-start;
+  }
+}
+
+@media (max-width: 767px) {
+  
+  #product-contact .product-contact-container:last-child {
+      flex-direction: column;
+  }
+
+  #product-contact .product-contact-box {
+      flex-direction: column;
+  }
+
+  #product-contact .product-contact-chat-img,
+  #product-contact .product-contact-chat-img img,
+  #product-contact .product-contact-text-contact,
+  #product-contact .product-contact-contact {
+      width: 100%;
+  }
+
+  #product-contact .product-contact-chat-img img {
+    
+  }
+
+  #product-contact .product-contact-contact {
+      align-items: flex-start;
+  }
+
+  #product-contact .product-contact-subtitle {
+      display: none;
+  }
+
+  #product-contact .product-chat-box {
+    display: flex;
+    column-gap: 30px;
+    flex-direction: column-reverse;
+  }
+  #product-contact .product-contact-chat-text {
+      padding-left: 20px;
+      padding-right: 20px;
+  }
+  .product-contact-chat-img img {
+      border-radius: 0px;
+  }
+}

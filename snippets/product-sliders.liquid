@@ -1,0 +1,112 @@
+<script>
+
+// Product Gallery Slider
+
+$( document ).ready(function() {
+
+const arrowR = `https://mule-cart.myshopify.com/cdn/shop/t/17/assets/slider-arrow-right.svg`;
+const arrowL = `https://mule-cart.myshopify.com/cdn/shop/t/17/assets/slider-arrow-left.svg`;
+
+    $('.slider-gallery').slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      prevArrow: `<img src="{{ 'slider-arrow-left.svg' | asset_url }}" alt="Next" class="slick-prev">`,
+      nextArrow: `<img src="{{ 'slider-arrow-right.svg' | asset_url }}" alt="Next" class="slick-next">`,
+      infinite: true,
+      asNavFor: '.slider-gallery-thumbs',
+      adaptiveHeight: true
+    });
+
+    $('.slider-gallery-thumbs').slick({
+      slidesToShow: 4,
+      slidesToScroll: 4,
+      arrows: false,
+      asNavFor: '.slider-gallery',
+      vertical: true,
+      verticalSwiping: true,
+      focusOnSelect: true,
+      infinite: true,
+      adaptiveHeight: true,
+      responsive: [
+        {
+          breakpoint: 720,
+          settings: {
+            vertical: false,
+            verticalSwiping: false,
+          }
+        }
+      ]
+    });
+    
+});
+
+</script>
+
+
+<script>
+
+// Reviews Slider
+
+if ($(window).width() <= 768) {
+  $('.reviews-slider').slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    prevArrow: `<img src="{{ 'slider-arrow-left.svg' | asset_url }}" alt="Prev" class="slick-prev">`,
+    nextArrow: `<img src="{{ 'slider-arrow-right.svg' | asset_url }}" alt="Next" class="slick-next">`,
+    infinite: true,
+    adaptiveHeight: true,
+    dots: true
+  });
+}
+
+$(window).resize(function() {
+  if ($(window).width() <= 768) {
+    if (!$('.reviews-slider').hasClass('slick-initialized')) {
+      $('.reviews-slider').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        prevArrow: `<img src="{{ 'slider-arrow-left.svg' | asset_url }}" alt="Prev" class="slick-prev">`,
+        nextArrow: `<img src="{{ 'slider-arrow-right.svg' | asset_url }}" alt="Next" class="slick-next">`,
+        infinite: true,
+        adaptiveHeight: true,
+        dots: true
+      });
+    }
+  } else {
+    if ($('.reviews-slider').hasClass('slick-initialized')) {
+      $('.reviews-slider').slick('unslick');
+    }
+  }
+});
+
+</script>
+
+<script>
+
+// Addon Products Slider
+
+$(document).ready(function(){
+    var initSliderInterval = setInterval(function() {
+        if ($('.complementary-products__container').length) {
+            $('.complementary-products__slider').slick({
+                infinite: true,
+                slidesToShow: 2,
+                slidesToScroll: 1,
+                prevArrow: `<img src="{{ 'slider-arrow-left.svg' | asset_url }}" alt="Prev" class="slick-prev">`,
+                nextArrow: `<img src="{{ 'slider-arrow-right.svg' | asset_url }}" alt="Next" class="slick-next">`,
+                arrows: true,
+                dots: false,
+                draggable: true,
+                responsive: [{
+                    breakpoint: 767,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }]
+            });
+            clearInterval(initSliderInterval);
+        }
+    }, 100);
+});
+
+</script>

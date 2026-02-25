@@ -1,0 +1,86 @@
+<div class="product-packs-item">
+    <div class="product-packs-details">
+        <div class="product-packs-image">
+            {% if block.settings.custom_image != blank %}
+                {{ block.settings.custom_image | image_url: width: 500 | image_tag: alt: "Product Pack Image", loading: 'lazy'}}
+            {% else %}
+                {{ product.featured_media | image_url: width: 500 | image_tag: alt: "Product Pack Image", loading: 'lazy'}}
+            {% endif %} 
+        </div>
+        <p class="product-packs-description">
+            {% if block.settings.custom_description != blank %}
+                {{ block.settings.custom_description }}
+            {% endif %}
+        </p>
+        <p class="product-packs-title">
+            {% if block.settings.custom_title != blank %}
+                {{ block.settings.custom_title }}
+            {% else %}
+                {{ product.title }}
+            {% endif %}
+        </p>
+        
+        <div class="product-pack-reviews">
+            <div data-bv-show="inline_rating" data-bv-product-id="{{ product.id }}" data-bv-seo="false"></div>
+            {% comment %}{{ block.settings.reviews_img | image_url: width: 100 | image_tag: alt: "Reviews Stars", loading: 'lazy'}}
+            <span>{{ block.settings.reviews_counter }}</span>{% endcomment %}
+        </div>
+    </div>
+
+    <div class="product-pack-form">
+        <div class="product-pack-price">
+
+            {% assign product_list_count = 0 %}
+            {% for product_id in product_list %}
+                {% assign product_list_count = product_list_count | plus: 1 %}
+            {% endfor %}
+            {% if product_list_count == 1 and product.variants.size == 1 %}
+                <p>{{ product.price | money }}</p>
+            {% else %}
+                {% assign cheapest_price = product.variants.first.price %}
+                {% assign all_same_price = true %}
+
+                {% for product_unit in product_list %}
+                    {% for variant in product_unit.variants %}
+                        {% if variant.price != first_variant_price %}
+                            {% assign all_same_price = false %}
+                        {% endif %}
+                        {% if variant.price < cheapest_price %}
+                            {% assign cheapest_price = variant.price %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+
+                {% if all_same_price %}
+                    <p>{{ product.price | money }}</p>
+                {% else %}
+                    <p>From {{ cheapest_price | money }}</p>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        {% if product_list_count == 1 and product.variants.size == 1 %}
+            <div class="product-pack-variant-select-empty"></div>
+        {% else %}
+            <select class="product-pack-variant-select">
+                {% for product_unit in product_list %}
+                    {% if product_unit.handle == "garage-fan" %}
+                        {% assign product_unit_variants = product_unit.variants | reverse %}
+                    {% else %}
+                        {% assign product_unit_variants = product_unit.variants %}
+                    {% endif %}
+                    {% for variant in product_unit_variants %}
+                        <option data-first-element="{{ block.settings.first_variant }}" {% unless variant.inventory_quantity > 0 %} data-out-of-stock="true" {% endunless %} value="{% if variant.inventory_quantity > 0 %}{{ product.url }}{% else %}0{% endif %}">
+                            {% if product_unit.variants.size > 1 %}{{ variant.title }}{% else %}{{ product.title }}{% endif %} {% unless variant.inventory_quantity > 0 %} (Out Of Stock) {% else %} - {{ variant.price | money }} {% endunless %}
+                        </option>
+                    {% endfor %}
+                {% endfor %}
+            </select>
+        {% endif %}
+        {% if product.available %}
+            <button class="product-pack-atc-btn" data-product-url="{{ product.url }}">Buy Now</button>
+        {% elsif product.handle == 'mule-f5-wet-rated-ceiling-fan' %}
+            <button class="product-pack-atc-btn" disabled="disabled">Coming in January!</button>
+        {% endif %}
+    </div>
+</div>

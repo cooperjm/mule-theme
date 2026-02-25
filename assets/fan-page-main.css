@@ -1,0 +1,309 @@
+.fan-page-main-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10px 20px;
+}
+
+.fan-page-main-banner .banner-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.fan-page-main-banner .banner-item .banner-item-icon,
+.fan-page-main-banner .banner-item .banner-item-icon svg {
+    width: 35px;
+    height: 35px;
+}
+
+.fan-page-main-banner .banner-item .banner-item-text {
+    font-weight: bold;
+    color: #575757;
+}
+
+.fan-page-main-section {
+    position: relative;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: top;
+}
+
+.fan-page-main-section .fan-page-main-container {
+    margin: auto;
+    max-width: 1400px;
+    padding: 20px;
+}
+
+.fan-page-main-section .fan-page-block {
+    display: grid;
+}
+
+.fan-page-main-section .fan-page-block .text-content h2 {
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 54px;
+    margin: 0;
+}
+
+.fan-page-main-section .fan-page-block .title-content h2 {
+    font-size: 60px;
+    font-weight: bold;
+    line-height: 72px;
+    margin: 0;
+}
+
+.fan-page-main-section .fan-page-block .title-content p {
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 29.87px;
+    margin: 0;
+    padding-top: 30px;
+}
+
+.fan-page-main-section .banner-image-block img,
+.fan-page-main-section .fan-page-block .fan-image img {
+    width: 100%;
+    height: auto;
+}
+
+.fan-page-main-section .banner-image-block .mobile-image {
+    display: none;
+}
+
+.fan-page-main-section .buttons-block .cta-secondary-button {
+    border-style: solid;
+    border-width: 1px;
+}
+
+.fan-page-main-section .buttons-block {
+    display: flex;
+    gap: 10px;
+    text-align: center;
+    padding-top: 15px;
+}
+
+.fan-page-main-section .icon-list-block {
+    color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    padding: 40px 0 60px;
+    gap: 107px;
+}
+
+.fan-page-main-section .icon-list-block .icon-list {
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+}
+
+.fan-page-main-section .icon-list-block .icon-list .icon-list-text {
+    text-align: center;
+    font-size: 20px;
+}
+
+.fan-page-main-section .buttons-block .cta-button,
+.fan-page-main-section .buttons-block .cta-secondary-button {
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 5px;
+    padding: 15px 20px;
+    font-size: 18px;
+    min-width: 210px;
+}
+
+.fan-page-main-section .image-slider-block .image-slider-block-img img {
+    width: 100%;
+    height: auto;
+}
+
+.fan-page-main-section .image-slider-block .slick-list {
+    margin: 0 -5px;
+}
+
+.fan-page-main-section .image-slider-block .image-slider-block-img.slick-slide {
+    margin: 0 5px;
+}
+
+@media screen and (min-width: 769px) {
+    .fan-page-main-section .fan-page-block {
+        grid-template-columns: 0.7fr 1fr;
+        column-gap: 50px;
+        margin-bottom: 20px;
+    }
+    
+    .fan-page-main-section .fan-page-block .fan-image {
+        grid-row: 1 / span 4;
+        grid-column: 1;
+        justify-self: end;
+    }
+    
+    .fan-page-main-section .fan-page-block .text-content {
+        grid-row: 1;
+        grid-column: 2; 
+        align-self: end;
+        text-align: center;
+        background: #101010CC;
+        padding: 60px 20px 0;
+    }
+    
+    .fan-page-main-section .fan-page-block .title-content {
+        grid-row: 2; 
+        grid-column: 2; 
+        align-self: end;
+        padding: 15px 20px 0;
+        text-align: center;
+        background: #101010CC;
+    }
+    
+    .fan-page-main-section .fan-page-block .buttons-block {
+        grid-row: 3; 
+        grid-column: 2; 
+        align-self: end;
+        justify-content: center;
+        background: #101010CC;
+        padding: 15px 20px 0;
+    }    
+
+    .fan-page-main-section .icon-list-block {
+        grid-row: 4;
+        grid-column: 2;
+        align-self: end;
+        justify-self: start;
+        justify-content: space-evenly;
+        width: 100%;
+        background: #101010CC;
+    }
+
+    .fan-page-main-section .image-slider-block {
+        margin-top: 5px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .anchor-image-slider-block-img {
+        overflow: hidden;
+        cursor: pointer;
+    }
+    
+    .anchor-image-slider-block-img img {
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .anchor-image-slider-block-img:hover img {
+        transform: scale(1.1); 
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .fan-page-main-section .fan-page-block {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .fan-page-main-banner {
+        display: none;
+    }
+
+    .fan-page-main-section .fan-page-block .text-content {
+        justify-self: start;
+    }
+
+    .fan-page-main-section .fan-page-block .fan-image {
+        order: 2;
+        min-height: 500px;
+    }
+
+    .fan-page-main-section .fan-page-block .title-content {
+        order: 3;
+    }
+
+    .fan-page-main-section .fan-page-block .buttons-block {
+        order: 4;
+    }
+
+    .fan-page-main-section .fan-page-block .text-content h2 {
+        font-size: 30px;
+        line-height: 40.74px;
+    }
+    
+    .fan-page-main-section .fan-page-block .title-content h2 {
+        font-size: 49px;
+        line-height: 56px;
+
+    }
+    
+    .fan-page-main-section .fan-page-block .title-content p {
+        line-height: 32px;
+        text-align: left;
+    }
+
+    .fan-page-main-section .buttons-block {
+        flex-direction: column;
+    }
+
+    .fan-page-main-section .banner-image-block .mobile-image {
+        display: block;
+    }
+
+    .fan-page-main-section .banner-image-block .desktop-image {
+        display: none;
+    }
+
+    .fan-page-main-section .icon-list-block {
+        justify-content: space-between;
+        padding: 40px 10px;
+        gap: 0;
+        order: 5;
+    }
+
+    .image-slider-block .slick-next {
+        background-color: #000;
+        right: 0;
+        width: 30px;
+        height: 76px;
+        padding: 10px 0;
+        border-radius: 5px 0 0 5px;
+    }
+
+    .image-slider-block .slick-prev {
+        background-color: #000;
+        left: 0;
+        width: 30px;
+        height: 76px;
+        padding: 10px 0;
+        border-radius: 0 5px 5px 0;
+    }
+
+    .fan-page-main-section .image-slider-block {
+        margin-top: 10px;
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .fan-page-main-section .fan-page-block .fan-image {
+        order: 2;
+        min-height: 340px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .fan-page-main-section .fan-page-block .fan-image {
+        order: 2;
+        min-height: 280px;
+    }
+}
+
+@media screen and (max-width: 340px) {
+    .fan-page-main-section .fan-page-block .fan-image {
+        order: 2;
+        min-height: 200px;
+    }
+}
+
+@media screen and (min-width: 375px) and (max-width: 435px) {
+    .fan-page-main-section .fan-page-block .title-content p {
+        padding: 0 30px 0 0px;
+    }
+}

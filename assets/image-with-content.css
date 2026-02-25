@@ -1,0 +1,130 @@
+.image-with-content-section .heading {
+    padding: 20px 40px 40px;
+    text-align: center
+}
+
+.image-with-content-section .heading h2 {
+    margin: 0;
+    font-size: 55px;
+    line-height: 75px;
+}
+
+.image-with-content-section .heading h3 {
+    margin: 0;
+    font-size: 45px;
+    line-height: 61px;
+}
+
+.image-with-content-section .content-container {
+    display: flex
+}
+
+.image-with-content-section .content-container .content-block,
+.image-with-content-section .content-container .image-block {
+    width: 50%
+}
+
+.image-with-content-section .content-container .image-block img {
+    width:100%;
+    height: 100%;
+}
+
+.image-with-content-section .content-container .content-block {
+    margin: auto;
+    max-width: 550px;
+    padding: 40px 40px;
+}
+
+.image-with-content-section .content-container .content-block h2 {
+    font-size: 45px;
+}
+
+.image-with-content-section .content-container .content-block .text-content {
+    font-size: 30px;
+}
+
+.image-with-content-section .content-container .content-block .text-content-item {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px
+}
+
+.image-with-content-section .content-container .content-block .text-content-item svg {
+    flex-shrink: 0;
+    margin-top: 9px;
+}
+
+
+.image-with-content-section .content-container .content-block .text-content-item .text-content-tooltip svg {
+    margin-bottom: -5px;
+    cursor: pointer;
+}
+
+.image-with-content-section .content-container .content-block .text-content-item .text-content-tooltip .tooltip-content {
+    display: none;
+    position: absolute;
+    font-size: 18px;
+    padding: 10px;
+    width: 400px;
+    background-color: white;
+    border: solid 1px;
+    margin-top: 5px;
+}
+
+.image-with-content-section .content-container .content-block .text-content-item .text-content-tooltip.active .tooltip-content {
+    display: block;
+}
+
+.image-with-content-section .content-container .content-block .text-content-item p {
+    margin: 4px 0;
+}
+
+@media screen and (max-width: 768px) {
+    .image-with-content-section .heading h2 {
+        font-size: 35px;
+        line-height: 47px;
+    }
+
+    .image-with-content-section .heading h3 {
+        font-size: 25px;
+        line-height: 33px;
+    }
+
+    .image-with-content-section .content-container {
+        flex-direction: column;
+    }
+    
+    .image-with-content-section .content-container .content-block,
+    .image-with-content-section .content-container .image-block {
+        width: 100%;
+    }
+
+    .image-with-content-section .content-container .image-block {
+        overflow: hidden;
+    }
+
+    .image-with-content-section .content-container .image-block img {
+        margin-top: -15px;
+        margin-bottom: -15px;
+    }
+
+    .image-with-content-section .content-container .content-block h2 {
+        font-size: 35px;
+    }
+    
+    .image-with-content-section .content-container .content-block .text-content {
+        font-size: 22px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .image-with-content-section .content-container .content-block .text-content-item .text-content-tooltip .tooltip-content {
+        width: 350px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .image-with-content-section .content-container .content-block .text-content-item .text-content-tooltip .tooltip-content {
+        width: 250px;
+    }
+}

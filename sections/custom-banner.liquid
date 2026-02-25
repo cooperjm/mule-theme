@@ -1,0 +1,117 @@
+<section class="custom-banner-section custom-banner-section-{{ section.id }}">
+    <div class="banner-content">
+        <div class="text-content">
+          {% if section.settings.highlighted_text != blank %}
+            {% assign highlighted_text = '<span class="highlighted-text">' | append: section.settings.highlighted_text | append: '</span>' %}    
+          {% endif %}
+          {% assign heading_text = section.settings.heading_text |  replace: "{highlighted_text}", highlighted_text  %}
+
+            <h2>{{ heading_text }}</h2>
+        </div>
+        <a href="{{ section.settings.button_link }}" class="cta-button">
+            {{ section.settings.button_text }}
+        </a>
+    </div>
+</section>
+
+<style>
+.custom-banner-section-{{ section.id }} .text-content h2 {
+  color: {{ section.settings.heading_color }};
+}
+
+.custom-banner-section-{{ section.id }} .text-content h2 .highlighted-text {
+  color: {{ section.settings.highlighted_color }};
+}
+
+.custom-banner-section-{{ section.id }} .cta-button {
+  background-color: {{ section.settings.btn_bg_color }};
+  color: {{ section.settings.btn_text_color }};
+}
+
+@media (min-width: 768px) {
+    .custom-banner-section-{{ section.id }} {
+        background-image: url({{ section.settings.desktop_image | image_url }});
+    }
+}
+
+@media (max-width: 767px) {
+    .custom-banner-section-{{ section.id }} {
+        background-image: url({{ section.settings.mobile_image | image_url }});
+    }
+}
+</style>
+
+{% schema %}
+    {
+      "name": "Custom Banner Section",
+      "settings": [
+        {
+          "id": "desktop_image",
+          "type": "image_picker",
+          "label": "Desktop Background Image"
+        },
+        {
+          "id": "mobile_image",
+          "type": "image_picker",
+          "label": "Mobile Background Image"
+        },
+        {
+          "id": "heading_text",
+          "type": "text",
+          "label": "Heading Text",
+          "info": "Use {highlighted_text} to include a highlighted text",
+          "default": "READY FOR {highlighted_text} AVAILABLE?"
+        },
+        {
+          "id": "highlighted_text",
+          "type": "text",
+          "label": "Highlighted text",
+          "default": "THE HARDEST WORKING SHOP FAN"
+        },
+        {
+          "id": "button_text",
+          "type": "text",
+          "label": "Button Text",
+          "default": "Get Your MULE"
+        },
+        {
+          "id": "button_link",
+          "type": "url",
+          "label": "Button URL"
+        },
+        {
+          "id": "heading_color",
+          "type": "color",
+          "label": "Heading Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "id": "highlighted_color",
+          "type": "color",
+          "label": "Highlighted Text Color",
+          "default": "#FDBF06"
+        },
+        {
+          "id": "btn_bg_color",
+          "type": "color",
+          "label": "Button Background Color",
+          "default": "#FDBF06"
+        },
+        
+        {
+          "id": "btn_text_color",
+          "type": "color",
+          "label": "Button Text Color",
+          "default": "#000000"
+        }
+      ],
+      "presets": [
+        {
+          "name": "Custom Banner Section",
+          "category": "Custom"
+        }
+      ]
+    }
+{% endschema %}
+    
+    

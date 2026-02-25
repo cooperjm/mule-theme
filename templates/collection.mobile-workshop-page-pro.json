@@ -1,0 +1,557 @@
+{
+  "sections": {
+    "aa98b42b-8971-4cc6-96f7-a1b3fb3706d4": {
+      "type": "pxs-image-with-text-overlay",
+      "disabled": true,
+      "settings": {
+        "section_height": "small",
+        "image": "shopify:\/\/shop_images\/bg.png",
+        "title": "Exclusive 2024 Offer! ",
+        "text": "<p><strong>Claim Your Free Gift with the Purchase of a Garage Fan or 5-in-1 Mobile Workshop<\/strong><\/p>",
+        "content_position": "center-center",
+        "color": "#ffffff",
+        "overlay_background": "#000000",
+        "overlay_opacity": 50,
+        "link": "shopify:\/\/pages\/deals",
+        "button_text": "View Deals"
+      }
+    },
+    "main": {
+      "type": "static-collection",
+      "blocks": {
+        "filter-1": {
+          "type": "filter",
+          "settings": {
+            "filter_option": "faceted",
+            "filter_groups": "expand_first",
+            "show_filter_product_count": true,
+            "filter_style": "tags",
+            "filter_limit": "999",
+            "grid_categories": "",
+            "custom_ordered_categories": "",
+            "custom_ordered_tags": "",
+            "excluded_tags": "",
+            "excluded_groups": ""
+          }
+        }
+      },
+      "block_order": [
+        "filter-1"
+      ],
+      "custom_css": [
+        ".product-stock-level__badge-text,.productitem__badge--soldout {display: none;}",
+        ".button-primary:active:disabled {background: transparent; border: 1px solid black;}",
+        ".button-primary:disabled {background: transparent; border: 1px solid black; cursor: not-allowed; color: #b1b1b1;}"
+      ],
+      "settings": {
+        "show_collection_image": false,
+        "products_per_page_range": 24,
+        "products_per_row": "4",
+        "sort_by": true,
+        "grid_list": true,
+        "default_view": "grid-view",
+        "enable_subcollection": false,
+        "show_product_count": false,
+        "thumbnail_image": "product-image",
+        "image_crop": "original"
+      }
+    },
+    "fan_page_main_RTBLwU": {
+      "type": "fan-page-main",
+      "blocks": {
+        "icon_f7hRkN": {
+          "type": "icon",
+          "settings": {
+            "icon": "shopify:\/\/shop_images\/Icon_2.png",
+            "text": "HIGH POWER"
+          }
+        },
+        "icon_9bDGgD": {
+          "type": "icon",
+          "settings": {
+            "icon": "shopify:\/\/shop_images\/Icon_1_815d1170-5ecd-4b31-a127-1eb74f0cf5a1.png",
+            "text": "EASY"
+          }
+        },
+        "icon_U7aJGC": {
+          "type": "icon",
+          "settings": {
+            "icon": "shopify:\/\/shop_images\/Icon_4.png",
+            "text": "LOW NOISE"
+          }
+        },
+        "slider_image_jXGHHj": {
+          "type": "slider_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/1.png"
+          }
+        },
+        "slider_image_imRpHG": {
+          "type": "slider_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/2.png"
+          }
+        },
+        "slider_image_CP9Vqh": {
+          "type": "slider_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/3.png"
+          }
+        },
+        "slider_image_NTULbf": {
+          "type": "slider_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/4.png"
+          }
+        },
+        "slider_image_iLDDb7": {
+          "type": "slider_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/5.png"
+          }
+        },
+        "slider_image_dWRFDH": {
+          "type": "slider_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/6.png"
+          }
+        }
+      },
+      "block_order": [
+        "icon_f7hRkN",
+        "icon_9bDGgD",
+        "icon_U7aJGC",
+        "slider_image_jXGHHj",
+        "slider_image_imRpHG",
+        "slider_image_CP9Vqh",
+        "slider_image_NTULbf",
+        "slider_image_iLDDb7",
+        "slider_image_dWRFDH"
+      ],
+      "settings": {
+        "desktop_image": "shopify:\/\/shop_images\/Banner_Tiles.png",
+        "mobile_image": "shopify:\/\/shop_images\/Banner_1.png",
+        "desktop_banner_image": "shopify:\/\/shop_images\/The_Best_Tool.png",
+        "mobile_banner_image": "shopify:\/\/shop_images\/Group_1_1.png",
+        "heading_text": "MULE WORKS HARD SO YOU CAN {highlighted_text} EASY",
+        "highlighted_text": "WORK",
+        "title": "",
+        "subtitle": "WITH THE 5-IN-1 MOBILE WORKSHOP",
+        "button_text": "Shop Now",
+        "button_link": "#product-list-section",
+        "second_button_text": "Learn More",
+        "second_button_link": "#image-with-content-section",
+        "heading_color": "#ffffff",
+        "highlighted_color": "#fdbf06",
+        "btn_bg_color": "#fdbf06",
+        "second_btn_color": "#ffffff",
+        "btn_text_color": "#000000",
+        "anchor_images": true
+      }
+    },
+    "image_with_content_dzHLrf": {
+      "type": "image-with-content",
+      "blocks": {
+        "richtext_DweqQc": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>Cool It.<\/strong> Cool your work area. 14” 3-speed fan on wheels. 2500 CFM.<\/p>"
+          }
+        },
+        "richtext_dUUXbc": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>Fumes?<\/strong> Improve air circulation and help eliminate fumes, odors and mosquitos.<\/p>"
+          }
+        },
+        "richtext_jLQtHB": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>Dry It. <\/strong>Help painted surfaces dry quicker. Aim it where you want it.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "richtext_DweqQc",
+        "richtext_dUUXbc",
+        "richtext_jLQtHB"
+      ],
+      "settings": {
+        "heading_text": "WHAT YOU NEED. WHEN YOU NEED IT... BRING IT!",
+        "subheading_text": "",
+        "image": "shopify:\/\/shop_images\/image_7_1af851bc-252d-4a34-92b3-dd023e2d9555.png",
+        "image_first": false,
+        "icon": "shopify:\/\/shop_images\/Icon.png",
+        "title": "FAN",
+        "background_color": "#f4f4f4"
+      }
+    },
+    "image_with_content_rwaxUk": {
+      "type": "image-with-content",
+      "blocks": {
+        "richtext_A8ACiW": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>Light Your World. <\/strong>1100 lumen 4000K LED light. Adjustable up\/down.<\/p>"
+          }
+        },
+        "richtext_XP4wpk": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>See <\/strong>what you’ve been missing. Reduce eye strain.<\/p>"
+          }
+        },
+        "richtext_9QVhUh": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>Get it done <\/strong>faster and with precision the first time.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "richtext_A8ACiW",
+        "richtext_XP4wpk",
+        "richtext_9QVhUh"
+      ],
+      "settings": {
+        "heading_text": "",
+        "subheading_text": "",
+        "image": "shopify:\/\/shop_images\/image_9_4dc68778-ec8a-457b-bb62-bb592ba73472.png",
+        "image_first": true,
+        "icon": "shopify:\/\/shop_images\/Icon_1_431e2e6e-2650-48e2-9b6e-486db00dfa93.png",
+        "title": "LIGHT",
+        "background_color": "#f4f4f4"
+      }
+    },
+    "image_with_content_Ta3LLw": {
+      "type": "image-with-content",
+      "blocks": {
+        "richtext_NjALTn": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>Plug it in. <\/strong>Power Strip Options: 3 Standard outlets, 2 USB ports. On\/off rocker switch.<\/p>"
+          }
+        },
+        "richtext_9FtwXm": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>Charge It.<\/strong> Charge your phone, lights or any USB compatible device.<\/p>"
+          }
+        },
+        "richtext_mzfKbd": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>Power Hub<\/strong> for your tools and lights. Extend your reach. 10-foot cord. Max load 1800 Watts.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "richtext_NjALTn",
+        "richtext_9FtwXm",
+        "richtext_mzfKbd"
+      ],
+      "settings": {
+        "heading_text": "",
+        "subheading_text": "",
+        "image": "shopify:\/\/shop_images\/Image_10_5dc860ad-93cb-44dc-90ad-be82df7c512b.png",
+        "image_first": false,
+        "icon": "shopify:\/\/shop_images\/Vector_6e6aac45-f5d5-4a52-a5aa-d836db798f10.png",
+        "title": "POWER",
+        "background_color": "#f4f4f4"
+      }
+    },
+    "image_with_content_dXwTVn": {
+      "type": "image-with-content",
+      "blocks": {
+        "richtext_faTnGF": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>Haul All. <\/strong>Load up the Mule to reduce your trips to the truck. Sturdy. Maximize your mobility.<\/p>"
+          }
+        },
+        "richtext_4NrTJ7": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>300 LBS<\/strong> Loading Tray Capacity. Perfect for 5-gallon paint buckets, stacked tool bins or bag loads.<\/p>"
+          }
+        },
+        "richtext_t6w3ci": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>8” No Flat Tires.<\/strong> Sturdy, durable. No more pumping tires.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "richtext_faTnGF",
+        "richtext_4NrTJ7",
+        "richtext_t6w3ci"
+      ],
+      "settings": {
+        "heading_text": "",
+        "subheading_text": "",
+        "image": "shopify:\/\/shop_images\/image_11_144221f6-735d-48ad-9228-6ae943abc543.png",
+        "image_first": true,
+        "icon": "shopify:\/\/shop_images\/Icon_2_5b138a4e-b8b0-4415-a2c5-fd7b1ee2468a.png",
+        "title": "HAUL",
+        "background_color": "#f4f4f4"
+      }
+    },
+    "image_with_content_PN36wG": {
+      "type": "image-with-content",
+      "blocks": {
+        "richtext_aAfDrn": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>Your Onsite Portable Work Hub. <\/strong>Make this MULE your work base to run your jobs efficiently.<\/p>"
+          }
+        },
+        "richtext_CkaXTK": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>Tool Caddy.<\/strong> Everything you need at your fingertips. Hang your toolbelt.<\/p>"
+          }
+        },
+        "richtext_mDVLTg": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>4 Bungee Wraps<\/strong> for hanging cords or tools from the work tray.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "richtext_aAfDrn",
+        "richtext_CkaXTK",
+        "richtext_mDVLTg"
+      ],
+      "settings": {
+        "heading_text": "",
+        "subheading_text": "",
+        "image": "shopify:\/\/shop_images\/Image_12_b2e8c15b-a503-4b20-8899-c2529a808e80.png",
+        "image_first": false,
+        "icon": "shopify:\/\/shop_images\/Icon_3.png",
+        "title": "ORGANIZE",
+        "background_color": "#f4f4f4"
+      }
+    },
+    "image_with_content_Mp3HKj": {
+      "type": "image-with-content",
+      "blocks": {
+        "richtext_b98dyJ": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>How do you pack your MULE? <\/strong>Versatile. The applications are endless.<\/p>"
+          }
+        },
+        "richtext_BQMXkW": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>Accessories.<\/strong> Speaker. Portable Power Station. Cup & Phone Holder. Tool box. And we are just getting started. More to follow based on your feedback. Stay tuned.<\/p>"
+          }
+        },
+        "richtext_ydaED6": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>Own it. <\/strong>Make it Yours. Run with it for your job, your space. You get the idea.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "richtext_b98dyJ",
+        "richtext_BQMXkW",
+        "richtext_ydaED6"
+      ],
+      "settings": {
+        "heading_text": "",
+        "subheading_text": "",
+        "image": "shopify:\/\/shop_images\/image_13_dce0d3a6-f5d8-45ea-ac57-8453836db574.png",
+        "image_first": true,
+        "icon": "shopify:\/\/shop_images\/Icon_4_fd4eaefc-63b2-44e3-aebc-e164308abf18.png",
+        "title": "CUSTOMIZE",
+        "background_color": "#f4f4f4"
+      }
+    },
+    "custom_banner_TGr7AN": {
+      "type": "custom-banner",
+      "settings": {
+        "desktop_image": "shopify:\/\/shop_images\/Call_to_Action_1.png",
+        "mobile_image": "shopify:\/\/shop_images\/Call_to_Action.png",
+        "heading_text": "READY FOR {highlighted_text} MULE AVAILABLE?",
+        "highlighted_text": "THE HARDEST WORKING",
+        "button_text": "Get Your MULE",
+        "button_link": "#product-list-section",
+        "heading_color": "#ffffff",
+        "highlighted_color": "#fdbf06",
+        "btn_bg_color": "#fdbf06",
+        "btn_text_color": "#000000"
+      }
+    },
+    "product_customer_reviews_qa3Tcz": {
+      "type": "product-customer-reviews",
+      "blocks": {
+        "customer_review_3G8QLq": {
+          "type": "customer_review",
+          "settings": {
+            "customer_username": "Dan the Handyman",
+            "review_image": "shopify:\/\/shop_images\/mobile-work-review-02.png",
+            "customer_review_text": "This thing is great! Perfect for carting around my tools and the work light is really bright and convenient. The rigid tires make it easy to move around the job and the fan on this unit is great keeping me cool."
+          }
+        },
+        "customer_review_X7FXpM": {
+          "type": "customer_review",
+          "settings": {
+            "customer_username": "ingridr0c71",
+            "review_image": "shopify:\/\/shop_images\/mobile-work-review-01.png",
+            "customer_review_text": "Mule 5 in 1 workshop is a clever way to help you in your shop. I was not aware of a multi workshop tool like this. My husband did the assembling. He used the manual and a video from the website."
+          }
+        },
+        "customer_review_BaJGf8": {
+          "type": "customer_review",
+          "settings": {
+            "customer_username": "JP3 Solutions",
+            "review_image": "shopify:\/\/shop_images\/mobile-work-review-03.png",
+            "customer_review_text": "Excited to use my new mobile workshop. This thing was packaged well and installation was easy to follow. I plan to use it on a basement project this weekend where I need to shine light on a dark corner."
+          }
+        }
+      },
+      "block_order": [
+        "customer_review_3G8QLq",
+        "customer_review_X7FXpM",
+        "customer_review_BaJGf8"
+      ],
+      "custom_css": [
+        "#product-customer-reviews h2 {font-size: 55px;}",
+        "@media screen and (max-width: 768px) {#product-customer-reviews h2 {font-size: 24px; } #product-customer-reviews {padding: 50px 20px 30px; }}"
+      ],
+      "settings": {
+        "customer_reviews_heading": "TRUSTED BY<br> THOUSANDS OF MULE FANS",
+        "show_customer_reviews_readmore": false
+      }
+    },
+    "media_logos_TERHqm": {
+      "type": "media-logos",
+      "blocks": {
+        "image_kKHy3n": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Good_Day.png"
+          }
+        },
+        "image_8ckTaW": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/MSN_News.png"
+          }
+        },
+        "image_6zFiWW": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Yahoo_news.png"
+          }
+        },
+        "image_NfV3Af": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/family_handyman_1.png"
+          }
+        },
+        "image_UbWGc3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/nhshow_1.png"
+          }
+        },
+        "image_ewA8GB": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/toolwife_1.png"
+          }
+        },
+        "image_KX4XCm": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Tools_design_1.png"
+          }
+        },
+        "image_iffzVb": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Hardware_connectionbn_1.png"
+          }
+        },
+        "image_9fGrwT": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Backgroundtools_1.png"
+          }
+        }
+      },
+      "block_order": [
+        "image_kKHy3n",
+        "image_8ckTaW",
+        "image_6zFiWW",
+        "image_NfV3Af",
+        "image_UbWGc3",
+        "image_ewA8GB",
+        "image_KX4XCm",
+        "image_iffzVb",
+        "image_9fGrwT"
+      ],
+      "custom_css": [
+        ".media-logos-container h2 {font-size: 35px;}",
+        "@media screen and (max-width: 768px) {.media-logos-container h2 {font-size: 24px; }}"
+      ],
+      "settings": {
+        "section_heading": "AS SEEN ON"
+      }
+    },
+    "static-recently-viewed": {
+      "type": "static-recently-viewed",
+      "disabled": true,
+      "settings": {
+        "enable_recently_viewed_products": true
+      }
+    },
+    "product_image_banner_c9LFit": {
+      "type": "product-image-banner",
+      "settings": {
+        "desktop_banner": "shopify:\/\/shop_images\/Group_2.png",
+        "full_width": true
+      }
+    },
+    "product_description_images_UpKhJJ": {
+      "type": "product-description-images",
+      "settings": {
+        "main_image": "shopify:\/\/shop_images\/b9fc86bffc8edbc4fbed0f2fb9c085d5.png",
+        "bottom_image_1": "shopify:\/\/shop_images\/image_28.png",
+        "bottom_image_2": "shopify:\/\/shop_images\/image_29.png",
+        "title": "5-IN-1 MOBILE WORKSHOP",
+        "description": "<p>PERFECT COMPANION FOR:<\/p><ul><li>Painters<\/li><li>Electricians<\/li><li>Contractors<\/li><li>Auto Repair<\/li><li>Facilities Maintenance<\/li><li>Gig Workers<\/li><li>Many More Uses<\/li><\/ul><p><em>*Note: The Mobile Workshop is not rated for damp or wet use.<\/em><\/p>"
+      }
+    },
+    "product_list_bXk4AP": {
+      "type": "product-list",
+      "settings": {
+        "featured_collection": ""
+      }
+    }
+  },
+  "order": [
+    "aa98b42b-8971-4cc6-96f7-a1b3fb3706d4",
+    "main",
+    "fan_page_main_RTBLwU",
+    "image_with_content_dzHLrf",
+    "image_with_content_rwaxUk",
+    "image_with_content_Ta3LLw",
+    "image_with_content_dXwTVn",
+    "image_with_content_PN36wG",
+    "image_with_content_Mp3HKj",
+    "custom_banner_TGr7AN",
+    "product_customer_reviews_qa3Tcz",
+    "media_logos_TERHqm",
+    "static-recently-viewed",
+    "product_image_banner_c9LFit",
+    "product_description_images_UpKhJJ",
+    "product_list_bXk4AP"
+  ]
+}

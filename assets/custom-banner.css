@@ -1,0 +1,72 @@
+.custom-banner-section {
+  position: relative;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  text-align: center;
+  padding: 50px 200px;
+  background-size: cover;
+  height: 200px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.custom-banner-section .banner-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.custom-banner-section .banner-content .text-content {
+  max-width: 540px;
+}
+
+.custom-banner-section .text-content h2 {
+  font-size: 34px;
+  text-align: left;
+}
+
+.custom-banner-section .cta-button {
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 5px;
+  padding: 15px 20px;
+  font-size: 18px;
+  min-width: 240px;
+}
+
+@media (max-width: 1366px) {
+  .custom-banner-section {
+    padding: 50px 60px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .custom-banner-section {
+    padding: 50px 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .custom-banner-section {
+    height: 720px;
+    background-position: bottom;
+    align-items: start;
+  }
+
+  .custom-banner-section .banner-content {
+    display: grid;
+    gap: 0;
+  }
+
+  .custom-banner-section .banner-content .text-content {
+    max-width: unset;
+  }
+}
+
+@media (max-width: 550px) {
+  .custom-banner-section {
+    height: 600px;
+  }
+
+}

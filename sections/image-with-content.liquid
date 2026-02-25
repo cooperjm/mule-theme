@@ -1,0 +1,139 @@
+<div class="image-with-content-section image-with-content-section-{{ section.id }}" id="image-with-content-section">
+    {% if section.settings.heading_text != blank %}
+        <div class="heading">
+            <h2>{{ section.settings.heading_text }}</h2>
+            {% if section.settings.subheading_text != blank %}
+                <h3>{{ section.settings.subheading_text }}</h3>
+            {% endif %}
+        </div>
+    {% endif %}
+    <div class="content-container {% if section.settings.image_first %}image_first{% endif %}">
+        <div class="content-block">
+            {% if section.settings.icon != blank %}
+                {{ section.settings.icon | image_url: width: 100 | image_tag: alt: "Icon Image", loading: 'lazy'}}
+            {% endif %}
+            
+            {% if section.settings.title != blank %}
+                <h2>{{ section.settings.title }}</h2>
+            {% endif %}
+
+            <div class="text-content">
+                {% for block in section.blocks %}
+                    <div class="text-content-item">
+                        {% render 'checkmark.svg' %}
+                        <div class="block-text-content">
+                            {% case block.type %}
+                                {% when 'tooltip_text' %}
+                                    {{ block.settings.text }}
+                                    {% if block.settings.tooltip != blank %}
+                                        <span class="text-content-tooltip">{% render 'tooltip.svg' %}<div class="tooltip-content">{{ block.settings.tooltip }}</div></span>
+                                    {% endif %}
+                                {% when 'richtext' %}
+                                    {{ block.settings.text }}
+                            {% endcase %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+        </div>
+        <div class="image-block">
+            {% if section.settings.image != blank %}
+                {{ section.settings.image | image_url: width: nil | image_tag }}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .image-with-content-section-{{ section.id }} .content-container {
+        background-color: {{ section.settings.background_color }};
+    }
+
+    @media screen and (min-width: 769px) {
+        .image-with-content-section-{{ section.id }} .content-container.image_first {
+            flex-direction: row-reverse;
+        }
+    }
+</style>
+
+{% schema %}
+    {
+      "name": "Image With Content",
+      "settings": [
+        {
+          "id": "heading_text",
+          "type": "text",
+          "label": "Heading Text"
+        },
+        {
+          "id": "subheading_text",
+          "type": "text",
+          "label": "Subheading Text"
+        },
+        {
+          "id": "image",
+          "type": "image_picker",
+          "label": "Block Image"
+        },
+        {
+          "id": "image_first",
+          "type": "checkbox",
+          "label": "Show Image First"
+        },
+        {
+          "id": "icon",
+          "type": "image_picker",
+          "label": "Block Icon"
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Block Title"
+        },
+        {
+          "id": "background_color",
+          "type": "color",
+          "label": "Block Background Color",
+          "default": "#F4F4F4"
+        }
+      ],
+      "blocks": [
+        {
+            "name": "Text With Tooltip",
+            "type": "tooltip_text",
+            "settings": [
+                {
+                    "type": "textarea",
+                    "id": "text",
+                    "label": "Text"
+                },
+                {
+                    "type": "textarea",
+                    "id": "tooltip",
+                    "label": "Tooltip Text"
+                }
+            ]
+        },
+        {
+            "name": "Richtext",
+            "type": "richtext",
+            "settings": [
+                {
+                    "type": "richtext",
+                    "id": "text",
+                    "label": "Text"
+                }
+            ]
+        }
+      ],
+      "presets": [
+        {
+          "name": "Image With Content",
+          "category": "Custom"
+        }
+      ]
+    }
+{% endschema %}
+    
+    

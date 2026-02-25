@@ -1,0 +1,47 @@
+<div class="product-gallery">
+  <div class="product-gallery-container">
+    <div class="slider-gallery desktop">
+      {% for image in product.images %}
+          <div data-image="{{ image.src | image_url: width: 560, height: 560, crop: 'center' }}">
+              <img src="{{ image.src | image_url: width: 560, height: 560, crop: 'center' }}" alt="{{ image.alt }}">
+          </div>
+      {% endfor %}
+    </div>
+    <div class="slider-gallery-thumbs">
+      {% for image in product.images %}
+          <div class="thumbnail" data-image="{{ image.src | image_url: width: 266, height: 266, crop: 'center' }}">
+            <img src="{{ image.src | image_url: width: 266, height: 266, crop: 'center' }}" alt="{{ image.alt }}">
+          </div>
+        {% endfor %}
+    </div>
+  </div>
+
+  <div class="videos-container">
+    {% for media in product.media %}
+      {% if media.media_type == 'external_video' %}
+        <style>
+          .product-single_video {
+              padding-bottom: 56.25%;
+          }
+        </style>
+        <div class="product-single_video">
+          {{ media | external_video_tag }}
+        </div>
+      {% elsif media.media_type == 'video' %}
+        <style>
+          .product-single_video {
+              padding-bottom: 0;
+          }
+        </style>
+        <div class="product-single_video">
+          <video controls poster="https://cdn.shopify.com/s/files/1/0674/5135/5350/files/mulevideothumb.jpg?v=1716245748">
+            {% for source in media.sources %}
+              <source src="{{ source.url }}" type="{{ source.mime_type }}">
+            {% endfor %}
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>

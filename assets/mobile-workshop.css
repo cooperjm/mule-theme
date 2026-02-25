@@ -1,0 +1,45 @@
+.fan-page-main-section .fan-page-block .title-content p {
+    padding-top: 0;
+}
+
+@media screen and (min-width: 769px) {
+    .fan-page-main-section .fan-page-block .text-content h2 {
+        font-size: 80px;
+        line-height: 78px;
+    }
+
+    .fan-page-main-section .fan-page-block .text-content {
+        text-align: left;
+        padding: 60px 60px 0;
+    }
+
+    .fan-page-main-section .fan-page-block .title-content {
+        text-align: left;
+        padding: 15px 60px 0;
+    }
+
+    .fan-page-main-section .fan-page-block .buttons-block {
+        padding: 30px 20px 0;
+    }
+
+    .fan-page-main-section .image-slider-block {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    .fan-page-main-section .fan-page-block .text-content {
+        padding: 60px 75px 0;
+    }
+    
+    .fan-page-main-section .fan-page-block .title-content {
+        padding: 15px 75px 0;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .fan-page-main-section .fan-page-block .text-content {
+        order: 2;
+    }
+}

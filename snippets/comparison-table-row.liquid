@@ -1,0 +1,30 @@
+<div class="comparison-table-row">
+    
+    <div class="product-title-container">
+        <div class="product-title">
+        {% if block.settings.custom_title != blank %}
+            <p>{{ block.settings.custom_title }}</p>
+        {% else %}
+            <p>{{ block.settings.product.title }}</p>
+        {% endif %}
+        <p><b>From {{ block.settings.product.price | money }}</b></p>
+        </div>
+    </div>
+    <div class="product-description">
+        {% if block.settings.custom_description != blank %}
+            {{ block.settings.custom_description }}
+        {% endif %}
+    </div>
+    <div class="product-image">
+        {% if block.settings.custom_image != blank %}
+            {{ block.settings.custom_image | image_url: width: 500 | image_tag: alt: "Product Image", loading: 'lazy'}}
+        {% else %}
+            {{ block.settings.product.featured_media | image_url: width: 500 | image_tag: alt: "Product Image", loading: 'lazy'}}
+        {% endif %} 
+    </div>
+    {% if block.settings.btn_text != blank %}
+        <div class="product-cta">
+            <a href="{% if block.settings.btn_url != blank %}{{ block.settings.btn_url }}{% else %}{{ block.settings.product.url }}{% endif %}">{{ block.settings.btn_text }}</a>
+        </div>
+    {% endif %} 
+</div>

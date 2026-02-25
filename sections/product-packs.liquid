@@ -1,0 +1,149 @@
+{{ 'product-packs.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-packs.js' | asset_url }}" defer></script>
+<div class="product-packs-section" id="product-packs-section">
+    <div class="product-packs-section-container">
+        <div class="title-content"> 
+            <h2>{{ section.settings.title }}</h2>
+            <p>{{ section.settings.subtitle }}</p>
+        </div>
+        <div class="product-packs-block">
+            {% assign first_block_size = 0 %}
+            {% assign second_block_size = 0 %}
+            {% for block in section.blocks %}
+                {% if block.settings.pack == "first_pack" %}
+                    {% assign first_block_size = first_block_size | plus: 1 %}
+                {% endif %}
+                {% if block.settings.pack == "second_pack" %}
+                    {% assign second_block_size = second_block_size | plus: 1 %}
+                {% endif %}
+            {% endfor %} 
+            <div class="pack-item first-pack {% if first_block_size == 2 %} two-columns{% endif %}">
+                <span class="pack-title">{{ section.settings.first_pack_title }}</span>
+                {% for block in section.blocks %}
+                    {% if block.settings.pack == "first_pack" %}
+                        {% for product in block.settings.products %}
+                            {% if forloop.first %}
+                                {% assign first_product = product %}
+                            {% endif %}
+                        {% endfor %}
+                        {% render "product-pack-block" product_list: block.settings.products product: first_product, block: block %}
+                        {% assign first_product = nil %}
+                    {% endif %}
+                {% endfor %} 
+            </div> 
+            <div class="pack-item second-pack {% if first_block_size == 2 %} two-columns{% endif %}">
+                <span class="pack-title">{{ section.settings.second_pack_title }}</span>
+                {% for block in section.blocks %}
+                    {% if block.settings.pack == "second_pack" %}
+                        {% for product in block.settings.products %}
+                            {% if forloop.first %}
+                                {% assign first_product = product %}
+                            {% endif %}
+                        {% endfor %}
+                        {% render "product-pack-block" product_list: block.settings.products product: first_product, block: block %}
+                        {% assign first_product = nil %}
+                    {% endif %}
+                {% endfor %} 
+            </div> 
+        </div>
+    </div>
+</div>
+
+{% schema %}
+    {
+      "name": "Product Packs",
+      "limit": 1,
+      "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "MAKE YOUR SHOP WORK FOR YOU"
+        },
+        {
+          "id": "subtitle",
+          "type": "text",
+          "label": "Subtitle",
+          "default": "WITH A FAN THAT WORKS AS HARD AS YOU DO"
+        },
+        {
+          "id": "first_pack_title",
+          "type": "text",
+          "label": "First Pack Title"
+        },
+        {
+          "id": "second_pack_title",
+          "type": "text",
+          "label": "Second Pack Title"
+        }
+      ],
+      "blocks": [
+        {
+            "name": "Pack Product",
+            "type": "pack_product",
+            "limit": 4,
+            "settings": [
+                {
+                    "type": "product_list",
+                    "id": "products",
+                    "label": "Product"
+                },
+                {
+                    "type": "text",
+                    "id": "first_variant",
+                    "label": "First Variant by ID"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "custom_image",
+                    "label": "Custom Image"
+                },
+                {
+                    "type": "text",
+                    "id": "custom_description",
+                    "label": "Custom Description"
+                },
+                {
+                    "type": "text",
+                    "id": "custom_title",
+                    "label": "Custom Title"
+                },
+                {
+                    "type": "text",
+                    "id": "reviews_counter",
+                    "label": "Reviews Counter"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "reviews_img",
+                    "label": "Reviews Image"
+                },
+                {
+                    "type": "select",
+                    "id": "pack",
+                    "label": "Select Pack",
+                    "options": [
+                        {
+                        "value": "first_pack",
+                        "label": "First Pack"
+                        },
+                        {
+                        "value": "second_pack",
+                        "label": "Second Pack"
+                        }
+                    ],
+                    "default": "first_pack"
+                }
+            ]
+        }
+      ],
+      "presets": [
+        {
+          "name": "Product Packs",
+          "category": "Custom"
+        }
+      ]
+    }
+{% endschema %}
+    
+    

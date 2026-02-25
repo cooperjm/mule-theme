@@ -1,0 +1,310 @@
+{% if cart.items.size > 0 %}
+  {% assign has_items = true %}
+{% endif %}
+
+{% if has_items %}
+
+  {{ 'cart-total-with-logos.css' | asset_url | stylesheet_tag }}
+
+  <div class="
+    cart-total-with-logos__{{ section.id }}
+    cart-total-with-logos__container"
+  >
+    <div class="cart-total-with-logos__content">
+      {% for block in section.blocks %}
+        {% if block.settings.text != blank or block.settings.title != blank %}
+          <div
+            class="cart-total-with-logos__block"
+            {{ block.shopify_attributes }}
+            data-highlights-block
+          >
+            {% if block.settings.icon != 'none' or block.settings.image != blank %}
+              <div class="cart-total-with-logos__icon">
+                {% if block.settings.image != blank %}
+                  {%
+                    render 'rimg',
+                    class: 'cart-total-with-logos__custom-icon',
+                    img: block.settings.image,
+                    size: '150x',
+                    focal_point: block.settings.image.presentation.focal_point,
+                  %}
+                {% else %}
+                  {% render 'icon-library', id: block.settings.icon %}
+                {% endif %}
+              </div>
+            {% endif %}
+
+            <div class="cart-total-with-logos__text">
+              {% if block.settings.title != blank %}
+                <span class="cart-total-with-logos__heading">
+                  {{ block.settings.title | escape }}
+                </span>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <div class="cart-total-with-logos__description">
+                  {{ block.settings.text }}
+                </div>
+              {% endif %}
+            </div>
+            {% if block.settings.link != blank %}
+              <a
+                class="cart-total-with-logos__block-link"
+                href="{{ block.settings.link }}"
+                {{ block.shopify_attributes }}
+              >
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="cart-total-block">
+      <div class="cart-subtotal">
+        <span>{{ 'cart.general.subtotal' | t }}:</span>
+        <span class="money" data-cart-total>{{ cart.items_subtotal_price | money }}</span>
+      </div>
+      <ul class="discount-list" data-cart-discounts aria-label="{{ 'product.general.discounts' | t }}">
+        {%- for discount_application in cart.cart_level_discount_applications -%}
+          <li class="discount-list-item cart-discount">
+            <span class="cart-discount-title">
+              Promo Code: <em>{{ discount_application.title }}</em>
+            </span>
+            <span class="cart-discount-price">-<span class="money">{{ discount_application.total_allocated_amount | money }}</span></span>
+          </li>
+        {%- endfor -%}
+        
+      </ul>
+
+      <div class="cart-shipping">
+        {%- capture taxes_shipping_checkout -%}
+          {%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
+            {{ 'cart.general.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
+          {%- elsif cart.taxes_included -%}
+            {{ 'cart.general.taxes_included_but_shipping_at_checkout' | t }}
+          {%- elsif shop.shipping_policy.body != blank -%}
+            {{ 'cart.general.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
+          {%- else -%}
+            {{ 'cart.general.tax_and_shipping' | t }}
+          {%- endif -%}
+        {%- endcapture -%}
+
+        <p class="cart-message meta"><em>{{ taxes_shipping_checkout }}</em></p>
+      </div>
+
+      <div class="cart-total">
+        <span>Cart Total:</span>
+        <span class="money" data-cart-total>{{ cart.total_price | money }}</span>
+      </div>
+
+      <div class="cart-checkout">
+        <button
+          class="button-primary"
+          type="submit"
+          name="checkout"
+          aria-label="{{ 'cart.general.checkout' | t }}"
+        >
+          {{ 'cart.general.checkout' | t }}
+          {% render 'icon-checkout-lock' %}
+        </button>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% schema %}
+{
+  "name": "Cart Total With Logos",
+  "class": "cart-total-with-logos",
+  "settings": [
+
+  ],
+  "blocks": [
+    {
+      "type": "highlight",
+      "name": "t:sections.highlights_banner.blocks.highlight.name",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "t:sections.highlights_banner.blocks.highlight.icon.label",
+          "options": [
+            {
+              "value": "none",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_1"
+            },
+            {
+              "value": "icon-award-trophy",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_2"
+            },
+            {
+              "value": "icon-car",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_3"
+            },
+            {
+              "value": "icon-car-2",
+              "label": "Car 2"
+            },
+            {
+              "value": "icon-cell-phone",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_4"
+            },
+            {
+              "value": "icon-chat",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_5"
+            },
+            {
+              "value": "icon-chat-alternate",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_6"
+            },
+            {
+              "value": "icon-credit-card",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_7"
+            },
+            {
+              "value": "icon-delivery",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_8"
+            },
+            {
+              "value": "icon-delivery-cart",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_9"
+            },
+            {
+              "value": "icon-delivery-door",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_10"
+            },
+            {
+              "value": "icon-delivery-handoff",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_11"
+            },
+            {
+              "value": "icon-delivery-package",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_12"
+            },
+            {
+              "value": "icon-discount",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_13"
+            },
+            {
+              "value": "icon-email",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_14"
+            },
+            {
+              "value": "icon-envelope",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_15"
+            },
+            {
+              "value": "icon-fast-delivery",
+              "label": "Icon Fast Delivery"
+            },
+            {
+              "value": "icon-gift-card",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_16"
+            },
+            {
+              "value": "icon-heart",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_17"
+            },
+            {
+              "value": "icon-information",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_18"
+            },
+            {
+              "value": "icon-label-tag",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_19"
+            },
+            {
+              "value": "icon-lock",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_20"
+            },
+            {
+              "value": "icon-number-14",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_21"
+            },
+            {
+              "value": "icon-number-24",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_22"
+            },
+            {
+              "value": "icon-number-30",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_23"
+            },
+            {
+              "value": "icon-people",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_24"
+            },
+            {
+              "value": "icon-pin",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_25"
+            },
+            {
+              "value": "icon-question-mark",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_26"
+            },
+            {
+              "value": "icon-rating-five-star",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_27"
+            },
+            {
+              "value": "icon-rating-star",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_28"
+            },
+            {
+              "value": "icon-smile",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_29"
+            },
+            {
+              "value": "icon-store",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_30"
+            },
+            {
+              "value": "icon-tape-measure",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_31"
+            },
+            {
+              "value": "icon-thumbs-up",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_32"
+            },
+            {
+              "value": "icon-transfer",
+              "label": "t:sections.highlights_banner.blocks.highlight.icon.option_33"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.highlights_banner.blocks.highlight.image.label",
+          "info": "t:sections.highlights_banner.blocks.highlight.image.info"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.highlights_banner.blocks.highlight.title.label"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:sections.highlights_banner.blocks.highlight.text.label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.highlights_banner.blocks.highlight.link.label"
+        }
+      ],
+      "limit": 3
+    }
+  ],
+  "presets": [
+    {
+      "category": "Store Information",
+      "name": "Cart Total With Logos"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["*"]
+  }
+}
+{% endschema %}

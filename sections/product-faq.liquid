@@ -1,0 +1,107 @@
+{{ 'product-faq.css' | asset_url | stylesheet_tag }}
+
+<style>
+.product-faq-icon::before {
+  content: url('{{ 'mobile-work-accordion-open.svg' | asset_url }}');
+}
+
+.product-faq-icon.open::before {
+  content: url('{{ 'mobile-work-accordion-close.svg' | asset_url }}');
+}
+</style>
+
+<section id="product-faq">
+    <div class="product-faq-container">
+        <h2>Frequently Asked Questions</h2>
+        <div class="product-faq-content">
+            <div class="product-faq-col">
+              {% for block in section.blocks %}
+                  <div class="product-faq-item">
+                    <div class="product-faq-container">
+                      <div class="product-faq-accordion">
+                        <div class="product-faq-question" onclick="toggleAccordion(event, 0)">
+                          <h3>{{ block.settings.faq_item_question }}</h3>
+                          <span class="product-faq-icon"></span>
+                        </div>
+                        <div class="product-faq-answer">
+                          <p>{{ block.settings.faq_item_answer }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var allQuestions = document.querySelectorAll('.product-faq-question');
+    
+    allQuestions.forEach((question, index) => {
+        question.onclick = function(event) {
+            toggleAccordion(event, index);
+        };
+    });
+
+    window.toggleAccordion = function(event, index) {
+        var allAnswers = document.querySelectorAll('.product-faq-answer');
+        var allIcons = document.querySelectorAll('.product-faq-icon');
+        allAnswers.forEach((answer, idx) => {
+            if (idx === index) {
+                var isClosed = !answer.classList.contains('open');
+                allIcons[idx].classList.toggle('open', isClosed);
+                if (isClosed) {
+                    answer.style.maxHeight = answer.scrollHeight + "px";
+                } else {
+                    answer.style.maxHeight = null;
+                }
+                answer.classList.toggle('open', isClosed);
+            } else {
+                answer.classList.remove('open');
+                answer.style.maxHeight = null;
+                allIcons[idx].classList.remove('open');
+            }
+        });
+    };
+});
+</script>
+
+{% schema %}
+  {
+    "name": "Product FAQ",
+    "class": "product-faq--section",
+    "max_blocks": 10,
+    "settings": [
+      {
+        "type": "text",
+        "id": "section_heading",
+        "label": "Insert Section Heading"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "FAQ",
+        "settings": [
+          {
+            "type": "html",
+            "id": "faq_item_question",
+            "label": "Insert Question"
+          },
+          {
+            "type": "html",
+            "id": "faq_item_answer",
+            "label": "Insert Answer"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Product FAQ"
+      }
+    ]
+  }
+  {% endschema %}

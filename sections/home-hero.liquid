@@ -1,0 +1,133 @@
+{{ 'home-hero.css' | asset_url | stylesheet_tag }}
+
+<section id="home-hero">
+  <img src="{{ section.settings.hero_background |  image_url }}" class="home-hero-background" alt="Home Hero">
+  <div class="section-container">
+    <div class="hero-content">
+      <h1 class="hero-title">{{ section.settings.hero_heading }}</h1>
+      <p class="hero-subtitle">{{ section.settings.hero_subheading }}</p>
+      <div class="button-container">
+        <a class="cta cta-primary" href="{{ section.settings.hero_cta_1_url }}">{{ section.settings.hero_cta_1_text }}</a>
+        <a class="cta cta-secondary" href="{{ section.settings.hero_cta_2_url }}">{{ section.settings.hero_cta_2_text }}</a>
+      </div>
+      <div class="features">
+        <div class="feature-item">
+          <img src="{{ section.settings.trust_icon_1 |  image_url }}" alt="Free Shipping Icon">
+          <span>{{ section.settings.trust_text_1 }}</span>
+        </div>
+        <div class="feature-item">
+          <img src="{{ section.settings.trust_icon_2 |  image_url }}" alt="Fast Delivery Icon">
+          <span>{{ section.settings.trust_text_2 }}</span>
+        </div>
+        <div class="feature-item">
+          <img src="{{ section.settings.trust_icon_3 |  image_url }}" alt="3 Years Warranty Icon">
+          <span>{{ section.settings.trust_text_3 }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<style>
+
+@media (max-width: 1080px) {
+  #home-hero {
+  background-image: url("{{ section.settings.hero_mobile_background |  image_url }}");
+  }
+}
+
+</style>
+
+{% schema %}
+  {
+    "name": "Home Hero",
+    "class": "home-hero--section",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "hero_background",
+        "label": "Insert Hero Background Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "hero_mobile_background",
+        "label": "Insert Hero Mobile Background Image"
+      },
+      {
+        "type": "color",
+        "id": "hero_text_color",
+        "label": "Insert Hero text color"
+      },
+      {
+        "type": "html",
+        "id": "hero_heading",
+        "label": "Insert Section Heading"
+      },
+      {
+        "type": "text",
+        "id": "hero_subheading",
+        "label": "Insert Section Subheading"
+      },
+      {
+        "type": "text",
+        "id": "hero_cta_1_text",
+        "label": "Insert Hero Cta 1 Text"
+      },
+      {
+        "type": "url",
+        "id": "hero_cta_1_url",
+        "label": "Insert Hero Cta 1 link"
+      },
+      {
+        "type": "text",
+        "id": "hero_cta_2_text",
+        "label": "Insert Hero Cta 2 Text"
+      },
+      {
+        "type": "url",
+        "id": "hero_cta_2_url",
+        "label": "Insert Hero Cta 2 link"
+      },
+      {
+        "type": "header",
+        "content": "Trust Icons"
+      },
+      {
+        "type": "image_picker",
+        "id": "trust_icon_1",
+        "label": "Insert Trust Icon 1 Image"
+      },
+      {
+        "type": "text",
+        "id": "trust_text_1",
+        "label": "Insert Trust Text 1"
+      },
+      {
+        "type": "image_picker",
+        "id": "trust_icon_2",
+        "label": "Insert Trust Icon 2 Image"
+      },
+      {
+        "type": "text",
+        "id": "trust_text_2",
+        "label": "Insert Trust Text 2"
+      },
+      {
+        "type": "image_picker",
+        "id": "trust_icon_3",
+        "label": "Insert Trust Icon 3 Image"
+      },
+      {
+        "type": "text",
+        "id": "trust_text_3",
+        "label": "Insert Trust Text 3"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Home Hero"
+      }
+    ]
+  }
+  {% endschema %}

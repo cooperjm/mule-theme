@@ -1,0 +1,102 @@
+{{ 'product-contact.css' | asset_url | stylesheet_tag }}
+
+<section id="product-contact" class="product-template-section">
+  <div class="product-contact-container product-template-container">
+    <h2>{{ section.settings.section_heading }}</h2>
+    <p class="product-contact-subtitle">{{ section.settings.section_subheading }}</p>
+    <div class="product-contact-box">
+        <p class="product-contact-text-contact">{{ section.settings.contact_paragraph }}</p>
+        <div class="product-contact-contact">
+            <p><img src='{{ "phoneicon.svg" | asset_url }}'/>{{ section.settings.contact_phone }}</p>
+            <p><img src="{{ 'chaticon.svg' | asset_url }}"/>{{ section.settings.contact_chat }}</p>
+        </div>
+    </div>
+    <div class="product-chat-box">
+        <div class="product-contact-chat-img">
+            <img src="{{ section.settings.contact_image | image_url }}"/>
+        </div>
+        <div class="product-contact-chat-text">
+            <p class="product-contact-chat-title">{{ section.settings.chat_heading }}</p>
+            <p class="product-contact-chat-subtitle">{{ section.settings.chat_subheading }}</p>
+            <p class="product-contact-chat-paragraph">{{ section.settings.chat_paragraph }}</p>
+            <a target="_blank" href="{{ section.settings.chat_cta_url }}" class="product-contact-cta">{{ section.settings.chat_cta }}</a>
+        </div>
+    </div>
+  </div>
+</section>
+
+<style>
+#product-contact {
+  background-image: url('{{ "diagonalwhitebg.png" | asset_url }}') ;
+}
+</style>
+
+{% schema %}
+  {
+    "name": "Product Contact",
+    "class": "product-contact--section",
+    "settings": [
+      {
+        "type": "html",
+        "id": "section_heading",
+        "label": "Insert Section Heading"
+      },
+      {
+        "type": "html",
+        "id": "section_subheading",
+        "label": "Insert Section Sub Heading"
+      },
+      {
+        "type": "text",
+        "id": "contact_paragraph",
+        "label": "Insert Contact Paragraph"
+      },
+      {
+        "type": "text",
+        "id": "contact_phone",
+        "label": "Insert Contact Phone"
+      },
+      {
+        "type": "text",
+        "id": "contact_chat",
+        "label": "Insert Contact Chat"
+      },
+      {
+        "type": "image_picker",
+        "id": "contact_image",
+        "label": "Insert Contact Image"
+      },
+      {
+        "type": "text",
+        "id": "chat_heading",
+        "label": "Insert Chat Heading"
+      },
+      {
+        "type": "text",
+        "id": "chat_subheading",
+        "label": "Insert Chat Sub Heading"
+      },
+      {
+        "type": "text",
+        "id": "chat_paragraph",
+        "label": "Insert Chat Paragraph"
+      },
+      {
+        "type": "text",
+        "id": "chat_cta",
+        "label": "Insert Chat Cta Text"
+      },
+      {
+        "type": "url",
+        "id": "chat_cta_url",
+        "label": "Insert Chat Cta URL"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Product Contact"
+      }
+    ]
+  }
+  {% endschema %}
+  

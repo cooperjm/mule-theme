@@ -1,0 +1,70 @@
+{
+  "sections": {
+    "aa98b42b-8971-4cc6-96f7-a1b3fb3706d4": {
+      "type": "pxs-image-with-text-overlay",
+      "disabled": true,
+      "settings": {
+        "section_height": "small",
+        "image": "shopify:\/\/shop_images\/bg.png",
+        "title": "Exclusive 2024 Offer! ",
+        "text": "<p><strong>Claim Your Free Gift with the Purchase of a Garage Fan or 5-in-1 Mobile Workshop<\/strong><\/p>",
+        "content_position": "center-center",
+        "color": "#ffffff",
+        "overlay_background": "#000000",
+        "overlay_opacity": 50,
+        "link": "shopify:\/\/pages\/deals",
+        "button_text": "View Deals"
+      }
+    },
+    "main": {
+      "type": "static-collection",
+      "blocks": {
+        "filter-1": {
+          "type": "filter",
+          "settings": {
+            "filter_option": "faceted",
+            "filter_groups": "expand_first",
+            "show_filter_product_count": true,
+            "filter_style": "tags",
+            "filter_limit": "999",
+            "grid_categories": "",
+            "custom_ordered_categories": "",
+            "custom_ordered_tags": "",
+            "excluded_tags": "",
+            "excluded_groups": ""
+          }
+        }
+      },
+      "block_order": [
+        "filter-1"
+      ],
+      "custom_css": [
+        ".product-stock-level__badge-text,.productitem__badge--soldout {display: none;}",
+        "button:disabled {display: none;}"
+      ],
+      "settings": {
+        "show_collection_image": false,
+        "products_per_page_range": 24,
+        "products_per_row": "4",
+        "sort_by": true,
+        "grid_list": true,
+        "default_view": "grid-view",
+        "enable_subcollection": false,
+        "show_product_count": false,
+        "thumbnail_image": "product-image",
+        "image_crop": "original"
+      }
+    },
+    "static-recently-viewed": {
+      "type": "static-recently-viewed",
+      "settings": {
+        "enable_recently_viewed_products": true
+      }
+    }
+  },
+  "order": [
+    "aa98b42b-8971-4cc6-96f7-a1b3fb3706d4",
+    "main",
+    "static-recently-viewed"
+  ]
+}

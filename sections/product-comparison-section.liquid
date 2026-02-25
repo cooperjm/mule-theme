@@ -1,0 +1,128 @@
+{{ 'product-comparison-section.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-comparison-section.js' | asset_url }}" defer></script>
+<div class="product-comparison-section">
+    <div class="title-content"> 
+        <h2>{{ section.settings.title }}</h2>
+        <p>{{ section.settings.subtitle }}</p>
+    </div>
+    <div class="product-comparison-tabs">
+        {% for block in section.blocks %}
+            <div class="product-comparison-tab{% if forloop.first %} active{% endif %}">
+                {{ block.settings.title }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="product-comparison-block">
+        {% for block in section.blocks %}
+            <div class="product-comparison-item{% if forloop.first %} active{% endif %}">
+                <div class="product-comparison-image">
+                    {{ block.settings.main_image | image_url: width: 500 | image_tag: alt: "Product Comparison Image", loading: 'lazy'}}
+                </div>
+                <h2 class="product-comparison-title">
+                    {{ block.settings.title }}
+                </h2>
+                <p class="product-comparison-label">GREAT FOR:</p>
+                <p class="product-comparison-subtitle">
+                    {{ block.settings.subtitle }}
+                </p>
+                <div class="product-comparison-description">
+                    {{ block.settings.description }}
+                </div>
+
+                {% if block.settings.button_text and block.settings.button_url %}
+                    <div class="product-comparison-button">
+                        <a class="cta-button" href="{{ block.settings.button_url }}">{{ block.settings.button_text }}</a>
+                    </div>
+                {% endif %}
+
+                <div class="product-comparison-bottom-images">
+                    <div class="product-comparison-bottom-image">
+                        {{ block.settings.bottom_image_1 | image_url: width: 300 | image_tag: alt: "Product Comparison Bottom Image", loading: 'lazy'}}
+                    </div>
+                    <div class="product-comparison-bottom-image">
+                        {{ block.settings.bottom_image_2 | image_url: width: 300 | image_tag: alt: "Product Comparison Bottom Image", loading: 'lazy'}}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}  
+    </div>
+</div>
+
+{% schema %}
+    {
+      "name": "Product Comparison",
+      "limit": 1,
+      "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "NOT SURE WHICH FAN IS RIGHT FOR YOU?"
+        },
+        {
+          "id": "subtitle",
+          "type": "text",
+          "label": "Subtitle",
+          "default": "SEE THE BENEFITS OF WALL MOUNT AND CEILING MOUNT OPTIONS"
+        }
+      ],
+      "blocks": [
+        {
+            "name": "Comparison Product",
+            "type": "comparison_product",
+            "limit": 2,
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "main_image",
+                    "label": "Main Image"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title"
+                },
+                {
+                    "type": "text",
+                    "id": "subtitle",
+                    "label": "Subtitle"
+                },
+                {
+                    "type": "richtext",
+                    "id": "description",
+                    "label": "Description"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "bottom_image_1",
+                    "label": "First Bottom Image"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "bottom_image_2",
+                    "label": "Second Bottom Image"
+                },
+                {
+                    "type": "text",
+                    "id": "button_text",
+                    "label": "Button Text"
+                },
+                {
+                    "type": "url",
+                    "id": "button_url",
+                    "label": "Button Url"
+                }
+            ]
+        }
+      ],
+      "presets": [
+        {
+          "name": "Product Comparison",
+          "category": "Custom"
+        }
+      ]
+    }
+{% endschema %}
+    
+    

@@ -1,0 +1,167 @@
+{{ 'product-comparison-table-section.css' | asset_url | stylesheet_tag }}
+<div class="product-comparison-table-section" id="product-comparison-table-section">
+    <div class="product-comparison-table-container">
+        <div class="title-content"> 
+            <h2>{{ section.settings.title }}</h2>
+            <h3>{{ section.settings.subtitle }}</h3>
+        </div>
+        <div class="product-comparison-table">
+            <div class="comparison-table first-comparison-table">
+                <div class="comparison-table-info-container">
+                    <div class="comparison-table-info">
+                        <p class="table-info-name">{{ section.settings.first_comparison_title }}</p>
+                        <div class="table-info-description">{{ section.settings.first_comparison_description }}</div>
+                    </div>
+                </div>
+                <div class="comparison-table-rows">
+                    {% for block in section.blocks %}
+                        {% if block.settings.section == "first_section" %}
+                            {% render "comparison-table-row" block: block %}
+                        {% endif %}
+                    {% endfor %} 
+                </div>
+            </div> 
+            <div class="comparison-table second-comparison-table">
+                <div class="comparison-table-info-container">
+                    <div class="comparison-table-info">
+                        <p class="table-info-name">{{ section.settings.second_comparison_title }}</p>
+                        <div class="table-info-description">{{ section.settings.second_comparison_description }}</div>
+                    </div>
+                </div>
+                <div class="comparison-table-rows">
+                    {% for block in section.blocks %}
+                        {% if block.settings.section == "second_section" %}
+                            {% render "comparison-table-row" block: block %}
+                        {% endif %}
+                    {% endfor %} 
+                </div>
+            </div> 
+        </div>
+        <div class="product-comparison-images">
+            {% for block in section.blocks %}
+                {% if block.type == 'bottom_image' %}
+                    <div class="product-comparison-image">
+                        {{ block.settings.image | image_url: width: 500 | image_tag: alt: "Bottom Image", loading: 'lazy'}}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% schema %}
+    {
+      "name": "Product Comparison Table",
+      "limit": 1,
+      "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "NOT SURE WHICH FAN IS RIGHT FOT YOU?"
+        },
+        {
+          "id": "subtitle",
+          "type": "text",
+          "label": "Subtitle",
+          "default": "SEE THE BENEFITS OF WALL MOUNT AND CEILING MOUNT OPTIONS"
+        },
+        {
+          "id": "first_comparison_title",
+          "type": "text",
+          "label": "First Comparison Title"
+        },
+        {
+          "id": "first_comparison_description",
+          "type": "richtext",
+          "label": "First Comparison Description"
+        },
+        {
+          "id": "second_comparison_title",
+          "type": "text",
+          "label": "Second Comparison Title"
+        },
+        {
+          "id": "second_comparison_description",
+          "type": "richtext",
+          "label": "Second Comparison Description"
+        }
+      ],
+      "blocks": [
+        {
+            "name": "Comparison Product",
+            "type": "comparison_product",
+            "limit": 4,
+            "settings": [
+                {
+                    "type": "product",
+                    "id": "product",
+                    "label": "Product"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "custom_image",
+                    "label": "Custom Image"
+                },
+                {
+                    "type": "text",
+                    "id": "custom_description",
+                    "label": "Custom Description"
+                },
+                {
+                    "type": "text",
+                    "id": "custom_title",
+                    "label": "Custom Title"
+                },
+                {
+                    "type": "text",
+                    "id": "btn_text",
+                    "label": "Button Text"
+                },
+                {
+                    "type": "url",
+                    "id": "btn_url",
+                    "label": "Button Url"
+                },
+                {
+                    "type": "select",
+                    "id": "section",
+                    "label": "Select Section",
+                    "options": [
+                        {
+                        "value": "first_section",
+                        "label": "First Section"
+                        },
+                        {
+                        "value": "second_section",
+                        "label": "Second Section"
+                        }
+                    ],
+                    "default": "first_section"
+                }
+            ]
+        },
+        {
+            "name": "Bottom Image",
+            "type": "bottom_image",
+            "limit": 4,
+            "settings": [
+                
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Bottom Image"
+                }
+            ]
+        }
+      ],
+      "presets": [
+        {
+          "name": "Product Comparison Table",
+          "category": "Custom"
+        }
+      ]
+    }
+{% endschema %}
+    
+    

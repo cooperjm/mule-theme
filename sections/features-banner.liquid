@@ -1,0 +1,199 @@
+{{ 'features-banner.css' | asset_url | stylesheet_tag }}
+
+<section id="features-banner">
+  <div class="section-container">
+    <h2>{{ section.settings.banner_heading }}</h2>
+    <div class="feature-main">
+      <div class="feature-main-image" style="background-image: url({{ section.settings.main_image | img_url: 'master' }});">
+        <div class="feature-main-content">
+          <h3>{{ section.settings.main_title }}</h3>
+          <p>{{ section.settings.main_description }}</p>
+          <a href="{{ section.settings.main_button_link }}" class="cta cta-primary">{{ section.settings.main_button_text }}</a>
+        </div>
+      </div>
+      <div class="feature-side-images">
+        <div class="feature-side-image" style="background-image: url({{ section.settings.side_image1 | img_url: 'master' }});">
+          <span>{{ section.settings.side_image1_text }}</span>
+        </div>
+        <div class="feature-side-image" style="background-image: url({{ section.settings.side_image2 | img_url: 'master' }});">
+          <span>{{ section.settings.side_image2_text }}</span>
+        </div>
+        <div class="feature-side-image" style="background-image: url({{ section.settings.side_image3 | img_url: 'master' }});">
+          <span>{{ section.settings.side_image3_text }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="feature-icons">
+      <h3>{{ section.settings.icon_heading }}</h3>
+      <div class="icon-container">
+        <div class="feature-icon">
+          <img src="{{ section.settings.icon1_image | img_url: 'small' }}" alt="{{ section.settings.icon1_alt }}">
+          <span>{{ section.settings.icon1_text }}</span>
+        </div>
+        <div class="feature-icon">
+          <img src="{{ section.settings.icon2_image | img_url: 'small' }}" alt="{{ section.settings.icon2_alt }}">
+          <span>{{ section.settings.icon2_text }}</span>
+        </div>
+        <div class="feature-icon">
+          <img src="{{ section.settings.icon3_image | img_url: 'small' }}" alt="{{ section.settings.icon3_alt }}">
+          <span>{{ section.settings.icon3_text }}</span>
+        </div>
+        <div class="feature-icon">
+          <img src="{{ section.settings.icon4_image | img_url: 'small' }}" alt="{{ section.settings.icon4_alt }}">
+          <span>{{ section.settings.icon4_text }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Features Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "banner_heading",
+      "label": "Banner Heading",
+      "default": "Professional Grade Solutions Tailored to Every User"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main Image"
+    },
+    {
+      "type": "text",
+      "id": "main_title",
+      "label": "Main Title",
+      "default": "Garage Lovers"
+    },
+    {
+      "type": "textarea",
+      "id": "main_description",
+      "label": "Main Description",
+      "default": "Is your garage your castle? Whether you are working on your car, woodworking or any other project, enjoy a cool breeze."
+    },
+    {
+      "type": "text",
+      "id": "main_button_text",
+      "label": "Main Button Text",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "main_button_link",
+      "label": "Main Button Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "side_image1",
+      "label": "Side Image 1"
+    },
+    {
+      "type": "text",
+      "id": "side_image1_text",
+      "label": "Side Image 1 Text",
+      "default": "Use It at Home"
+    },
+    {
+      "type": "image_picker",
+      "id": "side_image2",
+      "label": "Side Image 2"
+    },
+    {
+      "type": "text",
+      "id": "side_image2_text",
+      "label": "Side Image 2 Text",
+      "default": "Use on the Go"
+    },
+    {
+      "type": "image_picker",
+      "id": "side_image3",
+      "label": "Side Image 3"
+    },
+    {
+      "type": "text",
+      "id": "side_image3_text",
+      "label": "Side Image 3 Text",
+      "default": "Tons of Accessories"
+    },
+    {
+      "type": "text",
+      "id": "icon_heading",
+      "label": "Icon Heading",
+      "default": "Keep It Cool:"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon1_image",
+      "label": "Icon 1 Image"
+    },
+    {
+      "type": "text",
+      "id": "icon1_text",
+      "label": "Icon 1 Text",
+      "default": "At the Workshop"
+    },
+    {
+      "type": "text",
+      "id": "icon1_alt",
+      "label": "Icon 1 Alt Text"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon2_image",
+      "label": "Icon 2 Image"
+    },
+    {
+      "type": "text",
+      "id": "icon2_text",
+      "label": "Icon 2 Text",
+      "default": "At the Gym"
+    },
+    {
+      "type": "text",
+      "id": "icon2_alt",
+      "label": "Icon 2 Alt Text"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon3_image",
+      "label": "Icon 3 Image"
+    },
+    {
+      "type": "text",
+      "id": "icon3_text",
+      "label": "Icon 3 Text",
+      "default": "At the Barn"
+    },
+    {
+      "type": "text",
+      "id": "icon3_alt",
+      "label": "Icon 3 Alt Text"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon4_image",
+      "label": "Icon 4 Image"
+    },
+    {
+      "type": "text",
+      "id": "icon4_text",
+      "label": "Icon 4 Text",
+      "default": "Anywhere"
+    },
+    {
+      "type": "text",
+      "id": "icon4_alt",
+      "label": "Icon 4 Alt Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Features Banner",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

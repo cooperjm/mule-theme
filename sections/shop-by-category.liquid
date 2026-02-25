@@ -1,0 +1,77 @@
+{{ 'shop-by-category.css' | asset_url | stylesheet_tag }}
+
+<section id="shop_by_category">
+  <div class="section-container">
+    <h2>{{ section.settings.section_heading }}</h2>
+    <div class="categories">
+      {% for block in section.blocks %}
+        <div class="category">
+          <a href="{{ block.settings.collection.url }}">
+            <img src="{{ block.settings.collection_image | image_url }}" alt="Category Image" class="category-image">
+            <img src="{{ block.settings.hover_image | image_url }}" alt="Category Image" class="category-image-hover">
+            <h3>{{ block.settings.category_heading }}</h3>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+    <a href="{{ section.settings.section_button_url }}" class="cta cta-tertiary">{{ section.settings.section_button_text }}</a>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Shop by Category",
+    "class": "shop-by-category--section",
+    "max_blocks": 4,
+    "settings": [
+      {
+        "type": "text",
+        "id": "section_heading",
+        "label": "Insert Section Heading"
+      },
+      {
+        "type": "text",
+        "id": "section_button_text",
+        "label": "Insert Button Text"
+      },
+      {
+        "type": "url",
+        "id": "section_button_url",
+        "label": "Insert Button URL"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "Category",
+        "name": "Category",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "collection_image",
+            "label": "Insert Collection Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "hover_image",
+            "label": "Insert Hover Image"
+          },
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Select Collection"
+          },
+          {
+            "type": "text",
+            "id": "category_heading",
+            "label": "Insert Category Heading"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Shop By Category"
+      }
+    ]
+  }
+{% endschema %}

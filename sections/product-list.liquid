@@ -1,0 +1,51 @@
+{{ 'product-list-section.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-list-section.js' | asset_url }}" defer></script>
+
+{% if section.settings.featured_collection != blank %}
+    {% assign featured_collection = section.settings.featured_collection %}
+{% else %}
+    {% assign featured_collection = collection %}
+{% endif %}
+
+<div class="product-list-section" id="product-list-section">
+    <div class="page-width">
+        {% if featured_collection.products.size > 0 %}
+            <ul
+            class="
+                productgrid--items
+                products-per-row-4
+            "
+            data-html="productgrid-items"
+            data-productgrid-items
+            >
+            {% for product in featured_collection.products %}
+                {%
+                render 'product-grid-item',
+                product: product
+                %}
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+{% schema %}
+    {
+      "name": "Product List Section",
+      "limit": 1,
+      "settings": [
+        {
+            "type": "collection",
+            "id": "featured_collection",
+            "label": "Collection"
+        }
+      ],
+      "presets": [
+        {
+          "name": "Product List Section",
+          "category": "Custom"
+        }
+      ]
+    }
+{% endschema %}
+    
+    

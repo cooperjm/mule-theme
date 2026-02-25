@@ -1,0 +1,57 @@
+{{ 'seen-on.css' | asset_url | stylesheet_tag }}
+
+<section id="seen-on">
+  <div class="section-container">
+    <p>As Seen On:</p>
+    <div class="logos">
+      {% for block in section.blocks %}
+        <div class="logo-img" style="width: {{ block.settings.media_logo_width }}px;">
+          <img src="{{ block.settings.media_logo | image_url }}" alt="Media Logo">
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "As Seen On",
+    "class": "seen-on--section",
+    "max_blocks": 6,
+    "settings": [
+      {
+        "type": "text",
+        "id": "section_heading",
+        "label": "Insert Section Heading"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Logo",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "media_logo",
+            "label": "Insert Media logo 1 Image"
+          },
+          {
+            "type": "text",
+            "id": "logo_alt_text",
+            "label": "Insert Logo Alt Text"
+          },
+          {
+            "type": "number",
+            "id": "media_logo_width",
+            "label": "Insert Media Width in px"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "As Seen On"
+      }
+    ]
+  }
+{% endschema %}

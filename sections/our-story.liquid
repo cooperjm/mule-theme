@@ -1,0 +1,131 @@
+{{ 'our-story.css' | asset_url | stylesheet_tag }}
+
+<section id="our-story">
+  <div class="section-container">
+    <div class="content-wrapper">
+      <div class="image-container">
+        <img class="desktop-image" src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image_alt }}">
+        <img class="mobile-image" src="{{ section.settings.image_mobile | img_url: 'master' }}" alt="{{ section.settings.image_alt }}">
+      </div>
+      <div class="text-container">
+        <h2>{{ section.settings.heading }}</h2>
+        <div class="story-description">
+          {{ section.settings.description }}
+        </div>
+        <ul class="features-list">
+          <li>{{ section.settings.feature_1 }}</li>
+          <li>{{ section.settings.feature_2 }}</li>
+          <li>{{ section.settings.feature_3 }}</li>
+          <li>{{ section.settings.feature_4 }}</li>
+          <li>{{ section.settings.feature_5 }}</li>
+        </ul>
+        <div class="story-additional-description">
+          {{ section.settings.additional_description }}
+        </div>
+        <a href="{{ section.settings.button_link }}" class="cta cta-tertiary">{{ section.settings.button_text }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+#our-story .text-container .features-list li {
+  background: url('{{ "checkmark-icon.svg" | asset_url }}') no-repeat left center;
+}
+</style>
+
+
+
+{% schema %}
+{
+  "name": "Our Story",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Background Image Mobile"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image Alt Text"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Story"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>How do we get these separate bulky items to the project area without making multiple trips?</p>"
+    },
+    {
+      "type": "text",
+      "id": "feature_1",
+      "label": "Feature 1",
+      "default": "Plug in power tools"
+    },
+    {
+      "type": "text",
+      "id": "feature_2",
+      "label": "Feature 2",
+      "default": "Charge phones"
+    },
+    {
+      "type": "text",
+      "id": "feature_3",
+      "label": "Feature 3",
+      "default": "Keep cool"
+    },
+    {
+      "type": "text",
+      "id": "feature_4",
+      "label": "Feature 4",
+      "default": "Provide enough light"
+    },
+    {
+      "type": "text",
+      "id": "feature_5",
+      "label": "Feature 5",
+      "default": "Safely transport everything"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Thus the MULE Mobile Workshop was born!"
+    },
+    {
+      "type": "richtext",
+      "id": "additional_description",
+      "label": "Additional Description",
+      "default": "<p>At MULE, we aim to develop solutions for both everyday do-it-yourselfers and the pros.</p>"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Learn More About Mule Products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our Story",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

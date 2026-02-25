@@ -1,0 +1,235 @@
+#mobile-workshop-gallery {
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 150px 20px 236px;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  background-position: top;
+  align-items: center;
+  background-color: #f4f4f4;
+}
+
+@media (max-width: 768px) {
+  #mobile-workshop-gallery {
+    margin-bottom: 0px;
+  }
+}
+
+.mobile-workshop-gallery-container {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+#mobile-workshop-gallery .mobile-workshop-gallery-row {
+  max-width: 1447px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#mobile-workshop-gallery .mobile-workshop-gallery-image.width40 {
+  width: 40%;
+}
+
+#mobile-workshop-gallery .mobile-workshop-gallery-image.width30,
+#mobile-workshop-gallery .mobile-workshop-gallery-text.width30 {
+  width: 30%;
+}
+
+#mobile-workshop-gallery .mobile-workshop-gallery-image.width50 {
+  width: 50%;
+}
+
+#mobile-workshop-gallery .mobile-workshop-gallery-image img {
+  width: 100%;
+}
+
+#mobile-workshop-gallery .mobile-workshop-gallery-text p{
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+#mobile-workshop-gallery .mobile-workshop-gallery-text p img {
+  margin-top: 3px;
+  width: 18px;
+}
+
+#mobile-workshop-gallery iframe {
+  height: 100%;
+  width: 100%;
+}
+
+#mobile-workshop-gallery .mobile-workshop-gallery-text-element {
+  display: flex;
+  align-items: flex-start;
+  column-gap: 25px;
+}
+
+#mobile-workshop-gallery .mobile-workshop-gallery-text-element img {
+  width: 21px;
+  margin-top: 5px;
+}
+
+#mobile-workshop-gallery .mobile-workshop-gallery-text-element span {
+  width: calc(100% - 35px);
+  font-size: 18px;
+  line-height: 25px;
+  max-width: 295px;
+}
+
+#mobile-workshop-gallery .mobile-workshop-gallery-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  row-gap: 10px;
+  padding-left: 45px;
+}
+
+@media (max-width: 1345px) {
+  #mobile-workshop-gallery .mobile-workshop-gallery-text-element span {
+    font-size: 17px;
+    max-width: unset;
+  }
+  #mobile-workshop-gallery .mobile-workshop-gallery-text-element img {
+    width: 30px;
+  }
+
+  #mobile-workshop-gallery .mobile-workshop-gallery-text {
+    padding-left: 0px;
+  }
+}
+
+@media (max-width: 1200px) {
+  #mobile-workshop-gallery .mobile-workshop-gallery-text-element span {
+    font-size: 15px;
+  }
+  #mobile-workshop-gallery .mobile-workshop-gallery-text-element img {
+    width: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  #mobile-workshop-gallery iframe {
+    height: 60vw;
+  }
+
+  #mobile-workshop-gallery .mobile-workshop-gallery-text-element span {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 1024px) {
+  #mobile-workshop-gallery .mobile-workshop-gallery-image.width28mobile {
+      width: 28%;
+  }
+  #mobile-workshop-gallery .mobile-workshop-gallery-image.width21mobile {
+      width: 21%;
+  }
+  #mobile-workshop-gallery .mobile-workshop-gallery-text.width51mobile {
+      width: 51%;
+  }
+}
+
+@media (max-width: 999px) {
+  #mobile-workshop-gallery .mobile-workshop-gallery-image.width40,
+  #mobile-workshop-gallery .mobile-workshop-gallery-image.width50:first-child {
+      display: none;
+  }
+  #mobile-workshop-gallery .mobile-workshop-gallery-image.width30,
+  #mobile-workshop-gallery .mobile-workshop-gallery-text {
+      width: 50%;
+  }
+  #mobile-workshop-gallery .mobile-workshop-gallery-image.width50 {
+      width: 100%;
+  }
+  #mobile-workshop-gallery {
+      padding: 150px 20px 0px;
+  }
+}
+
+@media (max-width: 580px) {
+  #mobile-workshop-gallery {
+      padding: 0px;
+      background-image: none !important;
+  }
+
+  #mobile-workshop-gallery .mobile-workshop-gallery-image.width30,
+  #mobile-workshop-gallery .mobile-workshop-gallery-text.width30 {
+      width: 100%;
+      row-gap: 20px;
+  }
+
+  #mobile-workshop-gallery .mobile-workshop-gallery-text p {
+      font-size: 16px;
+  }
+
+  #mobile-workshop-gallery .mobile-workshop-gallery-row {
+    flex-direction: column;
+  }
+
+  #mobile-workshop-gallery .mobile-workshop-gallery-text   {
+    padding: 0 20px;
+  }
+}
+
+/* Mobile Workshop Trust */
+
+#mobile-workshop-trust {
+  position: relative;
+  padding: 0px 20px 95px;
+  display: flex;
+  gap: 40px;
+  flex-direction: column;
+  margin-top: -75px;
+}
+
+#mobile-workshop-trust .mobile-workshop-trust-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  align-items: center;
+  width: 100%;
+}
+
+#mobile-workshop-trust h2{
+  color: #181818;
+  text-align: center;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin: 0px;
+}
+
+#mobile-workshop-trust .mobile-workshop-trust-container-mobile {
+  display: none;
+}
+
+@media (max-width: 910px) {
+  #mobile-workshop-trust .mobile-workshop-trust-container {
+      display: none;
+  }
+  #mobile-workshop-trust .mobile-workshop-trust-container-mobile {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+  }
+  .mobile-workshop-trust-container-mobile img {
+      max-width: 165px;
+  }
+  #mobile-workshop-trust {
+      position: relative;
+      padding: 40px 20px 40px;
+      margin-top: 0px;
+  }
+}
