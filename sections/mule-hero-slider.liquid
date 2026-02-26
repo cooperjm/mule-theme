@@ -111,6 +111,7 @@
     object-fit: var(--mhs-bg-fit, cover);
     object-position: var(--mhs-bg-pos, center);
     transition: transform 8s ease-out;
+    z-index: 1;
   }
 
   /* Ken Burns Effect */
@@ -466,21 +467,29 @@
         -%}
 
         {%- if block.settings.background_image != blank -%}
+          {%- liquid
+            assign desktop_class = 'mhs__bg-item mhs__bg-desktop' | append: ken_burns
+            assign desktop_style = '--mhs-bg-pos: ' | append: block.settings.image_position | append: '; --mhs-bg-fit: ' | append: block.settings.image_fit | append: ';'
+          -%}
           {{ block.settings.background_image | image_url: width: 3000 | image_tag:
             loading: 'lazy',
             fetchpriority: fetch_priority,
             widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000',
-            class: 'mhs__bg-item mhs__bg-desktop' | append: ken_burns,
-            style: '--mhs-bg-pos: ' | append: block.settings.image_position | append: '; --mhs-bg-fit: ' | append: block.settings.image_fit | append: ';'
+            class: desktop_class,
+            style: desktop_style
           }}
         {%- endif -%}
 
         {%- if has_mobile -%}
+          {%- liquid
+            assign mobile_class = 'mhs__bg-item mhs__bg-mobile' | append: ken_burns
+            assign mobile_style = '--mhs-bg-pos: ' | append: block.settings.image_position | append: '; --mhs-bg-fit: ' | append: block.settings.image_fit | append: ';'
+          -%}
           {{ block.settings.mobile_background_image | image_url: width: 1500 | image_tag:
             loading: 'lazy',
             widths: '375, 550, 750, 1100, 1500',
-            class: 'mhs__bg-item mhs__bg-mobile' | append: ken_burns,
-            style: '--mhs-bg-pos: ' | append: block.settings.image_position | append: '; --mhs-bg-fit: ' | append: block.settings.image_fit | append: ';'
+            class: mobile_class,
+            style: mobile_style
           }}
         {%- endif -%}
 
