@@ -36,6 +36,14 @@
 %}
 
 <style>
+  :root {
+    --mhs-desktop-h: {{ desktop_h }};
+    --mhs-mobile-h: {{ mobile_h }};
+    --mhs-transition-speed: 0.55s;
+    --mhs-fade-speed: 0.6s;
+    --mhs-overlay-color: #000;
+  }
+
   #shopify-section-{{ section.id }} {
     padding-top: {{ section.settings.section_padding_top }}px;
     padding-bottom: {{ section.settings.section_padding_bottom }}px;
@@ -45,12 +53,13 @@
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: {{ desktop_h }};
+    height: var(--mhs-desktop-h);
+    background: #111;
   }
 
   @media screen and (max-width: 749px) {
     #shopify-section-{{ section.id }} .mhs {
-      height: {{ mobile_h }};
+      height: var(--mhs-mobile-h);
     }
   }
 
@@ -59,7 +68,7 @@
     display: flex;
     width: 100%;
     height: 100%;
-    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform var(--mhs-transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
   }
 
@@ -82,35 +91,42 @@
     position: absolute;
     inset: 0;
     opacity: 0;
-    transition: opacity 0.6s ease;
+    transition: opacity var(--mhs-fade-speed) ease;
     pointer-events: none;
+    z-index: 1;
   }
 
   #shopify-section-{{ section.id }} .mhs__track--fade .mhs__slide.is-active {
     opacity: 1;
     pointer-events: auto;
-  }
-
-  #shopify-section-{{ section.id }} .mhs__track:not(.mhs__track--fade) .mhs__slide.is-active {
-    /* slide mode — active class is visual only, track transform handles position */
+    z-index: 2;
   }
 
   /* ── Background image ────────────────────────────────── */
-  #shopify-section-{{ section.id }} .mhs__bg {
+  #shopify-section-{{ section.id }} .mhs__bg-item {
     position: absolute;
     inset: 0;
-    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    object-fit: var(--mhs-bg-fit, cover);
+    object-position: var(--mhs-bg-pos, center);
+    transition: transform 8s ease-out;
   }
 
-  #shopify-section-{{ section.id }} .mhs__bg--mobile {
+  /* Ken Burns Effect */
+  #shopify-section-{{ section.id }} .mhs__slide.is-active .mhs__bg-item--ken-burns {
+    transform: scale(1.15) translateZ(0);
+  }
+
+  #shopify-section-{{ section.id }} .mhs__bg-mobile {
     display: none;
   }
 
   @media screen and (max-width: 749px) {
-    #shopify-section-{{ section.id }} .mhs__slide--has-mobile-img .mhs__bg--desktop {
+    #shopify-section-{{ section.id }} .mhs__slide--has-mobile-img .mhs__bg-desktop {
       display: none;
     }
-    #shopify-section-{{ section.id }} .mhs__bg--mobile {
+    #shopify-section-{{ section.id }} .mhs__bg-mobile {
       display: block;
     }
   }
@@ -120,23 +136,32 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
+    z-index: 2;
   }
 
   #shopify-section-{{ section.id }} .mhs__overlay--gradient-bottom {
-    background: linear-gradient(to top, var(--mhs-overlay-color) 0%, transparent 65%) !important;
+    background: linear-gradient(to top, var(--mhs-overlay-color) 0%, transparent 75%) !important;
     opacity: 1 !important;
   }
   #shopify-section-{{ section.id }} .mhs__overlay--gradient-top {
-    background: linear-gradient(to bottom, var(--mhs-overlay-color) 0%, transparent 65%) !important;
+    background: linear-gradient(to bottom, var(--mhs-overlay-color) 0%, transparent 75%) !important;
     opacity: 1 !important;
   }
   #shopify-section-{{ section.id }} .mhs__overlay--gradient-left {
-    background: linear-gradient(to right, var(--mhs-overlay-color) 0%, transparent 65%) !important;
+    background: linear-gradient(to right, var(--mhs-overlay-color) 0%, transparent 75%) !important;
     opacity: 1 !important;
   }
   #shopify-section-{{ section.id }} .mhs__overlay--gradient-right {
-    background: linear-gradient(to left, var(--mhs-overlay-color) 0%, transparent 65%) !important;
+    background: linear-gradient(to left, var(--mhs-overlay-color) 0%, transparent 75%) !important;
     opacity: 1 !important;
+  }
+
+  /* Whole slide link */
+  #shopify-section-{{ section.id }} .mhs__slide-link {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    background: transparent;
   }
 
   /* ── Content wrapper ─────────────────────────────────── */
@@ -145,7 +170,7 @@
     inset: 0;
     display: flex;
     padding: {{ section.settings.content_padding }}px;
-    z-index: 2;
+    z-index: 3;
   }
 
   @media screen and (max-width: 749px) {
@@ -167,6 +192,25 @@
   #shopify-section-{{ section.id }} .mhs__content-inner {
     width: 100%;
     max-width: {{ section.settings.content_max_width }}px;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  #shopify-section-{{ section.id }} .mhs__slide.is-active .mhs__content-inner {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Glassmorphism */
+  #shopify-section-{{ section.id }} .mhs__content-inner--glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   }
 
   /* Text alignment */
@@ -409,18 +453,35 @@
         {{ block.shopify_attributes }}
       >
 
+        {%- liquid
+          assign fetch_priority = 'auto'
+          if forloop.first
+            assign fetch_priority = 'high'
+          endif
+
+          assign ken_burns = ''
+          if block.settings.enable_ken_burns
+            assign ken_burns = ' mhs__bg-item--ken-burns'
+          endif
+        -%}
+
         {%- if block.settings.background_image != blank -%}
-          <div
-            class="mhs__bg mhs__bg--desktop"
-            style="background-image: url('{{ block.settings.background_image | image_url: width: 2000 }}'); background-position: {{ block.settings.image_position }}; background-size: {{ block.settings.image_fit }};"
-          ></div>
+          {{ block.settings.background_image | image_url: width: 3000 | image_tag:
+            loading: 'lazy',
+            fetchpriority: fetch_priority,
+            widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000',
+            class: 'mhs__bg-item mhs__bg-desktop' | append: ken_burns,
+            style: '--mhs-bg-pos: ' | append: block.settings.image_position | append: '; --mhs-bg-fit: ' | append: block.settings.image_fit | append: ';'
+          }}
         {%- endif -%}
 
         {%- if has_mobile -%}
-          <div
-            class="mhs__bg mhs__bg--mobile"
-            style="background-image: url('{{ block.settings.mobile_background_image | image_url: width: 900 }}'); background-position: {{ block.settings.image_position }}; background-size: {{ block.settings.image_fit }};"
-          ></div>
+          {{ block.settings.mobile_background_image | image_url: width: 1500 | image_tag:
+            loading: 'lazy',
+            widths: '375, 550, 750, 1100, 1500',
+            class: 'mhs__bg-item mhs__bg-mobile' | append: ken_burns,
+            style: '--mhs-bg-pos: ' | append: block.settings.image_position | append: '; --mhs-bg-fit: ' | append: block.settings.image_fit | append: ';'
+          }}
         {%- endif -%}
 
         {%- if block.settings.overlay_opacity > 0 and block.settings.overlay_color != 'rgba(0,0,0,0)' -%}
@@ -438,7 +499,7 @@
           class="mhs__content {{ hc }} {{ vc }} {{ tac }}"
           style="color: {{ block.settings.text_color }};"
         >
-          <div class="mhs__content-inner">
+          <div class="mhs__content-inner{% if block.settings.enable_glassmorphism %} mhs__content-inner--glass{% endif %}">
 
             {%- if block.settings.eyebrow != blank -%}
               <p class="mhs__eyebrow">{{ block.settings.eyebrow | escape }}</p>
@@ -500,6 +561,10 @@
 
           </div>
         </div>
+
+        {%- if block.settings.whole_slide_link != blank -%}
+          <a href="{{ block.settings.whole_slide_link }}" class="mhs__slide-link" aria-label="Go to {{ block.settings.headline | default: 'slide' }}"></a>
+        {%- endif -%}
 
       </div>
     {%- endfor -%}
@@ -872,6 +937,13 @@
           "default": "#111111"
         },
         {
+          "id": "enable_ken_burns",
+          "type": "checkbox",
+          "label": "Enable Ken Burns effect",
+          "info": "Slowly zooms/pans the background image.",
+          "default": false
+        },
+        {
           "type": "header",
           "content": "Overlay"
         },
@@ -904,6 +976,17 @@
             { "value": "right",  "label": "Fade left from right" }
           ],
           "default": "none"
+        },
+        {
+          "type": "header",
+          "content": "Content architecture"
+        },
+        {
+          "id": "enable_glassmorphism",
+          "type": "checkbox",
+          "label": "Enable glassmorphism",
+          "info": "Applies a frosted glass effect to the content container.",
+          "default": false
         },
         {
           "type": "header",
@@ -972,6 +1055,12 @@
         {
           "type": "header",
           "content": "Button 1"
+        },
+        {
+          "id": "whole_slide_link",
+          "type": "url",
+          "label": "Whole slide link",
+          "info": "Making the entire slide clickable. Overrides button links if both are set."
         },
         {
           "id": "button_one_label",
