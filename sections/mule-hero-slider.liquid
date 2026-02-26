@@ -99,7 +99,6 @@
   #shopify-section-{{ section.id }} .mhs__bg {
     position: absolute;
     inset: 0;
-    background-size: cover;
     background-repeat: no-repeat;
   }
 
@@ -395,14 +394,14 @@
         {%- if block.settings.background_image != blank -%}
           <div
             class="mhs__bg mhs__bg--desktop"
-            style="background-image: url('{{ block.settings.background_image | image_url: width: 2000 }}'); background-position: {{ block.settings.image_position }};"
+            style="background-image: url('{{ block.settings.background_image | image_url: width: 2000 }}'); background-position: {{ block.settings.image_position }}; background-size: {{ block.settings.image_fit }};"
           ></div>
         {%- endif -%}
 
         {%- if has_mobile -%}
           <div
             class="mhs__bg mhs__bg--mobile"
-            style="background-image: url('{{ block.settings.mobile_background_image | image_url: width: 900 }}'); background-position: {{ block.settings.image_position }};"
+            style="background-image: url('{{ block.settings.mobile_background_image | image_url: width: 900 }}'); background-position: {{ block.settings.image_position }}; background-size: {{ block.settings.image_fit }};"
           ></div>
         {%- endif -%}
 
@@ -569,6 +568,7 @@
 
   function startAutoplay() {
     if (!isAutoplay) return;
+    clearInterval(timer);
     timer = setInterval(next, speed);
   }
 
@@ -833,6 +833,18 @@
             { "value": "center right",  "label": "Right" }
           ],
           "default": "center center"
+        },
+        {
+          "id": "image_fit",
+          "type": "select",
+          "label": "Image fit",
+          "options": [
+            { "value": "cover",   "label": "Cover (fill, may crop)" },
+            { "value": "contain", "label": "Contain (show full image)" },
+            { "value": "auto",    "label": "Auto (natural size)" },
+            { "value": "100% 100%", "label": "Stretch to fill" }
+          ],
+          "default": "cover"
         },
         {
           "id": "slide_background_color",
