@@ -1,12 +1,12 @@
-{%- comment -%} Mule Hero Slider — self-contained section with no theme JS dependencies {%- endcomment -%}
+{%- comment -%} Coops Slider — self-contained section with no theme JS dependencies {%- endcomment -%}
 
 {% liquid
-  assign autoplay        = section.settings.enable_autoplay
-  assign autoplay_speed  = section.settings.autoplay_speed
-  assign transition      = section.settings.transition
-  assign show_arrows     = section.settings.show_arrows
-  assign show_dots       = section.settings.show_dots
-  assign dot_style       = section.settings.dot_style
+  assign autoplay = section.settings.enable_autoplay
+  assign autoplay_speed = section.settings.autoplay_speed
+  assign transition = section.settings.transition
+  assign show_arrows = section.settings.show_arrows
+  assign show_dots = section.settings.show_dots
+  assign dot_style = section.settings.dot_style
 
   case section.settings.desktop_height
     when 'small'
@@ -72,33 +72,80 @@
     will-change: transform;
   }
 
-  /* ── Track (fade mode) ───────────────────────────────── */
-  #shopify-section-{{ section.id }} .mhs__track--fade {
+  /* ── Track (absolute modes) ───────────────────────────── */
+  #shopify-section-{{ section.id }} .mhs__track--absolute {
     display: block;
     position: relative;
   }
 
-  /* ── Slide ───────────────────────────────────────────── */
-  #shopify-section-{{ section.id }} .mhs__slide {
-    flex: 0 0 100%;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-  }
-
-  #shopify-section-{{ section.id }} .mhs__track--fade .mhs__slide {
+  #shopify-section-{{ section.id }} .mhs__track--absolute .mhs__slide {
     position: absolute;
     inset: 0;
-    opacity: 0;
-    transition: opacity var(--mhs-fade-speed) ease;
     pointer-events: none;
     z-index: 1;
   }
 
+  #shopify-section-{{ section.id }} .mhs__track--absolute .mhs__slide.is-leaving {
+    z-index: 2;
+  }
+
+  #shopify-section-{{ section.id }} .mhs__track--absolute .mhs__slide.is-active {
+    pointer-events: auto;
+    z-index: 3;
+  }
+
+  /* Fade */
+  #shopify-section-{{ section.id }} .mhs__track--fade .mhs__slide {
+    opacity: 0;
+    transition: opacity var(--mhs-fade-speed) ease;
+  }
+  #shopify-section-{{ section.id }} .mhs__track--fade .mhs__slide.is-leaving {
+    opacity: 0;
+  }
   #shopify-section-{{ section.id }} .mhs__track--fade .mhs__slide.is-active {
     opacity: 1;
-    pointer-events: auto;
+  }
+
+  /* Scale */
+  #shopify-section-{{ section.id }} .mhs__track--scale .mhs__slide {
+    opacity: 0;
+    transform: scale(1.05);
+    transition: opacity var(--mhs-fade-speed) ease, transform var(--mhs-fade-speed) ease;
+  }
+  #shopify-section-{{ section.id }} .mhs__track--scale .mhs__slide.is-leaving {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  #shopify-section-{{ section.id }} .mhs__track--scale .mhs__slide.is-active {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Reveal */
+  #shopify-section-{{ section.id }} .mhs__track--reveal .mhs__slide {
+    transform: translateX(100%);
+    transition: transform var(--mhs-transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #shopify-section-{{ section.id }} .mhs__track--reveal .mhs__slide.is-leaving {
+    transform: translateX(0);
+    z-index: 1;
+  }
+  #shopify-section-{{ section.id }} .mhs__track--reveal .mhs__slide.is-active {
+    transform: translateX(0);
+    z-index: 2;
+  }
+
+  /* Parallax */
+  #shopify-section-{{ section.id }} .mhs__track--parallax .mhs__slide {
+    transform: translateX(100%);
+    transition: transform var(--mhs-transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #shopify-section-{{ section.id }} .mhs__track--parallax .mhs__slide.is-leaving {
+    transform: translateX(-30%);
+    z-index: 1;
+  }
+  #shopify-section-{{ section.id }} .mhs__track--parallax .mhs__slide.is-active {
+    transform: translateX(0);
     z-index: 2;
   }
 
@@ -192,7 +239,6 @@
 
   #shopify-section-{{ section.id }} .mhs__content-inner {
     width: 100%;
-    max-width: {{ section.settings.content_max_width }}px;
   }
 
   /* ── Content Animations ──────────────────────────────── */
@@ -234,8 +280,8 @@
     transform: none;
   }
 
-  /* Glassmorphism */
-  #shopify-section-{{ section.id }} .mhs__content-inner--glass {
+  /* Content Background Styles */
+  #shopify-section-{{ section.id }} .mhs__content-inner--bg-glassmorphism {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -244,6 +290,24 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   }
+
+  #shopify-section-{{ section.id }} .mhs__content-inner--bg-solid {
+    background: var(--mhs-bg-solid, rgba(0,0,0,0.5));
+    padding: 40px;
+    border-radius: 12px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .mhs__content-inner--bg-glassmorphism,
+    #shopify-section-{{ section.id }} .mhs__content-inner--bg-solid {
+      padding: 32px 24px;
+    }
+  }
+
+  /* Text Shadows */
+  #shopify-section-{{ section.id }} .mhs__shadow-soft { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+  #shopify-section-{{ section.id }} .mhs__shadow-medium { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); }
+  #shopify-section-{{ section.id }} .mhs__shadow-strong { filter: drop-shadow(0 6px 16px rgba(0,0,0,0.85)); }
 
   /* Text alignment */
   #shopify-section-{{ section.id }} .mhs__content--ta-left  .mhs__content-inner { text-align: left; }
@@ -261,6 +325,17 @@
     margin: 0 0 14px;
     opacity: 0.75;
     font-weight: 600;
+  }
+
+  #shopify-section-{{ section.id }} .mhs__eyebrow--badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: var(--badge-bg, #fff);
+    color: var(--badge-color, #000);
+    opacity: 1;
+    margin: 0 0 18px;
   }
 
   #shopify-section-{{ section.id }} .mhs__headline {
@@ -421,9 +496,7 @@
   aria-label="Hero slideshow"
   aria-roledescription="carousel"
 >
-
   <div class="mhs__track" data-mhs-track>
-
     {%- for block in section.blocks -%}
       {%- liquid
         assign has_mobile = false
@@ -456,9 +529,9 @@
         assign btn1_style = block.settings.button_one_style
         assign btn2_style = block.settings.button_two_style
 
-        assign btn1_bg   = block.settings.button_one_color
+        assign btn1_bg = block.settings.button_one_color
         assign btn1_text = block.settings.button_one_text_color
-        assign btn2_bg   = block.settings.button_two_color
+        assign btn2_bg = block.settings.button_two_color
         assign btn2_text = block.settings.button_two_text_color
 
         if btn1_bg == 'rgba(0,0,0,0)'
@@ -484,7 +557,6 @@
         aria-label="Slide {{ forloop.index }} of {{ section.blocks.size }}"
         {{ block.shopify_attributes }}
       >
-
         {%- liquid
           assign fetch_priority = 'auto'
           if forloop.first
@@ -502,28 +574,47 @@
           assign desktop_style = '--mhs-bg-pos: ' | append: block.settings.image_position | append: '; --mhs-bg-fit: ' | append: block.settings.image_fit | append: ';'
         -%}
         {%- if block.settings.background_video != blank -%}
-          {{ block.settings.background_video | video_tag:
-            autoplay: true,
-            loop: true,
-            muted: true,
-            controls: false,
-            playsinline: true,
-            class: desktop_class,
-            style: desktop_style
+          {{
+            block.settings.background_video
+            | video_tag:
+              autoplay: true,
+              loop: true,
+              muted: true,
+              controls: false,
+              playsinline: true,
+              class: desktop_class,
+              style: desktop_style
           }}
         {%- elsif block.settings.background_video_url != blank -%}
           {%- if block.settings.background_video_url.type == 'youtube' -%}
-            <iframe src="https://www.youtube.com/embed/{{ block.settings.background_video_url.id }}?autoplay=1&mute=1&loop=1&playlist={{ block.settings.background_video_url.id }}&controls=0&showinfo=0&rel=0&playsinline=1" class="{{ desktop_class }}" style="{{ desktop_style }} pointer-events: none;" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <iframe
+              src="https://www.youtube.com/embed/{{ block.settings.background_video_url.id }}?autoplay=1&mute=1&loop=1&playlist={{ block.settings.background_video_url.id }}&controls=0&showinfo=0&rel=0&playsinline=1"
+              class="{{ desktop_class }}"
+              style="{{ desktop_style }} pointer-events: none;"
+              frameborder="0"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+            ></iframe>
           {%- elsif block.settings.background_video_url.type == 'vimeo' -%}
-            <iframe src="https://player.vimeo.com/video/{{ block.settings.background_video_url.id }}?autoplay=1&loop=1&muted=1&background=1" class="{{ desktop_class }}" style="{{ desktop_style }} pointer-events: none;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+            <iframe
+              src="https://player.vimeo.com/video/{{ block.settings.background_video_url.id }}?autoplay=1&loop=1&muted=1&background=1"
+              class="{{ desktop_class }}"
+              style="{{ desktop_style }} pointer-events: none;"
+              frameborder="0"
+              allow="autoplay; fullscreen"
+              allowfullscreen
+            ></iframe>
           {%- endif -%}
         {%- elsif block.settings.background_image != blank -%}
-          {{ block.settings.background_image | image_url: width: 3000 | image_tag:
-            loading: 'lazy',
-            fetchpriority: fetch_priority,
-            widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000',
-            class: desktop_class,
-            style: desktop_style
+          {{
+            block.settings.background_image
+            | image_url: width: 3000
+            | image_tag:
+              loading: 'lazy',
+              fetchpriority: fetch_priority,
+              widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000',
+              class: desktop_class,
+              style: desktop_style
           }}
         {%- endif -%}
 
@@ -533,27 +624,46 @@
             assign mobile_style = '--mhs-bg-pos: ' | append: block.settings.image_position | append: '; --mhs-bg-fit: ' | append: block.settings.image_fit | append: ';'
           -%}
           {%- if block.settings.mobile_background_video != blank -%}
-            {{ block.settings.mobile_background_video | video_tag:
-              autoplay: true,
-              loop: true,
-              muted: true,
-              controls: false,
-              playsinline: true,
-              class: mobile_class,
-              style: mobile_style
+            {{
+              block.settings.mobile_background_video
+              | video_tag:
+                autoplay: true,
+                loop: true,
+                muted: true,
+                controls: false,
+                playsinline: true,
+                class: mobile_class,
+                style: mobile_style
             }}
           {%- elsif block.settings.mobile_background_video_url != blank -%}
             {%- if block.settings.mobile_background_video_url.type == 'youtube' -%}
-              <iframe src="https://www.youtube.com/embed/{{ block.settings.mobile_background_video_url.id }}?autoplay=1&mute=1&loop=1&playlist={{ block.settings.mobile_background_video_url.id }}&controls=0&showinfo=0&rel=0&playsinline=1" class="{{ mobile_class }}" style="{{ mobile_style }} pointer-events: none;" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <iframe
+                src="https://www.youtube.com/embed/{{ block.settings.mobile_background_video_url.id }}?autoplay=1&mute=1&loop=1&playlist={{ block.settings.mobile_background_video_url.id }}&controls=0&showinfo=0&rel=0&playsinline=1"
+                class="{{ mobile_class }}"
+                style="{{ mobile_style }} pointer-events: none;"
+                frameborder="0"
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+              ></iframe>
             {%- elsif block.settings.mobile_background_video_url.type == 'vimeo' -%}
-              <iframe src="https://player.vimeo.com/video/{{ block.settings.mobile_background_video_url.id }}?autoplay=1&loop=1&muted=1&background=1" class="{{ mobile_class }}" style="{{ mobile_style }} pointer-events: none;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+              <iframe
+                src="https://player.vimeo.com/video/{{ block.settings.mobile_background_video_url.id }}?autoplay=1&loop=1&muted=1&background=1"
+                class="{{ mobile_class }}"
+                style="{{ mobile_style }} pointer-events: none;"
+                frameborder="0"
+                allow="autoplay; fullscreen"
+                allowfullscreen
+              ></iframe>
             {%- endif -%}
           {%- elsif block.settings.mobile_background_image != blank -%}
-            {{ block.settings.mobile_background_image | image_url: width: 1500 | image_tag:
-              loading: 'lazy',
-              widths: '375, 550, 750, 1100, 1500',
-              class: mobile_class,
-              style: mobile_style
+            {{
+              block.settings.mobile_background_image
+              | image_url: width: 1500
+              | image_tag:
+                loading: 'lazy',
+                widths: '375, 550, 750, 1100, 1500',
+                class: mobile_class,
+                style: mobile_style
             }}
           {%- endif -%}
         {%- endif -%}
@@ -586,7 +696,7 @@
               assign st_del = block.settings.stagger_delay
               assign st_del_2 = st_del | times: 2
               assign st_del_3 = st_del | times: 3
-              
+
               assign eyebrow_style = 'style="--anim-speed: ' | append: stagger_sp | append: '; --anim-delay: 0s;"'
               assign headline_style = 'style="--anim-speed: ' | append: stagger_sp | append: '; --anim-delay: ' | append: st_del | append: 's;"'
               assign subheading_style = 'style="--anim-speed: ' | append: stagger_sp | append: '; --anim-delay: ' | append: st_del_2 | append: 's;"'
@@ -604,11 +714,20 @@
           class="mhs__content {{ hc }} {{ vc }} {{ tac }}"
           style="color: {{ block.settings.text_color }};"
         >
-          <div class="mhs__content-inner{% if block.settings.enable_glassmorphism %} mhs__content-inner--glass{% endif %}{{ anim_class }}">
-
+          <div
+            class="mhs__content-inner{% if block.settings.content_bg_style != 'none' %} mhs__content-inner--bg-{{ block.settings.content_bg_style }}{% endif %}{% if block.settings.text_shadow != 'none' %} mhs__shadow-{{ block.settings.text_shadow }}{% endif %}{{ anim_class }}"
+            style="max-width: {{ block.settings.content_max_width }}px;{% if block.settings.content_bg_style == 'solid' %} --mhs-bg-solid: {{ block.settings.content_bg_color }};{% endif %}"
+          >
             {%- if block.settings.eyebrow != blank -%}
               <div class="mhs__anim-wrapper" {{ eyebrow_style }}>
-                <p class="mhs__eyebrow">{{ block.settings.eyebrow | escape }}</p>
+                <p
+                  class="mhs__eyebrow{% if block.settings.eyebrow_style == 'badge' %} mhs__eyebrow--badge{% endif %}"
+                  {% if block.settings.eyebrow_style == 'badge' %}
+                    style="--badge-bg: {{ block.settings.eyebrow_badge_bg }}; --badge-color: {{ block.settings.eyebrow_badge_color }};"
+                  {% endif %}
+                >
+                  {{ block.settings.eyebrow | escape }}
+                </p>
               </div>
             {%- endif -%}
 
@@ -626,7 +745,6 @@
 
             {%- if block.settings.button_one_label != blank or block.settings.button_two_label != blank -%}
               <div class="mhs__anim-wrapper mhs__buttons" {{ buttons_style }}>
-
                 {%- if block.settings.button_one_label != blank -%}
                   <a
                     href="{{ block.settings.button_one_link | default: '#' }}"
@@ -644,7 +762,9 @@
                         color: {{ btn1_text }};
                       {%- endif -%}
                     "
-                  >{{ block.settings.button_one_label | escape }}</a>
+                  >
+                    {{- block.settings.button_one_label | escape -}}
+                  </a>
                 {%- endif -%}
 
                 {%- if block.settings.button_two_label != blank -%}
@@ -664,23 +784,26 @@
                         color: {{ btn2_text }};
                       {%- endif -%}
                     "
-                  >{{ block.settings.button_two_label | escape }}</a>
+                  >
+                    {{- block.settings.button_two_label | escape -}}
+                  </a>
                 {%- endif -%}
-
               </div>
             {%- endif -%}
-
           </div>
         </div>
 
         {%- if block.settings.whole_slide_link != blank -%}
-          <a href="{{ block.settings.whole_slide_link }}" class="mhs__slide-link" aria-label="Go to {{ block.settings.headline | default: 'slide' }}"></a>
+          <a
+            href="{{ block.settings.whole_slide_link }}"
+            class="mhs__slide-link"
+            aria-label="Go to {{ block.settings.headline | default: 'slide' }}"
+          ></a>
         {%- endif -%}
-
       </div>
     {%- endfor -%}
-
-  </div>{%- comment -%} /.mhs__track {%- endcomment -%}
+  </div>
+  {%- comment -%} /.mhs__track {%- endcomment -%}
 
   {%- if show_arrows and section.blocks.size > 1 -%}
     <button class="mhs__arrow mhs__arrow--prev" data-mhs-prev aria-label="Previous slide">
@@ -710,116 +833,153 @@
       {%- endfor -%}
     </div>
   {%- endif -%}
-
 </div>
 
 <script>
-(function () {
-  var sectionEl = document.getElementById('shopify-section-{{ section.id }}');
-  if (!sectionEl) return;
+  (function () {
+    var sectionEl = document.getElementById('shopify-section-{{ section.id }}');
+    if (!sectionEl) return;
 
-  var slider    = sectionEl.querySelector('[data-mhs]');
-  var track     = sectionEl.querySelector('[data-mhs-track]');
-  var slides    = Array.from(sectionEl.querySelectorAll('[data-mhs-slide]'));
-  var dotsEl    = sectionEl.querySelector('[data-mhs-dots]');
-  var dots      = dotsEl ? Array.from(dotsEl.querySelectorAll('[data-mhs-dot]')) : [];
-  var prevBtn   = sectionEl.querySelector('[data-mhs-prev]');
-  var nextBtn   = sectionEl.querySelector('[data-mhs-next]');
-  var total     = slides.length;
+    var slider = sectionEl.querySelector('[data-mhs]');
+    var track = sectionEl.querySelector('[data-mhs-track]');
+    var slides = Array.from(sectionEl.querySelectorAll('[data-mhs-slide]'));
+    var dotsEl = sectionEl.querySelector('[data-mhs-dots]');
+    var dots = dotsEl ? Array.from(dotsEl.querySelectorAll('[data-mhs-dot]')) : [];
+    var prevBtn = sectionEl.querySelector('[data-mhs-prev]');
+    var nextBtn = sectionEl.querySelector('[data-mhs-next]');
+    var total = slides.length;
 
-  if (total <= 1) return;
+    if (total <= 1) return;
 
-  var current       = 0;
-  var timer         = null;
-  var isAutoplay    = slider.dataset.autoplay === 'true';
-  var speed         = (parseInt(slider.dataset.autoplaySpeed, 10) || 5) * 1000;
-  var isFade        = slider.dataset.transition === 'fade';
+    var current = 0;
+    var timer = null;
+    var isAutoplay = slider.dataset.autoplay === 'true';
+    var speed = (parseInt(slider.dataset.autoplaySpeed, 10) || 5) * 1000;
 
-  if (isFade) track.classList.add('mhs__track--fade');
+    var transType = slider.dataset.transition;
+    var isAbsoluteMode =
+      transType === 'fade' || transType === 'scale' || transType === 'parallax' || transType === 'reveal';
 
-  function setSlide(index) {
-    var prev = current;
-    current = ((index % total) + total) % total;
-
-    slides[prev].classList.remove('is-active');
-    slides[current].classList.add('is-active');
-
-    if (!isFade) {
-      track.style.transform = 'translateX(-' + (current * 100) + '%)';
+    if (isAbsoluteMode) {
+      track.classList.add('mhs__track--absolute', 'mhs__track--' + transType);
     }
 
-    dots.forEach(function (dot, i) {
-      var active = i === current;
-      dot.classList.toggle('is-active', active);
-      dot.setAttribute('aria-selected', active ? 'true' : 'false');
+    function setSlide(index) {
+      if (index === current) return;
+      var prev = current;
+      current = ((index % total) + total) % total;
+
+      slides.forEach(function (s) {
+        s.classList.remove('is-leaving');
+      });
+
+      slides[prev].classList.remove('is-active');
+      slides[prev].classList.add('is-leaving');
+
+      slides[current].classList.add('is-active');
+
+      if (!isAbsoluteMode) {
+        track.style.transform = 'translateX(-' + current * 100 + '%)';
+      }
+
+      dots.forEach(function (dot, i) {
+        var active = i === current;
+        dot.classList.toggle('is-active', active);
+        dot.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+
+      slider.setAttribute('aria-label', 'Hero slideshow, slide ' + (current + 1) + ' of ' + total);
+    }
+
+    function next() {
+      setSlide(current + 1);
+    }
+    function prev() {
+      setSlide(current - 1);
+    }
+
+    function startAutoplay() {
+      if (!isAutoplay) return;
+      clearInterval(timer);
+      timer = setInterval(next, speed);
+    }
+
+    function stopAutoplay() {
+      clearInterval(timer);
+    }
+
+    function resetAutoplay() {
+      stopAutoplay();
+      startAutoplay();
+    }
+
+    if (prevBtn)
+      prevBtn.addEventListener('click', function () {
+        prev();
+        resetAutoplay();
+      });
+    if (nextBtn)
+      nextBtn.addEventListener('click', function () {
+        next();
+        resetAutoplay();
+      });
+
+    dots.forEach(function (dot) {
+      dot.addEventListener('click', function () {
+        setSlide(parseInt(dot.dataset.mhsDot, 10));
+        resetAutoplay();
+      });
     });
 
-    slider.setAttribute('aria-label', 'Hero slideshow, slide ' + (current + 1) + ' of ' + total);
-  }
+    slider.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') {
+        prev();
+        resetAutoplay();
+      }
+      if (e.key === 'ArrowRight') {
+        next();
+        resetAutoplay();
+      }
+    });
 
-  function next() { setSlide(current + 1); }
-  function prev() { setSlide(current - 1); }
+    // Touch / swipe
+    var touchX = 0;
+    var touchY = 0;
+    slider.addEventListener(
+      'touchstart',
+      function (e) {
+        touchX = e.touches[0].clientX;
+        touchY = e.touches[0].clientY;
+      },
+      { passive: true }
+    );
+    slider.addEventListener(
+      'touchend',
+      function (e) {
+        var dx = e.changedTouches[0].clientX - touchX;
+        var dy = e.changedTouches[0].clientY - touchY;
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 44) {
+          dx < 0 ? next() : prev();
+          resetAutoplay();
+        }
+      },
+      { passive: true }
+    );
 
-  function startAutoplay() {
-    if (!isAutoplay) return;
-    clearInterval(timer);
-    timer = setInterval(next, speed);
-  }
+    // Pause on hover / focus
+    slider.addEventListener('mouseenter', stopAutoplay);
+    slider.addEventListener('mouseleave', startAutoplay);
+    slider.addEventListener('focusin', stopAutoplay);
+    slider.addEventListener('focusout', startAutoplay);
 
-  function stopAutoplay() {
-    clearInterval(timer);
-  }
-
-  function resetAutoplay() {
-    stopAutoplay();
     startAutoplay();
-  }
-
-  if (prevBtn) prevBtn.addEventListener('click', function () { prev(); resetAutoplay(); });
-  if (nextBtn) nextBtn.addEventListener('click', function () { next(); resetAutoplay(); });
-
-  dots.forEach(function (dot) {
-    dot.addEventListener('click', function () {
-      setSlide(parseInt(dot.dataset.mhsDot, 10));
-      resetAutoplay();
-    });
-  });
-
-  slider.addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowLeft')  { prev(); resetAutoplay(); }
-    if (e.key === 'ArrowRight') { next(); resetAutoplay(); }
-  });
-
-  // Touch / swipe
-  var touchX = 0;
-  var touchY = 0;
-  slider.addEventListener('touchstart', function (e) {
-    touchX = e.touches[0].clientX;
-    touchY = e.touches[0].clientY;
-  }, { passive: true });
-  slider.addEventListener('touchend', function (e) {
-    var dx = e.changedTouches[0].clientX - touchX;
-    var dy = e.changedTouches[0].clientY - touchY;
-    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 44) {
-      dx < 0 ? next() : prev();
-      resetAutoplay();
-    }
-  }, { passive: true });
-
-  // Pause on hover / focus
-  slider.addEventListener('mouseenter', stopAutoplay);
-  slider.addEventListener('mouseleave', startAutoplay);
-  slider.addEventListener('focusin',    stopAutoplay);
-  slider.addEventListener('focusout',   startAutoplay);
-
-  startAutoplay();
-}());
+  })();
 </script>
 
 {% schema %}
 {
-  "name": "Hero Slider",
-  "class": "mule-hero-slider-section",
+  "name": "Coops Slider",
+  "class": "coops-slider-section",
   "settings": [
     {
       "type": "header",
@@ -847,7 +1007,10 @@
       "label": "Transition",
       "options": [
         { "value": "slide", "label": "Slide" },
-        { "value": "fade",  "label": "Fade" }
+        { "value": "fade", "label": "Fade" },
+        { "value": "scale", "label": "Scale (Zoom out/in)" },
+        { "value": "parallax", "label": "Parallax Slide" },
+        { "value": "reveal", "label": "Reveal (Curtain)" }
       ],
       "default": "slide"
     },
@@ -878,8 +1041,8 @@
       "type": "select",
       "label": "Pagination style",
       "options": [
-        { "value": "dot",    "label": "Dots" },
-        { "value": "dash",   "label": "Dashes" },
+        { "value": "dot", "label": "Dots" },
+        { "value": "dash", "label": "Dashes" },
         { "value": "number", "label": "Numbers" }
       ],
       "default": "dot"
@@ -905,11 +1068,11 @@
       "type": "select",
       "label": "Height preset",
       "options": [
-        { "value": "small",    "label": "Small — 400px" },
-        { "value": "medium",   "label": "Medium — 560px" },
-        { "value": "large",    "label": "Large — 720px" },
+        { "value": "small", "label": "Small — 400px" },
+        { "value": "medium", "label": "Medium — 560px" },
+        { "value": "large", "label": "Large — 720px" },
         { "value": "viewport", "label": "Full viewport" },
-        { "value": "custom",   "label": "Custom" }
+        { "value": "custom", "label": "Custom" }
       ],
       "default": "medium"
     },
@@ -932,11 +1095,11 @@
       "type": "select",
       "label": "Height preset",
       "options": [
-        { "value": "small",    "label": "Small — 280px" },
-        { "value": "medium",   "label": "Medium — 420px" },
-        { "value": "large",    "label": "Large — 560px" },
+        { "value": "small", "label": "Small — 280px" },
+        { "value": "medium", "label": "Medium — 420px" },
+        { "value": "large", "label": "Large — 560px" },
         { "value": "viewport", "label": "Full viewport" },
-        { "value": "custom",   "label": "Custom" }
+        { "value": "custom", "label": "Custom" }
       ],
       "default": "medium"
     },
@@ -953,16 +1116,6 @@
     {
       "type": "header",
       "content": "Layout"
-    },
-    {
-      "id": "content_max_width",
-      "type": "range",
-      "label": "Content max width",
-      "min": 360,
-      "max": 1200,
-      "step": 20,
-      "unit": "px",
-      "default": 680
     },
     {
       "id": "content_padding",
@@ -1048,10 +1201,10 @@
           "label": "Image focus",
           "options": [
             { "value": "center center", "label": "Center" },
-            { "value": "top center",    "label": "Top" },
+            { "value": "top center", "label": "Top" },
             { "value": "bottom center", "label": "Bottom" },
-            { "value": "center left",   "label": "Left" },
-            { "value": "center right",  "label": "Right" }
+            { "value": "center left", "label": "Left" },
+            { "value": "center right", "label": "Right" }
           ],
           "default": "center center"
         },
@@ -1060,9 +1213,9 @@
           "type": "select",
           "label": "Image fit",
           "options": [
-            { "value": "cover",   "label": "Cover (fill, may crop)" },
+            { "value": "cover", "label": "Cover (fill, may crop)" },
             { "value": "contain", "label": "Contain (show full image)" },
-            { "value": "auto",    "label": "Auto (natural size)" },
+            { "value": "auto", "label": "Auto (natural size)" },
             { "value": "100% 100%", "label": "Stretch to fill" }
           ],
           "default": "cover"
@@ -1107,11 +1260,11 @@
           "label": "Gradient direction",
           "info": "Applies a directional fade instead of a flat overlay.",
           "options": [
-            { "value": "none",   "label": "None (flat)" },
+            { "value": "none", "label": "None (flat)" },
             { "value": "bottom", "label": "Fade up from bottom" },
-            { "value": "top",    "label": "Fade down from top" },
-            { "value": "left",   "label": "Fade right from left" },
-            { "value": "right",  "label": "Fade left from right" }
+            { "value": "top", "label": "Fade down from top" },
+            { "value": "left", "label": "Fade right from left" },
+            { "value": "right", "label": "Fade left from right" }
           ],
           "default": "none"
         },
@@ -1120,11 +1273,44 @@
           "content": "Content architecture"
         },
         {
-          "id": "enable_glassmorphism",
-          "type": "checkbox",
-          "label": "Enable glassmorphism",
-          "info": "Applies a frosted glass effect to the content container.",
-          "default": false
+          "id": "content_max_width",
+          "type": "range",
+          "label": "Content max width",
+          "min": 360,
+          "max": 1200,
+          "step": 20,
+          "unit": "px",
+          "default": 680
+        },
+        {
+          "id": "content_bg_style",
+          "type": "select",
+          "label": "Content background style",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "glassmorphism", "label": "Glassmorphism" },
+            { "value": "solid", "label": "Solid Color" }
+          ],
+          "default": "none"
+        },
+        {
+          "id": "content_bg_color",
+          "type": "color",
+          "label": "Solid background color",
+          "info": "Used only when Solid Color style is selected.",
+          "default": "rgba(0,0,0,0.5)"
+        },
+        {
+          "id": "text_shadow",
+          "type": "select",
+          "label": "Text shadow intensity",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "soft", "label": "Soft" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "strong", "label": "Strong" }
+          ],
+          "default": "none"
         },
         {
           "type": "header",
@@ -1135,9 +1321,9 @@
           "type": "select",
           "label": "Horizontal position",
           "options": [
-            { "value": "left",   "label": "Left" },
+            { "value": "left", "label": "Left" },
             { "value": "center", "label": "Center" },
-            { "value": "right",  "label": "Right" }
+            { "value": "right", "label": "Right" }
           ],
           "default": "left"
         },
@@ -1146,7 +1332,7 @@
           "type": "select",
           "label": "Vertical position",
           "options": [
-            { "value": "top",    "label": "Top" },
+            { "value": "top", "label": "Top" },
             { "value": "middle", "label": "Middle" },
             { "value": "bottom", "label": "Bottom" }
           ],
@@ -1157,9 +1343,9 @@
           "type": "select",
           "label": "Text alignment",
           "options": [
-            { "value": "left",   "label": "Left" },
+            { "value": "left", "label": "Left" },
             { "value": "center", "label": "Center" },
-            { "value": "right",  "label": "Right" }
+            { "value": "right", "label": "Right" }
           ],
           "default": "left"
         },
@@ -1178,12 +1364,12 @@
           "type": "select",
           "label": "Animation type",
           "options": [
-            { "value": "none",       "label": "None" },
-            { "value": "fade-up",    "label": "Fade up" },
-            { "value": "fade-down",  "label": "Fade down" },
-            { "value": "fade-left",  "label": "Fade left" },
+            { "value": "none", "label": "None" },
+            { "value": "fade-up", "label": "Fade up" },
+            { "value": "fade-down", "label": "Fade down" },
+            { "value": "fade-left", "label": "Fade left" },
             { "value": "fade-right", "label": "Fade right" },
-            { "value": "zoom-in",    "label": "Zoom in" }
+            { "value": "zoom-in", "label": "Zoom in" }
           ],
           "default": "fade-up"
         },
@@ -1192,7 +1378,7 @@
           "type": "select",
           "label": "Animation timing mode",
           "options": [
-            { "value": "staggered",  "label": "Staggered (Automatic)" },
+            { "value": "staggered", "label": "Staggered (Automatic)" },
             { "value": "individual", "label": "Individual (Manual)" }
           ],
           "default": "staggered"
@@ -1318,6 +1504,28 @@
           "info": "Small label shown above the headline."
         },
         {
+          "id": "eyebrow_style",
+          "type": "select",
+          "label": "Eyebrow style",
+          "options": [
+            { "value": "text", "label": "Standard Text" },
+            { "value": "badge", "label": "Badge / Pill" }
+          ],
+          "default": "text"
+        },
+        {
+          "id": "eyebrow_badge_bg",
+          "type": "color",
+          "label": "Eyebrow badge background",
+          "default": "#FFFFFF"
+        },
+        {
+          "id": "eyebrow_badge_color",
+          "type": "color",
+          "label": "Eyebrow badge text",
+          "default": "#000000"
+        },
+        {
           "id": "headline",
           "type": "text",
           "label": "Headline",
@@ -1357,9 +1565,9 @@
           "type": "select",
           "label": "Style",
           "options": [
-            { "value": "filled",   "label": "Filled" },
+            { "value": "filled", "label": "Filled" },
             { "value": "outlined", "label": "Outlined" },
-            { "value": "text",     "label": "Text only" }
+            { "value": "text", "label": "Text only" }
           ],
           "default": "filled"
         },
@@ -1396,9 +1604,9 @@
           "type": "select",
           "label": "Style",
           "options": [
-            { "value": "filled",   "label": "Filled" },
+            { "value": "filled", "label": "Filled" },
             { "value": "outlined", "label": "Outlined" },
-            { "value": "text",     "label": "Text only" }
+            { "value": "text", "label": "Text only" }
           ],
           "default": "outlined"
         },
@@ -1421,7 +1629,7 @@
   ],
   "presets": [
     {
-      "name": "Hero Slider",
+      "name": "Coops Slider",
       "blocks": [
         {
           "type": "slide",
