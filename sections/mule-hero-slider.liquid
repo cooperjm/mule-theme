@@ -511,6 +511,12 @@
             class: desktop_class,
             style: desktop_style
           }}
+        {%- elsif block.settings.background_video_url != blank -%}
+          {%- if block.settings.background_video_url.type == 'youtube' -%}
+            <iframe src="https://www.youtube.com/embed/{{ block.settings.background_video_url.id }}?autoplay=1&mute=1&loop=1&playlist={{ block.settings.background_video_url.id }}&controls=0&showinfo=0&rel=0&playsinline=1" class="{{ desktop_class }}" style="{{ desktop_style }} pointer-events: none;" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          {%- elsif block.settings.background_video_url.type == 'vimeo' -%}
+            <iframe src="https://player.vimeo.com/video/{{ block.settings.background_video_url.id }}?autoplay=1&loop=1&muted=1&background=1" class="{{ desktop_class }}" style="{{ desktop_style }} pointer-events: none;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          {%- endif -%}
         {%- elsif block.settings.background_image != blank -%}
           {{ block.settings.background_image | image_url: width: 3000 | image_tag:
             loading: 'lazy',
@@ -536,6 +542,12 @@
               class: mobile_class,
               style: mobile_style
             }}
+          {%- elsif block.settings.mobile_background_video_url != blank -%}
+            {%- if block.settings.mobile_background_video_url.type == 'youtube' -%}
+              <iframe src="https://www.youtube.com/embed/{{ block.settings.mobile_background_video_url.id }}?autoplay=1&mute=1&loop=1&playlist={{ block.settings.mobile_background_video_url.id }}&controls=0&showinfo=0&rel=0&playsinline=1" class="{{ mobile_class }}" style="{{ mobile_style }} pointer-events: none;" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            {%- elsif block.settings.mobile_background_video_url.type == 'vimeo' -%}
+              <iframe src="https://player.vimeo.com/video/{{ block.settings.mobile_background_video_url.id }}?autoplay=1&loop=1&muted=1&background=1" class="{{ mobile_class }}" style="{{ mobile_style }} pointer-events: none;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+            {%- endif -%}
           {%- elsif block.settings.mobile_background_image != blank -%}
             {{ block.settings.mobile_background_image | image_url: width: 1500 | image_tag:
               loading: 'lazy',
@@ -572,11 +584,13 @@
             if block.settings.animation_mode == 'staggered'
               assign stagger_sp = block.settings.stagger_speed | append: 's'
               assign st_del = block.settings.stagger_delay
+              assign st_del_2 = st_del | times: 2
+              assign st_del_3 = st_del | times: 3
               
               assign eyebrow_style = 'style="--anim-speed: ' | append: stagger_sp | append: '; --anim-delay: 0s;"'
               assign headline_style = 'style="--anim-speed: ' | append: stagger_sp | append: '; --anim-delay: ' | append: st_del | append: 's;"'
-              assign subheading_style = 'style="--anim-speed: ' | append: stagger_sp | append: '; --anim-delay: ' | append: (st_del | times: 2) | append: 's;"'
-              assign buttons_style = 'style="--anim-speed: ' | append: stagger_sp | append: '; --anim-delay: ' | append: (st_del | times: 3) | append: 's;"'
+              assign subheading_style = 'style="--anim-speed: ' | append: stagger_sp | append: '; --anim-delay: ' | append: st_del_2 | append: 's;"'
+              assign buttons_style = 'style="--anim-speed: ' | append: stagger_sp | append: '; --anim-delay: ' | append: st_del_3 | append: 's;"'
             else
               assign eyebrow_style = 'style="--anim-speed: ' | append: block.settings.individual_speed_eyebrow | append: 's; --anim-delay: ' | append: block.settings.individual_delay_eyebrow | append: 's;"'
               assign headline_style = 'style="--anim-speed: ' | append: block.settings.individual_speed_headline | append: 's; --anim-delay: ' | append: block.settings.individual_delay_headline | append: 's;"'
@@ -993,14 +1007,28 @@
         {
           "id": "background_video",
           "type": "video",
-          "label": "Desktop video",
+          "label": "Desktop video (Shopify)",
           "info": "Optional. MP4 or Shopify hosted video. Replaces desktop image."
+        },
+        {
+          "id": "background_video_url",
+          "type": "video_url",
+          "accept": ["youtube", "vimeo"],
+          "label": "Desktop video (External)",
+          "info": "Optional. YouTube or Vimeo URL. Overridden by Shopify Video if both are set."
         },
         {
           "id": "mobile_background_video",
           "type": "video",
-          "label": "Mobile video",
+          "label": "Mobile video (Shopify)",
           "info": "Optional. Replaces mobile background image."
+        },
+        {
+          "id": "mobile_background_video_url",
+          "type": "video_url",
+          "accept": ["youtube", "vimeo"],
+          "label": "Mobile video (External)",
+          "info": "Optional. YouTube or Vimeo URL. Overridden by Shopify Video if both are set."
         },
         {
           "id": "background_image",
@@ -1187,9 +1215,9 @@
           "info": "Used in Staggered mode.",
           "min": 0.0,
           "max": 1.0,
-          "step": 0.05,
+          "step": 0.1,
           "unit": "s",
-          "default": 0.15
+          "default": 0.2
         },
         {
           "id": "individual_speed_eyebrow",
@@ -1302,13 +1330,17 @@
         },
         {
           "type": "header",
-          "content": "Button 1"
+          "content": "Whole Slide Link"
         },
         {
           "id": "whole_slide_link",
           "type": "url",
           "label": "Whole slide link",
           "info": "Making the entire slide clickable. Overrides button links if both are set."
+        },
+        {
+          "type": "header",
+          "content": "Button 1"
         },
         {
           "id": "button_one_label",
