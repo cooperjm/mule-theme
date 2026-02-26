@@ -379,6 +379,24 @@
 
         assign btn1_style = block.settings.button_one_style
         assign btn2_style = block.settings.button_two_style
+
+        assign btn1_bg   = block.settings.button_one_color
+        assign btn1_text = block.settings.button_one_text_color
+        assign btn2_bg   = block.settings.button_two_color
+        assign btn2_text = block.settings.button_two_text_color
+
+        if btn1_bg == 'rgba(0,0,0,0)'
+          assign btn1_bg = settings.color_button_background
+        endif
+        if btn1_text == 'rgba(0,0,0,0)'
+          assign btn1_text = settings.color_button_text
+        endif
+        if btn2_bg == 'rgba(0,0,0,0)'
+          assign btn2_bg = settings.color_button_secondary_background
+        endif
+        if btn2_text == 'rgba(0,0,0,0)'
+          assign btn2_text = settings.color_button_secondary_text
+        endif
       -%}
 
       <div
@@ -443,15 +461,15 @@
                     class="mhs__btn mhs__btn--{{ btn1_style }}"
                     style="
                       {%- if btn1_style == 'filled' -%}
-                        background-color: {{ block.settings.button_one_color }};
-                        color: {{ block.settings.button_one_text_color }};
-                        border-color: {{ block.settings.button_one_color }};
+                        background-color: {{ btn1_bg }};
+                        color: {{ btn1_text }};
+                        border-color: {{ btn1_bg }};
                       {%- elsif btn1_style == 'outlined' -%}
                         background-color: transparent;
-                        color: {{ block.settings.button_one_text_color }};
-                        border-color: {{ block.settings.button_one_text_color }};
+                        color: {{ btn1_text }};
+                        border-color: {{ btn1_text }};
                       {%- else -%}
-                        color: {{ block.settings.button_one_text_color }};
+                        color: {{ btn1_text }};
                       {%- endif -%}
                     "
                   >{{ block.settings.button_one_label | escape }}</a>
@@ -463,15 +481,15 @@
                     class="mhs__btn mhs__btn--{{ btn2_style }}"
                     style="
                       {%- if btn2_style == 'filled' -%}
-                        background-color: {{ block.settings.button_two_color }};
-                        color: {{ block.settings.button_two_text_color }};
-                        border-color: {{ block.settings.button_two_color }};
+                        background-color: {{ btn2_bg }};
+                        color: {{ btn2_text }};
+                        border-color: {{ btn2_bg }};
                       {%- elsif btn2_style == 'outlined' -%}
                         background-color: transparent;
-                        color: {{ block.settings.button_two_text_color }};
-                        border-color: {{ block.settings.button_two_text_color }};
+                        color: {{ btn2_text }};
+                        border-color: {{ btn2_text }};
                       {%- else -%}
-                        color: {{ block.settings.button_two_text_color }};
+                        color: {{ btn2_text }};
                       {%- endif -%}
                     "
                   >{{ block.settings.button_two_label | escape }}</a>
@@ -980,13 +998,15 @@
           "id": "button_one_color",
           "type": "color",
           "label": "Button color",
-          "default": "#FFFFFF"
+          "info": "Leave transparent to use the theme's primary button color.",
+          "default": "rgba(0,0,0,0)"
         },
         {
           "id": "button_one_text_color",
           "type": "color",
-          "label": "Button text / border color",
-          "default": "#000000"
+          "label": "Button text \/ border color",
+          "info": "Leave transparent to use the theme's primary button text color.",
+          "default": "rgba(0,0,0,0)"
         },
         {
           "type": "header",
@@ -1017,13 +1037,15 @@
           "id": "button_two_color",
           "type": "color",
           "label": "Button color",
-          "default": "#000000"
+          "info": "Leave transparent to use the theme's secondary button color.",
+          "default": "rgba(0,0,0,0)"
         },
         {
           "id": "button_two_text_color",
           "type": "color",
-          "label": "Button text / border color",
-          "default": "#FFFFFF"
+          "label": "Button text \/ border color",
+          "info": "Leave transparent to use the theme's secondary button text color.",
+          "default": "rgba(0,0,0,0)"
         }
       ]
     }
