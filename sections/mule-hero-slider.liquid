@@ -396,7 +396,7 @@
     {%- for block in section.blocks -%}
       {%- liquid
         assign has_mobile = false
-        if block.settings.mobile_background_image != blank
+        if block.settings.mobile_background_image != blank or block.settings.mobile_background_video != blank
           assign has_mobile = true
         endif
 
@@ -466,11 +466,21 @@
           endif
         -%}
 
-        {%- if block.settings.background_image != blank -%}
-          {%- liquid
-            assign desktop_class = 'mhs__bg-item mhs__bg-desktop' | append: ken_burns
-            assign desktop_style = '--mhs-bg-pos: ' | append: block.settings.image_position | append: '; --mhs-bg-fit: ' | append: block.settings.image_fit | append: ';'
-          -%}
+        {%- liquid
+          assign desktop_class = 'mhs__bg-item mhs__bg-desktop' | append: ken_burns
+          assign desktop_style = '--mhs-bg-pos: ' | append: block.settings.image_position | append: '; --mhs-bg-fit: ' | append: block.settings.image_fit | append: ';'
+        -%}
+        {%- if block.settings.background_video != blank -%}
+          {{ block.settings.background_video | video_tag:
+            autoplay: true,
+            loop: true,
+            muted: true,
+            controls: false,
+            playsinline: true,
+            class: desktop_class,
+            style: desktop_style
+          }}
+        {%- elsif block.settings.background_image != blank -%}
           {{ block.settings.background_image | image_url: width: 3000 | image_tag:
             loading: 'lazy',
             fetchpriority: fetch_priority,
@@ -485,12 +495,24 @@
             assign mobile_class = 'mhs__bg-item mhs__bg-mobile' | append: ken_burns
             assign mobile_style = '--mhs-bg-pos: ' | append: block.settings.image_position | append: '; --mhs-bg-fit: ' | append: block.settings.image_fit | append: ';'
           -%}
-          {{ block.settings.mobile_background_image | image_url: width: 1500 | image_tag:
-            loading: 'lazy',
-            widths: '375, 550, 750, 1100, 1500',
-            class: mobile_class,
-            style: mobile_style
-          }}
+          {%- if block.settings.mobile_background_video != blank -%}
+            {{ block.settings.mobile_background_video | video_tag:
+              autoplay: true,
+              loop: true,
+              muted: true,
+              controls: false,
+              playsinline: true,
+              class: mobile_class,
+              style: mobile_style
+            }}
+          {%- elsif block.settings.mobile_background_image != blank -%}
+            {{ block.settings.mobile_background_image | image_url: width: 1500 | image_tag:
+              loading: 'lazy',
+              widths: '375, 550, 750, 1100, 1500',
+              class: mobile_class,
+              style: mobile_style
+            }}
+          {%- endif -%}
         {%- endif -%}
 
         {%- if block.settings.overlay_opacity > 0 and block.settings.overlay_color != 'rgba(0,0,0,0)' -%}
@@ -900,12 +922,25 @@
       "settings": [
         {
           "type": "header",
-          "content": "Images"
+          "content": "Media"
+        },
+        {
+          "id": "background_video",
+          "type": "video",
+          "label": "Desktop video",
+          "info": "Optional. MP4 or Shopify hosted video. Replaces desktop image."
+        },
+        {
+          "id": "mobile_background_video",
+          "type": "video",
+          "label": "Mobile video",
+          "info": "Optional. Replaces mobile background image."
         },
         {
           "id": "background_image",
           "type": "image_picker",
-          "label": "Desktop image"
+          "label": "Desktop image",
+          "info": "Used as fallback if no video is provided."
         },
         {
           "id": "mobile_background_image",
