@@ -193,14 +193,45 @@
   #shopify-section-{{ section.id }} .mhs__content-inner {
     width: 100%;
     max-width: {{ section.settings.content_max_width }}px;
-    transition: opacity 0.8s ease, transform 0.8s ease;
-    opacity: 0;
-    transform: translateY(20px);
   }
 
-  #shopify-section-{{ section.id }} .mhs__slide.is-active .mhs__content-inner {
+  /* ── Content Animations ──────────────────────────────── */
+  /* Hidden starting states */
+  #shopify-section-{{ section.id }} .mhs__content-inner--anim-fade-up > * {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity var(--anim-speed, 0.8s) ease, transform var(--anim-speed, 0.8s) ease;
+    transition-delay: var(--anim-delay, 0s);
+  }
+  #shopify-section-{{ section.id }} .mhs__content-inner--anim-fade-down > * {
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: opacity var(--anim-speed, 0.8s) ease, transform var(--anim-speed, 0.8s) ease;
+    transition-delay: var(--anim-delay, 0s);
+  }
+  #shopify-section-{{ section.id }} .mhs__content-inner--anim-fade-left > * {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity var(--anim-speed, 0.8s) ease, transform var(--anim-speed, 0.8s) ease;
+    transition-delay: var(--anim-delay, 0s);
+  }
+  #shopify-section-{{ section.id }} .mhs__content-inner--anim-fade-right > * {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity var(--anim-speed, 0.8s) ease, transform var(--anim-speed, 0.8s) ease;
+    transition-delay: var(--anim-delay, 0s);
+  }
+  #shopify-section-{{ section.id }} .mhs__content-inner--anim-zoom-in > * {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity var(--anim-speed, 0.8s) ease, transform var(--anim-speed, 0.8s) ease;
+    transition-delay: var(--anim-delay, 0s);
+  }
+
+  /* Active states (triggers the transition) */
+  #shopify-section-{{ section.id }} .mhs__slide.is-active .mhs__content-inner[class*="--anim-"] > * {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 
   /* Glassmorphism */
@@ -526,26 +557,61 @@
           ></div>
         {%- endif -%}
 
+        {%- liquid
+          assign anim_class = ''
+          if block.settings.animation_type != 'none'
+            assign anim_class = ' mhs__content-inner--anim-' | append: block.settings.animation_type
+          endif
+
+          assign eyebrow_style = ''
+          assign headline_style = ''
+          assign subheading_style = ''
+          assign buttons_style = ''
+
+          if block.settings.animation_type != 'none'
+            if block.settings.animation_mode == 'staggered'
+              assign stagger_sp = block.settings.stagger_speed | append: 's'
+              assign st_del = block.settings.stagger_delay
+              
+              assign eyebrow_style = 'style="--anim-speed: ' | append: stagger_sp | append: '; --anim-delay: 0s;"'
+              assign headline_style = 'style="--anim-speed: ' | append: stagger_sp | append: '; --anim-delay: ' | append: st_del | append: 's;"'
+              assign subheading_style = 'style="--anim-speed: ' | append: stagger_sp | append: '; --anim-delay: ' | append: (st_del | times: 2) | append: 's;"'
+              assign buttons_style = 'style="--anim-speed: ' | append: stagger_sp | append: '; --anim-delay: ' | append: (st_del | times: 3) | append: 's;"'
+            else
+              assign eyebrow_style = 'style="--anim-speed: ' | append: block.settings.individual_speed_eyebrow | append: 's; --anim-delay: ' | append: block.settings.individual_delay_eyebrow | append: 's;"'
+              assign headline_style = 'style="--anim-speed: ' | append: block.settings.individual_speed_headline | append: 's; --anim-delay: ' | append: block.settings.individual_delay_headline | append: 's;"'
+              assign subheading_style = 'style="--anim-speed: ' | append: block.settings.individual_speed_subheading | append: 's; --anim-delay: ' | append: block.settings.individual_delay_subheading | append: 's;"'
+              assign buttons_style = 'style="--anim-speed: ' | append: block.settings.individual_speed_buttons | append: 's; --anim-delay: ' | append: block.settings.individual_delay_buttons | append: 's;"'
+            endif
+          endif
+        -%}
+
         <div
           class="mhs__content {{ hc }} {{ vc }} {{ tac }}"
           style="color: {{ block.settings.text_color }};"
         >
-          <div class="mhs__content-inner{% if block.settings.enable_glassmorphism %} mhs__content-inner--glass{% endif %}">
+          <div class="mhs__content-inner{% if block.settings.enable_glassmorphism %} mhs__content-inner--glass{% endif %}{{ anim_class }}">
 
             {%- if block.settings.eyebrow != blank -%}
-              <p class="mhs__eyebrow">{{ block.settings.eyebrow | escape }}</p>
+              <div class="mhs__anim-wrapper" {{ eyebrow_style }}>
+                <p class="mhs__eyebrow">{{ block.settings.eyebrow | escape }}</p>
+              </div>
             {%- endif -%}
 
             {%- if block.settings.headline != blank -%}
-              <h2 class="mhs__headline">{{ block.settings.headline | escape }}</h2>
+              <div class="mhs__anim-wrapper" {{ headline_style }}>
+                <h2 class="mhs__headline">{{ block.settings.headline | escape }}</h2>
+              </div>
             {%- endif -%}
 
             {%- if block.settings.subheading != blank -%}
-              <div class="mhs__subheading">{{ block.settings.subheading }}</div>
+              <div class="mhs__anim-wrapper" {{ subheading_style }}>
+                <div class="mhs__subheading">{{ block.settings.subheading }}</div>
+              </div>
             {%- endif -%}
 
             {%- if block.settings.button_one_label != blank or block.settings.button_two_label != blank -%}
-              <div class="mhs__buttons">
+              <div class="mhs__anim-wrapper mhs__buttons" {{ buttons_style }}>
 
                 {%- if block.settings.button_one_label != blank -%}
                   <a
@@ -1074,6 +1140,144 @@
           "type": "color",
           "label": "Text color",
           "default": "#FFFFFF"
+        },
+        {
+          "type": "header",
+          "content": "Text Animations"
+        },
+        {
+          "id": "animation_type",
+          "type": "select",
+          "label": "Animation type",
+          "options": [
+            { "value": "none",       "label": "None" },
+            { "value": "fade-up",    "label": "Fade up" },
+            { "value": "fade-down",  "label": "Fade down" },
+            { "value": "fade-left",  "label": "Fade left" },
+            { "value": "fade-right", "label": "Fade right" },
+            { "value": "zoom-in",    "label": "Zoom in" }
+          ],
+          "default": "fade-up"
+        },
+        {
+          "id": "animation_mode",
+          "type": "select",
+          "label": "Animation timing mode",
+          "options": [
+            { "value": "staggered",  "label": "Staggered (Automatic)" },
+            { "value": "individual", "label": "Individual (Manual)" }
+          ],
+          "default": "staggered"
+        },
+        {
+          "id": "stagger_speed",
+          "type": "range",
+          "label": "Stagger base speed",
+          "info": "Used in Staggered mode.",
+          "min": 0.2,
+          "max": 2.0,
+          "step": 0.1,
+          "unit": "s",
+          "default": 0.8
+        },
+        {
+          "id": "stagger_delay",
+          "type": "range",
+          "label": "Stagger interval delay",
+          "info": "Used in Staggered mode.",
+          "min": 0.0,
+          "max": 1.0,
+          "step": 0.05,
+          "unit": "s",
+          "default": 0.15
+        },
+        {
+          "id": "individual_speed_eyebrow",
+          "type": "range",
+          "label": "Eyebrow speed",
+          "info": "Used in Individual mode.",
+          "min": 0.2,
+          "max": 2.0,
+          "step": 0.1,
+          "unit": "s",
+          "default": 0.8
+        },
+        {
+          "id": "individual_delay_eyebrow",
+          "type": "range",
+          "label": "Eyebrow delay",
+          "info": "Used in Individual mode.",
+          "min": 0.0,
+          "max": 2.0,
+          "step": 0.1,
+          "unit": "s",
+          "default": 0.0
+        },
+        {
+          "id": "individual_speed_headline",
+          "type": "range",
+          "label": "Headline speed",
+          "info": "Used in Individual mode.",
+          "min": 0.2,
+          "max": 2.0,
+          "step": 0.1,
+          "unit": "s",
+          "default": 0.8
+        },
+        {
+          "id": "individual_delay_headline",
+          "type": "range",
+          "label": "Headline delay",
+          "info": "Used in Individual mode.",
+          "min": 0.0,
+          "max": 2.0,
+          "step": 0.1,
+          "unit": "s",
+          "default": 0.1
+        },
+        {
+          "id": "individual_speed_subheading",
+          "type": "range",
+          "label": "Subheading speed",
+          "info": "Used in Individual mode.",
+          "min": 0.2,
+          "max": 2.0,
+          "step": 0.1,
+          "unit": "s",
+          "default": 0.8
+        },
+        {
+          "id": "individual_delay_subheading",
+          "type": "range",
+          "label": "Subheading delay",
+          "info": "Used in Individual mode.",
+          "min": 0.0,
+          "max": 2.0,
+          "step": 0.1,
+          "unit": "s",
+          "default": 0.2
+        },
+        {
+          "id": "individual_speed_buttons",
+          "type": "range",
+          "label": "Buttons speed",
+          "info": "Used in Individual mode.",
+          "min": 0.2,
+          "max": 2.0,
+          "step": 0.1,
+          "unit": "s",
+          "default": 0.8
+        },
+        {
+          "id": "individual_delay_buttons",
+          "type": "range",
+          "label": "Buttons delay",
+          "info": "Used in Individual mode.",
+          "min": 0.0,
+          "max": 2.0,
+          "step": 0.1,
+          "unit": "s",
+          "default": 0.3
         },
         {
           "type": "header",
