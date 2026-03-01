@@ -4,5 +4,4 @@
 # Shopify CLI
 .shopify/
 
-# Theme settings data (managed via Shopify admin)
-config/settings_data.json
+
