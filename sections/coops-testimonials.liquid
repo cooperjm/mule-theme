@@ -1,0 +1,546 @@
+<div
+  class="coops-testimonials-section"
+  style="background-color: {{ section.settings.bg_color }}; padding: {{ section.settings.padding_vertical }}px 0;"
+>
+  <div
+    class="{% if section.settings.section_width == 'page-width' %}page-width{% else %}coops-testimonials-custom-width{% endif %}"
+    {% if section.settings.section_width == 'custom' %}
+      style="max-width: {{ section.settings.custom_max_width }}px;"
+    {% endif %}
+  >
+    <div class="coops-testimonials-header" style="justify-content: {{ section.settings.title_alignment }};">
+      {% if section.settings.title != blank %}
+        <h2 class="coops-testimonials-title" style="text-align: {{ section.settings.title_alignment }};">
+          {{ section.settings.title }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.nav_position == 'top' %}
+        <div class="coops-testimonials-nav">
+          <button class="coops-nav-btn coops-nav-prev" aria-label="Previous Testimonials">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="coops-nav-btn coops-nav-next" aria-label="Next Testimonials">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      {% endif %}
+    </div>
+
+    <div
+      class="coops-testimonials-grid"
+      id="coops-slider-{{ section.id }}"
+      style="--cards-per-row: {{ section.settings.cards_per_row }}; --cards-per-row-mobile: {{ section.settings.cards_per_row_mobile | default: 1 }}; --card-min-height: {{ section.settings.card_min_height }}px;"
+    >
+      {% for block in section.blocks %}
+        <div class="coops-testimonial-card" {{ block.shopify_attributes }}>
+          <div class="coops-testimonial-card-inner">
+            <div class="coops-testimonial-top">
+              <div class="coops-testimonial-stars">
+                {% assign rating = block.settings.rating | times: 1 %}
+                {% for i in (1..5) %}
+                  {% if i <= rating %}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#FACC15" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                    </svg>
+                  {% else %}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#6B7280" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                    </svg>
+                  {% endif %}
+                {% endfor %}
+                <span class="coops-testimonial-rating-text">{{ rating }}/5</span>
+              </div>
+              <div class="coops-testimonial-text">
+                {{ block.settings.review_text }}
+              </div>
+            </div>
+            <div class="coops-testimonial-bottom">
+              <div class="coops-testimonial-bottom-bg">
+                <svg
+                  preserveAspectRatio="none"
+                  viewBox="0 0 402 188"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="100%"
+                  height="100%"
+                >
+                  <path d="M0 86.1224C0 62.3404 22.3858 43.0612 50 43.0612H402V170.522C402 180.035 393.046 187.747 382 187.747H20C8.9543 187.747 0 180.035 0 170.522V86.1224Z" fill="#FDBB19"/>
+                  <path d="M352.02 43.0612H402V3.76453e-06C402 5.65488 400.707 11.2544 398.194 16.4788C395.681 21.7032 391.998 26.4503 387.355 30.4489C382.712 34.4475 377.2 37.6194 371.134 39.7834C365.074 41.9453 358.579 43.059 352.02 43.0612Z" fill="#FDBB19"/>
+                </svg>
+              </div>
+              <div class="coops-testimonial-reviewer">
+                {% if block.settings.reviewer_initials != blank %}
+                  <div class="coops-testimonial-avatar">{{ block.settings.reviewer_initials }}</div>
+                {% endif %}
+                <span class="coops-testimonial-name">{{ block.settings.reviewer_name }}</span>
+              </div>
+            </div>
+          </div>
+          {% if block.settings.product_image != blank %}
+            <div
+              class="coops-testimonial-product-image"
+              style="--img-width-desktop: {{ block.settings.image_width }}px; --img-width-mobile: {{ block.settings.image_width_mobile | default: 150 }}px; right: {{ block.settings.image_offset_x }}px; bottom: {{ block.settings.image_offset_y }}px;"
+            >
+              <img
+                src="{{ block.settings.product_image | image_url }}"
+                width="{{ block.settings.product_image.width }}"
+                height="{{ block.settings.product_image.height }}"
+                alt="{{ block.settings.product_image.alt | default: block.settings.reviewer_name | escape }}"
+                loading="lazy"
+              >
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.nav_position == 'bottom' %}
+      <div class="coops-testimonials-nav-bottom" style="justify-content: {{ section.settings.nav_alignment }};">
+        <button class="coops-nav-btn coops-nav-prev" aria-label="Previous Testimonials">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="coops-nav-btn coops-nav-next" aria-label="Next Testimonials">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .coops-testimonials-section {
+    overflow: hidden;
+  }
+  .coops-testimonials-custom-width {
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 15px;
+    box-sizing: border-box;
+  }
+  .coops-testimonials-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  .coops-testimonials-title {
+    margin: 0;
+  }
+  .coops-testimonials-nav {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .coops-testimonials-nav-bottom {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+  }
+  .coops-nav-btn {
+    background: #333333;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .coops-nav-btn:hover {
+    background: #555555;
+  }
+  .coops-testimonials-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - (var(--cards-per-row-mobile, 1) - 1) * 20px) / var(--cards-per-row-mobile, 1));
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 20px;
+    padding-bottom: 20px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .coops-testimonials-grid::-webkit-scrollbar {
+    display: none;
+  }
+  @media screen and (min-width: 768px) {
+    .coops-testimonials-grid {
+      grid-auto-columns: calc((100% - 20px) / 2);
+    }
+  }
+  @media screen and (min-width: 1024px) {
+    .coops-testimonials-grid {
+      grid-auto-columns: calc((100% - (var(--cards-per-row, 3) - 1) * 20px) / var(--cards-per-row, 3));
+    }
+  }
+
+  .coops-testimonial-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 22px;
+    overflow: hidden;
+    scroll-snap-align: start;
+    min-height: var(--card-min-height, auto);
+  }
+  .coops-testimonial-card-inner {
+    background-color: #333333;
+    display: flex;
+    flex-direction: column;
+    color: #ffffff;
+    position: relative;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    flex-grow: 1;
+  }
+
+  .coops-testimonial-top {
+    padding: 30px 30px 20px 30px;
+    z-index: 2;
+    flex-grow: 1;
+  }
+
+  .coops-testimonial-stars {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 15px;
+  }
+  .coops-testimonial-rating-text {
+    margin-left: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #facc15;
+  }
+
+  .coops-testimonial-text {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #e5e7eb;
+  }
+  .coops-testimonial-text p {
+    margin: 0;
+  }
+
+  .coops-testimonial-bottom {
+    position: relative;
+    padding: 70px 30px 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 160px;
+    color: #000000;
+    margin-top: 20px;
+  }
+  .coops-testimonial-bottom-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+  }
+  .coops-testimonial-bottom-bg svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+  }
+
+  .coops-testimonial-reviewer {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 2;
+    position: relative;
+  }
+
+  .coops-testimonial-avatar {
+    width: 48px;
+    height: 48px;
+    background-color: #000000;
+    color: #facc15;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .coops-testimonial-name {
+    font-weight: bold;
+    font-size: 18px;
+    max-width: 120px;
+    line-height: 1.2;
+  }
+
+  .coops-testimonial-product-image {
+    position: absolute;
+    width: var(--img-width-mobile, 200px);
+    /* Positions will be inherited from inline styles */
+    z-index: 10;
+    pointer-events: none;
+  }
+  @media screen and (min-width: 768px) {
+    .coops-testimonial-product-image {
+      width: var(--img-width-desktop, 200px);
+    }
+  }
+
+  .coops-testimonial-product-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const sectionContainers = document.querySelectorAll('.coops-testimonials-section');
+
+    sectionContainers.forEach((section) => {
+      const slider = section.querySelector('.coops-testimonials-grid');
+      const prevBtn = section.querySelector('.coops-nav-prev');
+      const nextBtn = section.querySelector('.coops-nav-next');
+
+      if (slider && prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', () => {
+          const card = slider.querySelector('.coops-testimonial-card');
+          if (card) {
+            const cardWidth = card.offsetWidth + 20; // 20px gap
+            slider.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+          }
+        });
+
+        nextBtn.addEventListener('click', () => {
+          const card = slider.querySelector('.coops-testimonial-card');
+          if (card) {
+            const cardWidth = card.offsetWidth + 20;
+            slider.scrollBy({ left: cardWidth, behavior: 'smooth' });
+          }
+        });
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Coops Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "What our customers say"
+    },
+    {
+      "type": "select",
+      "id": "title_alignment",
+      "label": "Title Alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" },
+        { "value": "space-between", "label": "Space Between" }
+      ],
+      "default": "space-between"
+    },
+    {
+      "type": "select",
+      "id": "nav_position",
+      "label": "Navigation Arrows Position",
+      "options": [
+        { "value": "top", "label": "Top (Next to Title)" },
+        { "value": "bottom", "label": "Bottom (Under Cards)" }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "select",
+      "id": "nav_alignment",
+      "label": "Bottom Navigation Alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "label": "Vertical Padding",
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page-width", "label": "Theme Default" },
+        { "value": "full-width", "label": "Full Width" },
+        { "value": "custom", "label": "Custom Max Width" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "range",
+      "id": "custom_max_width",
+      "min": 600,
+      "max": 2000,
+      "step": 50,
+      "unit": "px",
+      "label": "Custom Max Width",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "cards_per_row",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Cards per row (Desktop)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "cards_per_row_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Cards per row (Mobile)",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "card_min_height",
+      "min": 300,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "label": "Card Minimum Height",
+      "default": 400
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star Rating",
+          "default": 4
+        },
+        {
+          "type": "richtext",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "<p>This is a clever way to help you in your shop. I was not aware of a multi workshop tool like this.</p>"
+        },
+        {
+          "type": "text",
+          "id": "reviewer_initials",
+          "label": "Reviewer Initials",
+          "default": "MW"
+        },
+        {
+          "type": "text",
+          "id": "reviewer_name",
+          "label": "Reviewer Name",
+          "default": "Maxin Will"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Product Image (Transparent PNG recommended)"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "min": 100,
+          "max": 400,
+          "step": 10,
+          "unit": "px",
+          "label": "Product Image Width (Desktop)",
+          "default": 200
+        },
+        {
+          "type": "range",
+          "id": "image_width_mobile",
+          "min": 100,
+          "max": 400,
+          "step": 10,
+          "unit": "px",
+          "label": "Product Image Width (Mobile)",
+          "default": 150
+        },
+        {
+          "type": "range",
+          "id": "image_offset_x",
+          "min": -100,
+          "max": 50,
+          "step": 5,
+          "unit": "px",
+          "label": "Product Image Right Offset",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "image_offset_y",
+          "min": -100,
+          "max": 50,
+          "step": 5,
+          "unit": "px",
+          "label": "Product Image Bottom Offset",
+          "default": 0
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Coops Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

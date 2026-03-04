@@ -1,0 +1,255 @@
+{% style %}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .coops-icon-banner-{{ section.id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+  }
+
+  {% if section.settings.background_image != blank %}
+  .coops-icon-banner-{{ section.id }} .coops-icon-banner-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    filter: blur({{ section.settings.background_blur }}px);
+    /* Scale slightly to prevent blurred edges from showing background */
+    transform: scale(1.1);
+  }
+  {% endif %}
+
+  .coops-icon-banner-{{ section.id }} .coops-icon-banner-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    max-width: var(--page-width, 1200px);
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  @media screen and (min-width: 750px) {
+    .coops-icon-banner-{{ section.id }} .coops-icon-banner-content {
+      gap: 50px;
+      justify-content: space-around;
+    }
+  }
+
+  .coops-icon-banner-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1 1 120px;
+    max-width: 200px;
+  }
+
+  .coops-icon-banner-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .coops-icon-banner-icon img,
+  .coops-icon-banner-icon svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .coops-icon-banner-text {
+    font-size: {{ section.settings.text_size }}rem;
+    font-weight: {{ section.settings.text_weight }};
+    line-height: 1.3;
+    margin: 0;
+    opacity: {{ section.settings.text_opacity | divided_by: 100.0 }};
+  }
+{% endstyle %}
+
+<div class="coops-icon-banner-{{ section.id }} section-{{ section.id }}-padding">
+  {% if section.settings.background_image != blank %}
+    {{
+      section.settings.background_image
+      | image_url: width: 2000
+      | image_tag: class: 'coops-icon-banner-bg', loading: 'lazy'
+    }}
+  {% endif %}
+
+  <div class="coops-icon-banner-content">
+    {% for block in section.blocks %}
+      <div class="coops-icon-banner-item" {{ block.shopify_attributes }}>
+        <div class="coops-icon-banner-icon" style="width: {{ block.settings.icon_width }}px;">
+          {% if block.settings.svg_code != blank %}
+            {{ block.settings.svg_code }}
+          {% elsif block.settings.icon_image != blank %}
+            {{
+              block.settings.icon_image
+              | image_url: width: 200
+              | image_tag: loading: 'lazy', alt: block.settings.icon_image.alt
+              | default: block.settings.title
+            }}
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+        {% if block.settings.title != blank %}
+          <p class="coops-icon-banner-text">{{ block.settings.title | escape }}</p>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Coop's Icon Banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    },
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "range",
+      "id": "background_blur",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Background Image Blur",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "text_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Text Opacity",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 1.0,
+      "max": 3.0,
+      "step": 0.1,
+      "unit": "rem",
+      "label": "Text Size",
+      "default": 1.6
+    },
+    {
+      "type": "select",
+      "id": "text_weight",
+      "label": "Text Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ],
+      "default": "500"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon_block",
+      "name": "Icon Block",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon Image"
+        },
+        {
+          "type": "html",
+          "id": "svg_code",
+          "label": "Or SVG Code",
+          "info": "Paste SVG code here. Overrides image picker."
+        },
+        {
+          "type": "range",
+          "id": "icon_width",
+          "min": 20,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Icon Width",
+          "default": 50
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Text",
+          "default": "Icon Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Coop's Icon Banner",
+      "blocks": [{ "type": "icon_block" }, { "type": "icon_block" }, { "type": "icon_block" }, { "type": "icon_block" }]
+    }
+  ]
+}
+{% endschema %}

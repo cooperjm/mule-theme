@@ -69,9 +69,14 @@
     assign cbs_badge_sale_bg = '#e02020'
   endif
 
+  assign cbs_arrow_bg = section.settings.arrow_bg_color
+  if cbs_arrow_bg == 'rgba(0,0,0,0)'
+    assign cbs_arrow_bg = '#2d2d2d'
+  endif
+
   assign cbs_arrow_color = section.settings.arrow_color
   if cbs_arrow_color == 'rgba(0,0,0,0)'
-    assign cbs_arrow_color = settings.color_button_background
+    assign cbs_arrow_color = '#ffffff'
   endif
 
   assign cbs_dot_active = section.settings.dot_active_color
@@ -83,41 +88,6 @@
   if cbs_dot_inactive == 'rgba(0,0,0,0)'
     assign cbs_dot_inactive = settings.color_text_light
   endif
-
-  case section.settings.slider_height_desktop
-    when 'small'
-      assign cbs_slider_h_desktop = '320px'
-    when 'medium'
-      assign cbs_slider_h_desktop = '460px'
-    when 'large'
-      assign cbs_slider_h_desktop = '600px'
-    when 'viewport'
-      assign cbs_slider_h_desktop = '100vh'
-    when 'custom'
-      assign cbs_slider_h_desktop = section.settings.slider_height_desktop_custom | append: 'px'
-    else
-      assign cbs_slider_h_desktop = 'auto'
-  endcase
-
-  case section.settings.slider_height_mobile
-    when 'small'
-      assign cbs_slider_h_mobile = '240px'
-    when 'medium'
-      assign cbs_slider_h_mobile = '340px'
-    when 'large'
-      assign cbs_slider_h_mobile = '460px'
-    when 'viewport'
-      assign cbs_slider_h_mobile = '100vh'
-    when 'custom'
-      assign cbs_slider_h_mobile = section.settings.slider_height_mobile_custom | append: 'px'
-    else
-      assign cbs_slider_h_mobile = cbs_slider_h_desktop
-  endcase
-
-  assign cbs_slider_has_height = false
-  unless section.settings.slider_height_desktop == 'auto'
-    assign cbs_slider_has_height = true
-  endunless
 
   assign cbs_img_bg = section.settings.image_bg
   if cbs_img_bg == 'rgba(0,0,0,0)'
@@ -280,33 +250,35 @@
     flex-direction: column;
   }
 
-  /* ── Fixed section height — cards stretch to fill ────── */
-  #shopify-section-{{ section.id }} .cbs__slider-outer--fixed-h {
-    height: var(--cbs-h-desktop);
-  }
-
-  #shopify-section-{{ section.id }} .cbs__slider-outer--fixed-h .cbs__track {
-    height: 100%;
-  }
-
-  #shopify-section-{{ section.id }} .cbs__slider-outer--fixed-h .cbs__card {
-    height: 100%;
-  }
-
-  #shopify-section-{{ section.id }} .cbs__slider-outer--fixed-h .cbs__card-img-link {
-    flex: 1;
-    min-height: 0;
-  }
-
-  #shopify-section-{{ section.id }} .cbs__slider-outer--fixed-h .cbs__card-img-wrap {
-    height: 100%;
+  /* ── Custom Heights ──────────────────────────────────── */
+  {% if section.settings.image_height_desktop > 0 %}
+  #shopify-section-{{ section.id }} .cbs__card-img-wrap {
+    height: {{ section.settings.image_height_desktop }}px;
     aspect-ratio: unset;
   }
+  {% endif %}
+
+  {% if section.settings.body_height_desktop > 0 %}
+  #shopify-section-{{ section.id }} .cbs__card-body {
+    height: {{ section.settings.body_height_desktop }}px;
+    flex: none;
+  }
+  {% endif %}
 
   @media screen and (max-width: 749px) {
-    #shopify-section-{{ section.id }} .cbs__slider-outer--fixed-h {
-      height: var(--cbs-h-mobile);
+    {% if section.settings.image_height_mobile > 0 %}
+    #shopify-section-{{ section.id }} .cbs__card-img-wrap {
+      height: {{ section.settings.image_height_mobile }}px;
+      aspect-ratio: unset;
     }
+    {% endif %}
+
+    {% if section.settings.body_height_mobile > 0 %}
+    #shopify-section-{{ section.id }} .cbs__card-body {
+      height: {{ section.settings.body_height_mobile }}px;
+      flex: none;
+    }
+    {% endif %}
   }
 
   #shopify-section-{{ section.id }} .cbs__card-img-link {
@@ -532,12 +504,6 @@
     color: var(--cbs-card-text);
     opacity: 0.75;
     margin: 0;
-    /* hide on narrow multi-card tiles — only show in hero or grid modes */
-    display: none;
-  }
-
-  #shopify-section-{{ section.id }} [data-mode="slider"][data-spv-desktop="1"] .cbs__card-desc,
-  #shopify-section-{{ section.id }} .cbs__track--grid .cbs__card-desc {
     display: block;
   }
 
@@ -587,42 +553,49 @@
     }
   }
 
+  /* ── Controls (Arrows & Dots) ─────────────────────────── */
+  #shopify-section-{{ section.id }} .cbs__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 16px;
+    margin-top: 32px;
+  }
+
   /* ── Arrows ───────────────────────────────────────────── */
   #shopify-section-{{ section.id }} .cbs__arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    border: 2px solid var(--cbs-arrow-color);
-    background: transparent;
+    border: none;
+    background-color: var(--cbs-arrow-bg);
     color: var(--cbs-arrow-color);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.2s, opacity 0.2s;
+    transition: opacity 0.2s, background-color 0.2s;
     padding: 0;
   }
 
-  #shopify-section-{{ section.id }} .cbs__arrow:hover {
-    background-color: var(--cbs-arrow-color);
-    color: var(--cbs-section-bg);
+  #shopify-section-{{ section.id }} .cbs__arrow:hover:not(:disabled) {
+    opacity: 0.85;
   }
 
-  #shopify-section-{{ section.id }} .cbs__arrow--prev {
-    left: 10px;
+  #shopify-section-{{ section.id }} .cbs__arrow:disabled {
+    opacity: 0.25;
+    cursor: default;
   }
 
+  #shopify-section-{{ section.id }} .cbs__arrow--prev,
   #shopify-section-{{ section.id }} .cbs__arrow--next {
-    right: 10px;
+    /* override any legacy absolute position rules just in case */
+    position: static;
+    transform: none;
   }
 
-  #shopify-section-{{ section.id }} .cbs__arrow[hidden] {
-    display: none;
-  }
+
 
   /* ── Dots ─────────────────────────────────────────────── */
   #shopify-section-{{ section.id }} .cbs__dots {
@@ -630,7 +603,6 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-top: 24px;
   }
 
   #shopify-section-{{ section.id }} .cbs__dot {
@@ -688,6 +660,7 @@
     --cbs-atc-text: {{ cbs_atc_text }};
     --cbs-badge-sale-bg: {{ cbs_badge_sale_bg }};
     --cbs-arrow-color: {{ cbs_arrow_color }};
+    --cbs-arrow-bg: {{ cbs_arrow_bg }};
     --cbs-dot-active: {{ cbs_dot_active }};
     --cbs-dot-inactive: {{ cbs_dot_inactive }};
     --cbs-gap: {{ section.settings.card_gap }}px;
@@ -733,8 +706,7 @@
     {%- else -%}
       {%- comment -%} ── Slider outer ── {%- endcomment -%}
       <div
-        class="cbs__slider-outer{% if cbs_slider_has_height %} cbs__slider-outer--fixed-h{% endif %}"
-        {% if cbs_slider_has_height %}style="--cbs-h-desktop: {{ cbs_slider_h_desktop }}; --cbs-h-mobile: {{ cbs_slider_h_mobile }};"{% endif %}
+        class="cbs__slider-outer"
         data-cbs-outer
       >
         <ul
@@ -861,23 +833,32 @@
             </li>
           {%- endfor -%}
         </ul>
-
-        {%- if cbs_mode == 'slider' and section.settings.show_arrows -%}
-          <button class="cbs__arrow cbs__arrow--prev" data-cbs-prev aria-label="Previous products">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-              <path d="M11 14L6 9L11 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <button class="cbs__arrow cbs__arrow--next" data-cbs-next aria-label="Next products">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-              <path d="M7 4L12 9L7 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        {%- endif -%}
       </div>
 
-      {%- if cbs_mode == 'slider' and section.settings.show_dots -%}
-        <div class="cbs__dots" data-cbs-dots></div>
+      {%- if cbs_mode == 'slider' -%}
+        {%- if section.settings.show_arrows or section.settings.show_dots -%}
+          <div class="cbs__controls">
+            {%- if section.settings.show_arrows -%}
+              <button class="cbs__arrow cbs__arrow--prev" data-cbs-prev aria-label="Previous products">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M11 14L6 9L11 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            {%- endif -%}
+
+            {%- if section.settings.show_dots -%}
+              <div class="cbs__dots" data-cbs-dots></div>
+            {%- endif -%}
+
+            {%- if section.settings.show_arrows -%}
+              <button class="cbs__arrow cbs__arrow--next" data-cbs-next aria-label="Next products">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M7 4L12 9L7 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
       {%- endif -%}
     {%- endif -%}
   </div>
@@ -935,9 +916,14 @@
 
     // ── Blur background fade-in ───────────────────────────
     sectionEl.querySelectorAll('.cbs__blur-bg-img').forEach(function (img) {
-      function show() { img.style.opacity = '1'; }
-      if (img.complete && img.naturalWidth > 0) { show(); }
-      else { img.addEventListener('load', show); }
+      function show() {
+        img.style.opacity = '1';
+      }
+      if (img.complete && img.naturalWidth > 0) {
+        show();
+      } else {
+        img.addEventListener('load', show);
+      }
     });
 
     // ── Grid mode: no slider logic needed ─────────────────
@@ -1023,8 +1009,8 @@
       }
       track.style.transform = 'translateX(-' + offset + 'px)';
 
-      if (prevBtn) prevBtn.hidden = current === 0;
-      if (nextBtn) nextBtn.hidden = current >= pages - 1;
+      if (prevBtn) prevBtn.disabled = current === 0;
+      if (nextBtn) nextBtn.disabled = current >= pages - 1;
 
       updateDots();
     }
@@ -1117,7 +1103,6 @@
   "name": "Coops Best Sellers",
   "class": "coops-best-sellers-section",
   "settings": [
-
     { "type": "header", "content": "Header" },
     {
       "id": "heading",
@@ -1135,9 +1120,9 @@
       "type": "select",
       "label": "Heading alignment",
       "options": [
-        { "value": "left",   "label": "Left"   },
+        { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right",  "label": "Right"  }
+        { "value": "right", "label": "Right" }
       ],
       "default": "left"
     },
@@ -1181,7 +1166,7 @@
       "label": "Display mode",
       "options": [
         { "value": "slider", "label": "Slider" },
-        { "value": "grid",   "label": "Grid"   }
+        { "value": "grid", "label": "Grid" }
       ],
       "default": "slider"
     },
@@ -1236,54 +1221,48 @@
 
     { "type": "header", "content": "Height / Width" },
     {
-      "id": "slider_height_desktop",
-      "type": "select",
-      "label": "Slider height — desktop",
-      "info": "Fixed height stretches cards to fill the section; images fill remaining card space.",
-      "options": [
-        { "value": "auto",     "label": "Auto (content height)"  },
-        { "value": "small",    "label": "Small — 320px"          },
-        { "value": "medium",   "label": "Medium — 460px"         },
-        { "value": "large",    "label": "Large — 600px"          },
-        { "value": "viewport", "label": "Full viewport height"   },
-        { "value": "custom",   "label": "Custom"                 }
-      ],
-      "default": "auto"
-    },
-    {
-      "id": "slider_height_desktop_custom",
+      "id": "image_height_desktop",
       "type": "range",
-      "label": "Custom desktop height",
-      "min": 200,
-      "max": 900,
-      "step": 20,
+      "label": "Custom image height — desktop",
+      "info": "Set to 0 to use aspect ratio",
+      "min": 0,
+      "max": 800,
+      "step": 10,
       "unit": "px",
-      "default": 500
+      "default": 0
     },
     {
-      "id": "slider_height_mobile",
-      "type": "select",
-      "label": "Slider height — mobile",
-      "info": "Defaults to the desktop height if set to Auto.",
-      "options": [
-        { "value": "auto",     "label": "Auto (match desktop / content)" },
-        { "value": "small",    "label": "Small — 240px"                  },
-        { "value": "medium",   "label": "Medium — 340px"                 },
-        { "value": "large",    "label": "Large — 460px"                  },
-        { "value": "viewport", "label": "Full viewport height"           },
-        { "value": "custom",   "label": "Custom"                         }
-      ],
-      "default": "auto"
-    },
-    {
-      "id": "slider_height_mobile_custom",
+      "id": "image_height_mobile",
       "type": "range",
-      "label": "Custom mobile height",
-      "min": 160,
+      "label": "Custom image height — mobile",
+      "info": "Set to 0 to use aspect ratio",
+      "min": 0,
       "max": 600,
-      "step": 20,
+      "step": 10,
       "unit": "px",
-      "default": 360
+      "default": 0
+    },
+    {
+      "id": "body_height_desktop",
+      "type": "range",
+      "label": "Custom body height — desktop",
+      "info": "Set to 0 to auto-size based on content",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "id": "body_height_mobile",
+      "type": "range",
+      "label": "Custom body height — mobile",
+      "info": "Set to 0 to auto-size based on content",
+      "min": 0,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 0
     },
     {
       "id": "container_max_width",
@@ -1381,10 +1360,10 @@
       "type": "select",
       "label": "Aspect ratio",
       "options": [
-        { "value": "1 / 1",  "label": "Square (1:1)"        },
-        { "value": "3 / 4",  "label": "Portrait (3:4)"       },
-        { "value": "4 / 3",  "label": "Landscape (4:3)"      },
-        { "value": "16 / 9", "label": "Widescreen (16:9)"    }
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "3 / 4", "label": "Portrait (3:4)" },
+        { "value": "4 / 3", "label": "Landscape (4:3)" },
+        { "value": "16 / 9", "label": "Widescreen (16:9)" }
       ],
       "default": "1 / 1"
     },
@@ -1393,9 +1372,9 @@
       "type": "select",
       "label": "Image fit",
       "options": [
-        { "value": "cover",   "label": "Cover — fill frame, crop edges"        },
-        { "value": "contain", "label": "Contain — show full image, no crop"    },
-        { "value": "fill",    "label": "Fill — stretch to frame (may distort)" }
+        { "value": "cover", "label": "Cover — fill frame, crop edges" },
+        { "value": "contain", "label": "Contain — show full image, no crop" },
+        { "value": "fill", "label": "Fill — stretch to frame (may distort)" }
       ],
       "default": "cover"
     },
@@ -1539,7 +1518,13 @@
     {
       "id": "arrow_color",
       "type": "color",
-      "label": "Slider arrows",
+      "label": "Slider arrow (icon) color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "id": "arrow_bg_color",
+      "type": "color",
+      "label": "Slider arrow background color",
       "default": "rgba(0,0,0,0)"
     },
     {
@@ -1576,7 +1561,6 @@
       "unit": "px",
       "default": 60
     }
-
   ],
   "presets": [
     {
