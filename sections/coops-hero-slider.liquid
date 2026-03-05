@@ -103,6 +103,11 @@
     z-index: 3;
   }
 
+  /* Disable transitions during cleanup to prevent visible snap-back */
+  #shopify-section-{{ section.id }} .mhs__slide.mhs__no-transition {
+    transition: none !important;
+  }
+
   /* Fade */
   #shopify-section-{{ section.id }} .mhs__track--fade .mhs__slide {
     opacity: 0;
@@ -143,6 +148,14 @@
     transform: translateX(0);
     z-index: 2;
   }
+  /* Reveal — reverse (prev direction) */
+  #shopify-section-{{ section.id }} .mhs__track--reveal .mhs__slide.is-reverse {
+    transform: translateX(-100%);
+  }
+  #shopify-section-{{ section.id }} .mhs__track--reveal .mhs__slide.is-active.is-reverse {
+    transform: translateX(0);
+    z-index: 2;
+  }
 
   /* Parallax */
   #shopify-section-{{ section.id }} .mhs__track--parallax .mhs__slide {
@@ -154,6 +167,18 @@
     z-index: 1;
   }
   #shopify-section-{{ section.id }} .mhs__track--parallax .mhs__slide.is-active {
+    transform: translateX(0);
+    z-index: 2;
+  }
+  /* Parallax — reverse (prev direction) */
+  #shopify-section-{{ section.id }} .mhs__track--parallax .mhs__slide.is-reverse {
+    transform: translateX(-100%);
+  }
+  #shopify-section-{{ section.id }} .mhs__track--parallax .mhs__slide.is-leaving.is-reverse {
+    transform: translateX(30%);
+    z-index: 1;
+  }
+  #shopify-section-{{ section.id }} .mhs__track--parallax .mhs__slide.is-active.is-reverse {
     transform: translateX(0);
     z-index: 2;
   }
@@ -284,8 +309,7 @@
   }
 
   /* Active states (triggers the transition) */
-  #shopify-section-{{ section.id }} .mhs__slide.is-active .mhs__content-inner[class*="--anim-"] > *,
-  #shopify-section-{{ section.id }} .mhs__slide.is-leaving .mhs__content-inner[class*="--anim-"] > * {
+  #shopify-section-{{ section.id }} .mhs__slide.is-active .mhs__content-inner[class*="--anim-"] > * {
     opacity: 1;
     transform: none;
   }
@@ -866,8 +890,13 @@
 
     var current = 0;
     var timer = null;
+    var isAnimating = false;
+    var cleanupTimer = null;
     var isAutoplay = slider.dataset.autoplay === 'true';
     var speed = (parseInt(slider.dataset.autoplaySpeed, 10) || 5) * 1000;
+
+    /* Match this to the longest CSS transition duration (--mhs-transition-speed / --mhs-fade-speed) */
+    var transitionMs = 600;
 
     var transType = slider.dataset.transition;
     var isAbsoluteMode =
@@ -877,23 +906,61 @@
       track.classList.add('mhs__track--absolute', 'mhs__track--' + transType);
     }
 
-    function setSlide(index) {
-      if (index === current) return;
-      var prev = current;
-      current = ((index % total) + total) % total;
-
+    /* Force-finish any in-progress transition so state is clean */
+    function finishTransition() {
+      if (cleanupTimer) {
+        clearTimeout(cleanupTimer);
+        cleanupTimer = null;
+      }
       slides.forEach(function (s) {
-        s.classList.remove('is-leaving');
+        s.classList.add('mhs__no-transition');
+        s.classList.remove('is-leaving', 'is-reverse');
+        void s.offsetHeight; /* force browser to commit the snap */
+        s.classList.remove('mhs__no-transition');
       });
+      isAnimating = false;
+    }
 
-      slides[prev].classList.remove('is-active');
-      slides[prev].classList.add('is-leaving');
+    function setSlide(index, direction) {
+      var target = ((index % total) + total) % total;
+      if (target === current) return;
+      direction = direction || 'next';
 
+      /* If a transition is already running, force-finish it first */
+      if (isAnimating) {
+        finishTransition();
+      }
+
+      isAnimating = true;
+      var prevIndex = current;
+      current = target;
+      var isReverse = direction === 'prev';
+
+      /* Mark leaving slide */
+      slides[prevIndex].classList.remove('is-active');
+      slides[prevIndex].classList.add('is-leaving');
+      if (isReverse) slides[prevIndex].classList.add('is-reverse');
+
+      /* Mark incoming slide */
       slides[current].classList.add('is-active');
+      if (isReverse) slides[current].classList.add('is-reverse');
 
       if (!isAbsoluteMode) {
         track.style.transform = 'translateX(-' + current * 100 + '%)';
       }
+
+      /* Clean up after the CSS transition finishes */
+      var cleanPrev = prevIndex;
+      var cleanCurr = current;
+      cleanupTimer = setTimeout(function () {
+        slides[cleanPrev].classList.add('mhs__no-transition');
+        slides[cleanPrev].classList.remove('is-leaving', 'is-reverse');
+        void slides[cleanPrev].offsetHeight; /* force browser to commit the snap */
+        slides[cleanPrev].classList.remove('mhs__no-transition');
+        slides[cleanCurr].classList.remove('is-reverse');
+        isAnimating = false;
+        cleanupTimer = null;
+      }, transitionMs);
 
       dots.forEach(function (dot, i) {
         var active = i === current;
@@ -905,10 +972,10 @@
     }
 
     function next() {
-      setSlide(current + 1);
+      setSlide(current + 1, 'next');
     }
     function prev() {
-      setSlide(current - 1);
+      setSlide(current - 1, 'prev');
     }
 
     function startAutoplay() {
@@ -939,7 +1006,9 @@
 
     dots.forEach(function (dot) {
       dot.addEventListener('click', function () {
-        setSlide(parseInt(dot.dataset.mhsDot, 10));
+        var target = parseInt(dot.dataset.mhsDot, 10);
+        var dir = target >= current ? 'next' : 'prev';
+        setSlide(target, dir);
         resetAutoplay();
       });
     });
