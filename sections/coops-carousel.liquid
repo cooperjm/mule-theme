@@ -1,0 +1,866 @@
+{%- comment -%} Coops Carousel — self-contained image carousel section {%- endcomment -%}
+
+{% liquid
+  assign eyebrow = section.settings.eyebrow
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign body_text = section.settings.body_text
+
+  assign bg_color = section.settings.bg_color
+  assign bg_image = section.settings.bg_image
+  assign bg_blur = section.settings.bg_blur
+  assign overlay_color = section.settings.overlay_color
+  assign overlay_opacity = section.settings.overlay_opacity | times: 0.01
+
+  assign img_height = section.settings.image_height
+  assign img_height_mobile = section.settings.image_height_mobile
+  assign img_gap = section.settings.image_gap
+  assign img_radius = section.settings.image_radius
+  assign aspect = section.settings.aspect_ratio
+  assign scroll_speed = section.settings.scroll_speed
+  assign pause_hover = section.settings.pause_on_hover
+  assign randomize = section.settings.randomize_order
+  assign lightbox = section.settings.enable_lightbox
+
+  assign section_id = section.id
+  assign block_count = section.blocks.size
+%}
+
+{%- capture aspect_css -%}
+  {%- case aspect -%}
+    {%- when 'natural' -%}auto
+    {%- when '1-1' -%}1 / 1
+    {%- when '3-4' -%}3 / 4
+    {%- when '4-3' -%}4 / 3
+    {%- when '16-9' -%}16 / 9
+    {%- when '9-16' -%}9 / 16
+    {%- when 'custom' -%}{{ section.settings.custom_ratio_w }} / {{ section.settings.custom_ratio_h }}
+  {%- endcase -%}
+{%- endcapture -%}
+{%- assign aspect_css = aspect_css | strip -%}
+
+<style>
+  /* ── Section ────────────────────────────────────────── */
+  #shopify-section-{{ section_id }} .cc {
+    position: relative;
+    overflow: hidden;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ bg_color }};
+  }
+
+  #shopify-section-{{ section_id }} .cc__bg-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    {% if bg_blur > 0 %}
+      filter: blur({{ bg_blur }}px);
+      transform: scale(1.05);
+    {% endif %}
+  }
+
+  #shopify-section-{{ section_id }} .cc__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-color: {{ overlay_color }};
+    opacity: {{ overlay_opacity }};
+  }
+
+  #shopify-section-{{ section_id }} .cc__inner {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ── Container widths ───────────────────────────────── */
+  #shopify-section-{{ section_id }} .cc__container--page-width {
+    max-width: var(--page-width, 1200px);
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+  #shopify-section-{{ section_id }} .cc__container--full-width {
+    width: 100%;
+    padding: 0 15px;
+  }
+  #shopify-section-{{ section_id }} .cc__container--custom {
+    max-width: {{ section.settings.custom_max_width }}px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  /* ── Header ─────────────────────────────────────────── */
+  #shopify-section-{{ section_id }} .cc__header {
+    text-align: {{ section.settings.text_alignment }};
+    margin-bottom: 40px;
+  }
+
+  #shopify-section-{{ section_id }} .cc__eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+    color: {{ section.settings.eyebrow_color }};
+    font-weight: {{ section.settings.eyebrow_weight }};
+  }
+
+  #shopify-section-{{ section_id }} .cc__heading {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.1;
+    margin: 0 0 12px;
+    color: {{ section.settings.heading_color }};
+    font-weight: {{ section.settings.heading_weight }};
+    text-wrap: balance;
+  }
+
+  #shopify-section-{{ section_id }} .cc__subheading {
+    font-size: clamp(16px, 2vw, 22px);
+    line-height: 1.3;
+    margin: 0 0 12px;
+    color: {{ section.settings.subheading_color }};
+    font-weight: {{ section.settings.subheading_weight }};
+  }
+
+  #shopify-section-{{ section_id }} .cc__body {
+    font-size: clamp(14px, 1.4vw, 17px);
+    line-height: 1.6;
+    margin: 0;
+    color: {{ section.settings.body_color }};
+    font-weight: {{ section.settings.body_weight }};
+  }
+  #shopify-section-{{ section_id }} .cc__body p {
+    margin: 0;
+  }
+
+  /* ── Carousel wrapper ───────────────────────────────── */
+  #shopify-section-{{ section_id }} .cc__carousel {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── Track (infinite marquee) ────────────────────────── */
+  #shopify-section-{{ section_id }} .cc__track {
+    display: flex;
+    gap: {{ img_gap }}px;
+    width: max-content;
+    animation: cc-scroll-{{ section_id }} {{ scroll_speed }}s linear infinite;
+  }
+
+  {% if pause_hover %}
+  #shopify-section-{{ section_id }} .cc__carousel:hover .cc__track {
+    animation-play-state: paused;
+  }
+  {% endif %}
+
+  @keyframes cc-scroll-{{ section_id }} {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── Slides ─────────────────────────────────────────── */
+  #shopify-section-{{ section_id }} .cc__slide {
+    flex: 0 0 auto;
+    height: {{ img_height }}px;
+    overflow: hidden;
+    border-radius: {{ img_radius }}px;
+    position: relative;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section_id }} .cc__slide {
+      height: {{ img_height_mobile }}px;
+    }
+  }
+
+  #shopify-section-{{ section_id }} .cc__slide-link {
+    display: block;
+    height: 100%;
+  }
+
+  #shopify-section-{{ section_id }} .cc__img {
+    display: block;
+    height: 100%;
+    {% if aspect == 'natural' %}
+      width: auto;
+    {% else %}
+      aspect-ratio: {{ aspect_css }};
+    {% endif %}
+    object-fit: cover;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section_id }} .cc__header {
+      margin-bottom: 24px;
+    }
+  }
+
+  /* ── Lightbox ──────────────────────────────────────── */
+  #shopify-section-{{ section_id }} .cc__lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.92);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  }
+  #shopify-section-{{ section_id }} .cc__lightbox.is-open {
+    display: flex;
+  }
+  #shopify-section-{{ section_id }} .cc__lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 4px;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+    cursor: default;
+  }
+  #shopify-section-{{ section_id }} .cc__lightbox.is-open .cc__lightbox-img {
+    transform: scale(1);
+  }
+  #shopify-section-{{ section_id }} .cc__lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    z-index: 2;
+  }
+  #shopify-section-{{ section_id }} .cc__lightbox-close:hover {
+    background: rgba(255,255,255,0.3);
+  }
+  #shopify-section-{{ section_id }} .cc__lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    z-index: 2;
+  }
+  #shopify-section-{{ section_id }} .cc__lightbox-nav:hover {
+    background: rgba(255,255,255,0.3);
+  }
+  #shopify-section-{{ section_id }} .cc__lightbox-prev { left: 20px; }
+  #shopify-section-{{ section_id }} .cc__lightbox-next { right: 20px; }
+
+  #shopify-section-{{ section_id }} .cc__slide[data-cc-lightbox] {
+    cursor: zoom-in;
+  }
+</style>
+
+<section
+  class="cc"
+  data-cc-section="{{ section_id }}"
+  data-cc-randomize="{{ randomize }}"
+  data-cc-lightbox="{{ lightbox }}"
+>
+  {%- if bg_image != blank -%}
+    {{ bg_image | image_url: width: 3000 | image_tag: loading: 'lazy', class: 'cc__bg-image' }}
+  {%- endif -%}
+
+  {%- if overlay_opacity > 0 and overlay_color != 'rgba(0,0,0,0)' -%}
+    <div class="cc__overlay"></div>
+  {%- endif -%}
+
+  <div class="cc__inner">
+    {%- if eyebrow != blank or heading != blank or subheading != blank or body_text != blank -%}
+      <div class="cc__container--{{ section.settings.section_width }}">
+        <div class="cc__header">
+          {%- if eyebrow != blank -%}
+            <p class="cc__eyebrow">{{ eyebrow | escape }}</p>
+          {%- endif -%}
+          {%- if heading != blank -%}
+            <h2 class="cc__heading">{{ heading | escape }}</h2>
+          {%- endif -%}
+          {%- if subheading != blank -%}
+            <p class="cc__subheading">{{ subheading | escape }}</p>
+          {%- endif -%}
+          {%- if body_text != blank -%}
+            <div class="cc__body">{{ body_text }}</div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if block_count > 0 -%}
+      <div class="cc__carousel">
+        <div class="cc__track" data-cc-track>
+          {%- comment -%} Original set {%- endcomment -%}
+          {%- for block in section.blocks -%}
+            {%- assign link_url = block.settings.image_link -%}
+            {%- assign has_link = false -%}
+            {%- if link_url != blank %}{% assign has_link = true %}{% endif -%}
+            <div
+              class="cc__slide"
+              {{ block.shopify_attributes }}
+              {%- if block.settings.image != blank and has_link == false %}
+                data-cc-lightbox="{{ block.settings.image | image_url: width: 2000 }}"
+              {% endif -%}
+            >
+              {%- if block.settings.image != blank -%}
+                {%- if has_link -%}
+                  <a href="{{ link_url }}" class="cc__slide-link">
+                {%- endif -%}
+                {{
+                  block.settings.image
+                  | image_url: height: img_height, crop: 'center'
+                  | image_tag: loading: 'lazy', class: 'cc__img', widths: '200, 300, 400, 500, 600, 800, 1000, 1200'
+                }}
+                {%- if has_link -%}
+                  </a>
+                {%- endif -%}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'cc__img' }}
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+
+          {%- comment -%} Duplicate set for seamless infinite loop {%- endcomment -%}
+          {%- for block in section.blocks -%}
+            {%- assign link_url = block.settings.image_link -%}
+            {%- assign has_link = false -%}
+            {%- if link_url != blank %}{% assign has_link = true %}{% endif -%}
+            <div
+              class="cc__slide"
+              aria-hidden="true"
+              {%- if block.settings.image != blank and has_link == false %}
+                data-cc-lightbox="{{ block.settings.image | image_url: width: 2000 }}"
+              {% endif -%}
+            >
+              {%- if block.settings.image != blank -%}
+                {%- if has_link -%}
+                  <a href="{{ link_url }}" class="cc__slide-link" tabindex="-1">
+                {%- endif -%}
+                {{
+                  block.settings.image
+                  | image_url: height: img_height, crop: 'center'
+                  | image_tag: loading: 'lazy', class: 'cc__img', widths: '200, 300, 400, 500, 600, 800, 1000, 1200'
+                }}
+                {%- if has_link -%}
+                  </a>
+                {%- endif -%}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'cc__img' }}
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if lightbox -%}
+    <div class="cc__lightbox" data-cc-lightbox-overlay>
+      <button class="cc__lightbox-close" data-cc-lightbox-close aria-label="Close">&times;</button>
+      <button class="cc__lightbox-nav cc__lightbox-prev" data-cc-lightbox-prev aria-label="Previous image">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <img class="cc__lightbox-img" data-cc-lightbox-img src="" alt="">
+      <button class="cc__lightbox-nav cc__lightbox-next" data-cc-lightbox-next aria-label="Next image">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  (function () {
+    const SECTION_ID = '{{ section_id }}';
+    const section = document.querySelector('[data-cc-section="' + SECTION_ID + '"]');
+    if (!section) return;
+
+    const track = section.querySelector('[data-cc-track]');
+
+    if (!track) return;
+
+    /* ── Randomize order ───────────────────────────────── */
+    if (section.dataset.ccRandomize === 'true') {
+      const slides = Array.from(track.querySelectorAll('.cc__slide'));
+      const half = Math.ceil(slides.length / 2);
+      const originals = slides.slice(0, half);
+
+      /* Fisher-Yates shuffle */
+      for (let i = originals.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        track.insertBefore(originals[j], originals[i]);
+        [originals[i], originals[j]] = [originals[j], originals[i]];
+      }
+
+      /* Rebuild the duplicate set to match the new order */
+      const dupes = slides.slice(half);
+      dupes.forEach(function (d) {
+        d.remove();
+      });
+      originals.forEach(function (orig) {
+        const clone = orig.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        clone.removeAttribute('data-shopify-editor-block');
+        track.appendChild(clone);
+      });
+    }
+
+    /* ── Lightbox ───────────────────────────────────────── */
+    if (section.dataset.ccLightbox === 'true') {
+      const overlay = section.querySelector('[data-cc-lightbox-overlay]');
+      const lbImg = section.querySelector('[data-cc-lightbox-img]');
+      const lbClose = section.querySelector('[data-cc-lightbox-close]');
+      const lbPrev = section.querySelector('[data-cc-lightbox-prev]');
+      const lbNext = section.querySelector('[data-cc-lightbox-next]');
+
+      if (!overlay || !lbImg) return;
+
+      /* Collect all unique lightbox-enabled image URLs */
+      let lbImages = [];
+      let currentIdx = 0;
+
+      function collectImages() {
+        const seen = new Set();
+        lbImages = [];
+        track.querySelectorAll('.cc__slide[data-cc-lightbox]').forEach(function (slide) {
+          const url = slide.getAttribute('data-cc-lightbox');
+          if (url && !seen.has(url)) {
+            seen.add(url);
+            lbImages.push(url);
+          }
+        });
+      }
+
+      function openLightbox(url) {
+        collectImages();
+        currentIdx = lbImages.indexOf(url);
+        if (currentIdx === -1) currentIdx = 0;
+        lbImg.src = lbImages[currentIdx];
+        overlay.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        overlay.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
+
+      function showImage(idx) {
+        if (lbImages.length === 0) return;
+        currentIdx = (idx + lbImages.length) % lbImages.length;
+        lbImg.src = lbImages[currentIdx];
+      }
+
+      track.addEventListener('click', function (e) {
+        const slide = e.target.closest('.cc__slide[data-cc-lightbox]');
+        if (!slide) return;
+        e.preventDefault();
+        openLightbox(slide.getAttribute('data-cc-lightbox'));
+      });
+
+      lbClose.addEventListener('click', closeLightbox);
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeLightbox();
+      });
+
+      if (lbPrev)
+        lbPrev.addEventListener('click', function (e) {
+          e.stopPropagation();
+          showImage(currentIdx - 1);
+        });
+      if (lbNext)
+        lbNext.addEventListener('click', function (e) {
+          e.stopPropagation();
+          showImage(currentIdx + 1);
+        });
+
+      document.addEventListener('keydown', function (e) {
+        if (!overlay.classList.contains('is-open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') showImage(currentIdx - 1);
+        if (e.key === 'ArrowRight') showImage(currentIdx + 1);
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Coops Carousel",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header text"
+    },
+    {
+      "id": "eyebrow",
+      "type": "text",
+      "label": "Eyebrow",
+      "info": "Small label above the heading."
+    },
+    {
+      "id": "heading",
+      "type": "text",
+      "label": "Heading",
+      "default": "Image Carousel"
+    },
+    {
+      "id": "subheading",
+      "type": "text",
+      "label": "Subheading"
+    },
+    {
+      "id": "body_text",
+      "type": "richtext",
+      "label": "Body text"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "id": "eyebrow_color",
+      "type": "color",
+      "label": "Eyebrow color",
+      "default": "#666666"
+    },
+    {
+      "id": "eyebrow_weight",
+      "type": "select",
+      "label": "Eyebrow weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "id": "heading_color",
+      "type": "color",
+      "label": "Heading color",
+      "default": "#111111"
+    },
+    {
+      "id": "heading_weight",
+      "type": "select",
+      "label": "Heading weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra-bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "id": "subheading_color",
+      "type": "color",
+      "label": "Subheading color",
+      "default": "#444444"
+    },
+    {
+      "id": "subheading_weight",
+      "type": "select",
+      "label": "Subheading weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "id": "body_color",
+      "type": "color",
+      "label": "Body text color",
+      "default": "#555555"
+    },
+    {
+      "id": "body_weight",
+      "type": "select",
+      "label": "Body text weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "id": "bg_color",
+      "type": "color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "id": "bg_image",
+      "type": "image_picker",
+      "label": "Background image"
+    },
+    {
+      "id": "bg_blur",
+      "type": "range",
+      "label": "Background image blur",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "id": "overlay_color",
+      "type": "color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "id": "overlay_opacity",
+      "type": "range",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "id": "padding_top",
+      "type": "range",
+      "label": "Section top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "id": "padding_bottom",
+      "type": "range",
+      "label": "Section bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "id": "section_width",
+      "type": "select",
+      "label": "Header content width",
+      "options": [
+        { "value": "page-width", "label": "Theme default" },
+        { "value": "full-width", "label": "Full width" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "id": "custom_max_width",
+      "type": "range",
+      "label": "Custom max width",
+      "min": 600,
+      "max": 2000,
+      "step": 50,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "id": "text_alignment",
+      "type": "select",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Carousel"
+    },
+    {
+      "id": "image_height",
+      "type": "range",
+      "label": "Image height (desktop)",
+      "min": 150,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "id": "image_height_mobile",
+      "type": "range",
+      "label": "Image height (mobile)",
+      "min": 100,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "id": "image_gap",
+      "type": "range",
+      "label": "Space between images",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "id": "aspect_ratio",
+      "type": "select",
+      "label": "Image aspect ratio",
+      "options": [
+        { "value": "natural", "label": "Natural (original ratio)" },
+        { "value": "1-1", "label": "1:1 Square" },
+        { "value": "3-4", "label": "3:4 Portrait" },
+        { "value": "4-3", "label": "4:3 Landscape" },
+        { "value": "16-9", "label": "16:9 Widescreen" },
+        { "value": "9-16", "label": "9:16 Tall portrait" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "natural"
+    },
+    {
+      "id": "custom_ratio_w",
+      "type": "range",
+      "label": "Custom ratio — width",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "id": "custom_ratio_h",
+      "type": "range",
+      "label": "Custom ratio — height",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "id": "image_radius",
+      "type": "range",
+      "label": "Image border radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Scroll behavior"
+    },
+    {
+      "id": "scroll_speed",
+      "type": "range",
+      "label": "Scroll speed",
+      "info": "Lower = faster. Seconds per full loop cycle.",
+      "min": 5,
+      "max": 120,
+      "step": 5,
+      "unit": "s",
+      "default": 30
+    },
+    {
+      "id": "pause_on_hover",
+      "type": "checkbox",
+      "label": "Pause on hover",
+      "default": true
+    },
+    {
+      "id": "randomize_order",
+      "type": "checkbox",
+      "label": "Randomize image order",
+      "info": "Shuffles images randomly on each page load.",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Lightbox"
+    },
+    {
+      "id": "enable_lightbox",
+      "type": "checkbox",
+      "label": "Enable lightbox",
+      "info": "Click an image to view it full-size. Only applies to images without a link.",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "id": "image",
+          "type": "image_picker",
+          "label": "Image"
+        },
+        {
+          "id": "image_link",
+          "type": "url",
+          "label": "Image link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Coops Carousel",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}
