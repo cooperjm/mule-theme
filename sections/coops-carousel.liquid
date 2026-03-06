@@ -22,6 +22,12 @@
   assign randomize = section.settings.randomize_order
   assign lightbox = section.settings.enable_lightbox
 
+  assign edge_fade = section.settings.enable_edge_fade
+  assign edge_fade_width = section.settings.edge_fade_width
+  assign hover_effect = section.settings.hover_effect
+  assign enable_shadow = section.settings.enable_shadow
+  assign shadow_intensity = section.settings.shadow_intensity | times: 0.01
+
   assign section_id = section.id
   assign block_count = section.blocks.size
 %}
@@ -138,22 +144,50 @@
   /* ── Carousel wrapper ───────────────────────────────── */
   #shopify-section-{{ section_id }} .cc__carousel {
     position: relative;
-    overflow: hidden;
+    overflow-x: clip;
+    overflow-y: visible;
   }
+
+  /* ── Edge fade mask ──────────────────────────────────── */
+  {% if edge_fade %}
+  #shopify-section-{{ section_id }} .cc__carousel::before,
+  #shopify-section-{{ section_id }} .cc__carousel::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    bottom: -20px;
+    width: {{ edge_fade_width }}px;
+    z-index: 3;
+    pointer-events: none;
+  }
+  #shopify-section-{{ section_id }} .cc__carousel::before {
+    left: 0;
+    background: linear-gradient(to right, {{ bg_color }}, transparent);
+  }
+  #shopify-section-{{ section_id }} .cc__carousel::after {
+    right: 0;
+    background: linear-gradient(to left, {{ bg_color }}, transparent);
+  }
+  {% endif %}
 
   /* ── Track (infinite marquee) ────────────────────────── */
   #shopify-section-{{ section_id }} .cc__track {
     display: flex;
-    gap: {{ img_gap }}px;
     width: max-content;
+  }
+
+  #shopify-section-{{ section_id }} .cc__track.is-animating {
     animation: cc-scroll-{{ section_id }} {{ scroll_speed }}s linear infinite;
   }
 
-  {% if pause_hover %}
-  #shopify-section-{{ section_id }} .cc__carousel:hover .cc__track {
-    animation-play-state: paused;
+  #shopify-section-{{ section_id }} .cc__track-inner {
+    display: flex;
+    flex-shrink: 0;
+    width: max-content;
+    gap: {{ img_gap }}px;
+    padding-right: {{ img_gap }}px;
   }
-  {% endif %}
+
 
   @keyframes cc-scroll-{{ section_id }} {
     0% { transform: translateX(0); }
@@ -167,7 +201,33 @@
     overflow: hidden;
     border-radius: {{ img_radius }}px;
     position: relative;
+    transition: transform 0.35s ease, filter 0.35s ease, box-shadow 0.35s ease;
   }
+
+  {% if enable_shadow %}
+  #shopify-section-{{ section_id }} .cc__slide {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, {{ shadow_intensity }});
+  }
+  {% endif %}
+
+  /* ── Hover effects ──────────────────────────────────── */
+  {% if hover_effect == 'zoom' %}
+  #shopify-section-{{ section_id }} .cc__slide:hover {
+    transform: scale(1.05);
+    z-index: 2;
+  }
+  {% elsif hover_effect == 'brighten' %}
+  #shopify-section-{{ section_id }} .cc__slide:hover {
+    filter: brightness(1.12);
+    z-index: 2;
+  }
+  {% elsif hover_effect == 'lift' %}
+  #shopify-section-{{ section_id }} .cc__slide:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+  }
+  {% endif %}
 
   @media screen and (max-width: 749px) {
     #shopify-section-{{ section_id }} .cc__slide {
@@ -277,6 +337,7 @@
   data-cc-section="{{ section_id }}"
   data-cc-randomize="{{ randomize }}"
   data-cc-lightbox="{{ lightbox }}"
+  data-cc-pause-hover="{{ pause_hover }}"
 >
   {%- if bg_image != blank -%}
     {{ bg_image | image_url: width: 3000 | image_tag: loading: 'lazy', class: 'cc__bg-image' }}
@@ -309,65 +370,77 @@
     {%- if block_count > 0 -%}
       <div class="cc__carousel">
         <div class="cc__track" data-cc-track>
-          {%- comment -%} Original set {%- endcomment -%}
-          {%- for block in section.blocks -%}
-            {%- assign link_url = block.settings.image_link -%}
-            {%- assign has_link = false -%}
-            {%- if link_url != blank %}{% assign has_link = true %}{% endif -%}
-            <div
-              class="cc__slide"
-              {{ block.shopify_attributes }}
-              {%- if block.settings.image != blank and has_link == false %}
-                data-cc-lightbox="{{ block.settings.image | image_url: width: 2000 }}"
-              {% endif -%}
-            >
-              {%- if block.settings.image != blank -%}
-                {%- if has_link -%}
-                  <a href="{{ link_url }}" class="cc__slide-link">
+          <div class="cc__track-inner">
+            {%- comment -%} Original set {%- endcomment -%}
+            {%- for block in section.blocks -%}
+              {%- assign link_url = block.settings.image_link -%}
+              {%- assign has_link = false -%}
+              {%- if link_url != blank %}{% assign has_link = true %}{% endif -%}
+              {%- assign custom_h = block.settings.custom_height -%}
+              <div
+                class="cc__slide"
+                {{ block.shopify_attributes }}
+                {%- if custom_h > 0 %}
+                  style="height: {{ custom_h }}px"
+                {% endif -%}
+                {%- if block.settings.image != blank and has_link == false %}
+                  data-cc-lightbox="{{ block.settings.image | image_url: width: 2000 }}"
+                {% endif -%}
+              >
+                {%- if block.settings.image != blank -%}
+                  {%- if has_link -%}
+                    <a href="{{ link_url }}" class="cc__slide-link">
+                  {%- endif -%}
+                  {{
+                    block.settings.image
+                    | image_url: height: img_height, crop: 'center'
+                    | image_tag: loading: 'lazy', class: 'cc__img', widths: '200, 300, 400, 500, 600, 800, 1000, 1200'
+                  }}
+                  {%- if has_link -%}
+                    </a>
+                  {%- endif -%}
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'cc__img' }}
                 {%- endif -%}
-                {{
-                  block.settings.image
-                  | image_url: height: img_height, crop: 'center'
-                  | image_tag: loading: 'lazy', class: 'cc__img', widths: '200, 300, 400, 500, 600, 800, 1000, 1200'
-                }}
-                {%- if has_link -%}
-                  </a>
-                {%- endif -%}
-              {%- else -%}
-                {{ 'image' | placeholder_svg_tag: 'cc__img' }}
-              {%- endif -%}
-            </div>
-          {%- endfor -%}
+              </div>
+            {%- endfor -%}
+          </div>
 
-          {%- comment -%} Duplicate set for seamless infinite loop {%- endcomment -%}
-          {%- for block in section.blocks -%}
-            {%- assign link_url = block.settings.image_link -%}
-            {%- assign has_link = false -%}
-            {%- if link_url != blank %}{% assign has_link = true %}{% endif -%}
-            <div
-              class="cc__slide"
-              aria-hidden="true"
-              {%- if block.settings.image != blank and has_link == false %}
-                data-cc-lightbox="{{ block.settings.image | image_url: width: 2000 }}"
-              {% endif -%}
-            >
-              {%- if block.settings.image != blank -%}
-                {%- if has_link -%}
-                  <a href="{{ link_url }}" class="cc__slide-link" tabindex="-1">
+          <div class="cc__track-inner" aria-hidden="true">
+            {%- comment -%} Duplicate set for seamless infinite loop {%- endcomment -%}
+            {%- for block in section.blocks -%}
+              {%- assign link_url = block.settings.image_link -%}
+              {%- assign has_link = false -%}
+              {%- if link_url != blank %}{% assign has_link = true %}{% endif -%}
+              {%- assign custom_h = block.settings.custom_height -%}
+              <div
+                class="cc__slide"
+                aria-hidden="true"
+                {%- if custom_h > 0 %}
+                  style="height: {{ custom_h }}px"
+                {% endif -%}
+                {%- if block.settings.image != blank and has_link == false %}
+                  data-cc-lightbox="{{ block.settings.image | image_url: width: 2000 }}"
+                {% endif -%}
+              >
+                {%- if block.settings.image != blank -%}
+                  {%- if has_link -%}
+                    <a href="{{ link_url }}" class="cc__slide-link" tabindex="-1">
+                  {%- endif -%}
+                  {{
+                    block.settings.image
+                    | image_url: height: img_height, crop: 'center'
+                    | image_tag: loading: 'lazy', class: 'cc__img', widths: '200, 300, 400, 500, 600, 800, 1000, 1200'
+                  }}
+                  {%- if has_link -%}
+                    </a>
+                  {%- endif -%}
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'cc__img' }}
                 {%- endif -%}
-                {{
-                  block.settings.image
-                  | image_url: height: img_height, crop: 'center'
-                  | image_tag: loading: 'lazy', class: 'cc__img', widths: '200, 300, 400, 500, 600, 800, 1000, 1200'
-                }}
-                {%- if has_link -%}
-                  </a>
-                {%- endif -%}
-              {%- else -%}
-                {{ 'image' | placeholder_svg_tag: 'cc__img' }}
-              {%- endif -%}
-            </div>
-          {%- endfor -%}
+              </div>
+            {%- endfor -%}
+          </div>
         </div>
       </div>
     {%- endif -%}
@@ -403,27 +476,69 @@
 
     /* ── Randomize order ───────────────────────────────── */
     if (section.dataset.ccRandomize === 'true') {
-      const slides = Array.from(track.querySelectorAll('.cc__slide'));
-      const half = Math.ceil(slides.length / 2);
-      const originals = slides.slice(0, half);
+      const trackInners = track.querySelectorAll('.cc__track-inner');
+      if (trackInners.length === 2) {
+        const firstInner = trackInners[0];
+        const secondInner = trackInners[1];
+        const slides = Array.from(firstInner.querySelectorAll('.cc__slide'));
 
-      /* Fisher-Yates shuffle */
-      for (let i = originals.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        track.insertBefore(originals[j], originals[i]);
-        [originals[i], originals[j]] = [originals[j], originals[i]];
+        /* Fisher-Yates shuffle */
+        for (let i = slides.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          firstInner.insertBefore(slides[j], slides[i]);
+          [slides[i], slides[j]] = [slides[j], slides[i]];
+        }
+
+        /* Sync the second inner to match the new DOM order */
+        secondInner.innerHTML = '';
+        Array.from(firstInner.children).forEach(function (slide) {
+          const clone = slide.cloneNode(true);
+          clone.setAttribute('aria-hidden', 'true');
+          clone.removeAttribute('data-shopify-editor-block');
+          secondInner.appendChild(clone);
+        });
+      }
+    }
+
+    /* ── Start Animation ───────────────────────────────── */
+    /* We start the animation dynamically after any JS DOM shuffling 
+       to ensure the track begins after layout is stable. */
+    requestAnimationFrame(function () {
+      track.classList.add('is-animating');
+    });
+
+    /* ── Smooth pause on hover ─────────────────────────── */
+    if (section.dataset.ccPauseHover === 'true') {
+      const carousel = section.querySelector('.cc__carousel');
+      let targetRate = 1;
+      let currentRate = 1;
+      let rafId = null;
+
+      function easeRate() {
+        var diff = targetRate - currentRate;
+        if (Math.abs(diff) < 0.005) {
+          currentRate = targetRate;
+        } else {
+          currentRate += diff * 0.1;
+        }
+        var animations = track.getAnimations();
+        for (var i = 0; i < animations.length; i++) {
+          animations[i].playbackRate = Math.max(currentRate, 0.001);
+        }
+        if (currentRate !== targetRate) {
+          rafId = requestAnimationFrame(easeRate);
+        } else {
+          rafId = null;
+        }
       }
 
-      /* Rebuild the duplicate set to match the new order */
-      const dupes = slides.slice(half);
-      dupes.forEach(function (d) {
-        d.remove();
+      carousel.addEventListener('mouseenter', function () {
+        targetRate = 0;
+        if (!rafId) rafId = requestAnimationFrame(easeRate);
       });
-      originals.forEach(function (orig) {
-        const clone = orig.cloneNode(true);
-        clone.setAttribute('aria-hidden', 'true');
-        clone.removeAttribute('data-shopify-editor-block');
-        track.appendChild(clone);
+      carousel.addEventListener('mouseleave', function () {
+        targetRate = 1;
+        if (!rafId) rafId = requestAnimationFrame(easeRate);
       });
     }
 
@@ -794,6 +909,56 @@
     },
     {
       "type": "header",
+      "content": "Effects"
+    },
+    {
+      "id": "enable_edge_fade",
+      "type": "checkbox",
+      "label": "Edge fade mask",
+      "info": "Soft gradient fade on left and right edges.",
+      "default": true
+    },
+    {
+      "id": "edge_fade_width",
+      "type": "range",
+      "label": "Edge fade width",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "id": "hover_effect",
+      "type": "select",
+      "label": "Slide hover effect",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "zoom", "label": "Zoom" },
+        { "value": "brighten", "label": "Brighten" },
+        { "value": "lift", "label": "Lift" }
+      ],
+      "default": "zoom"
+    },
+    {
+      "id": "enable_shadow",
+      "type": "checkbox",
+      "label": "Slide shadow",
+      "info": "Adds a soft drop shadow behind each image.",
+      "default": false
+    },
+    {
+      "id": "shadow_intensity",
+      "type": "range",
+      "label": "Shadow intensity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "header",
       "content": "Scroll behavior"
     },
     {
@@ -846,6 +1011,17 @@
           "id": "image_link",
           "type": "url",
           "label": "Image link"
+        },
+        {
+          "id": "custom_height",
+          "type": "range",
+          "label": "Custom height",
+          "info": "Override the section height for this slide. Set to 0 to use the section default.",
+          "min": 0,
+          "max": 800,
+          "step": 10,
+          "unit": "px",
+          "default": 0
         }
       ]
     }
