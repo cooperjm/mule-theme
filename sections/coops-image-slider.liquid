@@ -1,0 +1,502 @@
+{%- comment -%} Coops Image Slider — configurable image slider / static grid section {%- endcomment -%}
+
+{% liquid
+  assign heading = section.settings.heading
+  assign bg_color = section.settings.bg_color
+  assign section_id = section.id
+  assign block_count = section.blocks.size
+
+  assign slides_per_view = section.settings.slides_per_view
+  assign slides_per_view_mobile = section.settings.slides_per_view_mobile
+  assign img_height = section.settings.image_height
+  assign img_height_mobile = section.settings.image_height_mobile
+  assign img_gap = section.settings.image_gap
+  assign img_radius = section.settings.image_radius
+  assign img_fit = section.settings.image_fit
+
+  assign nav_position = section.settings.nav_position
+  assign nav_color = section.settings.nav_color
+
+  assign is_static = false
+  if block_count <= slides_per_view
+    assign is_static = true
+  endif
+
+  assign is_static_mobile = false
+  if block_count <= slides_per_view_mobile
+    assign is_static_mobile = true
+  endif
+%}
+
+<style>
+  /* ── Section ────────────────────────────────────────── */
+  #shopify-section-{{ section_id }} .cis {
+    position: relative;
+    overflow: hidden;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ bg_color }};
+  }
+
+  /* ── Container widths ───────────────────────────────── */
+  #shopify-section-{{ section_id }} .cis__container--page-width {
+    max-width: var(--page-width, 1200px);
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+  #shopify-section-{{ section_id }} .cis__container--full-width {
+    width: 100%;
+    padding: 0 15px;
+  }
+  #shopify-section-{{ section_id }} .cis__container--custom {
+    max-width: {{ section.settings.custom_max_width }}px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  /* ── Header row ─────────────────────────────────────── */
+  #shopify-section-{{ section_id }} .cis__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  #shopify-section-{{ section_id }} .cis__heading {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.1;
+    margin: 0;
+    color: {{ section.settings.heading_color }};
+    font-weight: {{ section.settings.heading_weight }};
+  }
+
+  /* ── Nav buttons ────────────────────────────────────── */
+  #shopify-section-{{ section_id }} .cis__nav {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  #shopify-section-{{ section_id }} .cis__nav-bottom {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+    justify-content: {{ section.settings.nav_alignment }};
+  }
+  #shopify-section-{{ section_id }} .cis__nav-btn {
+    background: {{ nav_color }};
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+  #shopify-section-{{ section_id }} .cis__nav-btn:hover {
+    opacity: 0.8;
+  }
+
+  /* ── Slider track ───────────────────────────────────── */
+  #shopify-section-{{ section_id }} .cis__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - ({{ slides_per_view }} - 1) * {{ img_gap }}px) / {{ slides_per_view }});
+    gap: {{ img_gap }}px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    {% if is_static %}
+      overflow: hidden;
+    {% else %}
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+    {% endif %}
+  }
+  #shopify-section-{{ section_id }} .cis__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section_id }} .cis__track {
+      grid-auto-columns: calc((100% - ({{ slides_per_view_mobile }} - 1) * {{ img_gap }}px) / {{ slides_per_view_mobile }});
+      {% if is_static_mobile %}
+        overflow: hidden;
+      {% else %}
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+      {% endif %}
+    }
+  }
+
+  /* ── Slide ──────────────────────────────────────────── */
+  #shopify-section-{{ section_id }} .cis__slide {
+    scroll-snap-align: start;
+    height: {{ img_height }}px;
+    overflow: hidden;
+    border-radius: {{ img_radius }}px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section_id }} .cis__slide {
+      height: {{ img_height_mobile }}px;
+    }
+  }
+
+  #shopify-section-{{ section_id }} .cis__slide-link {
+    display: block;
+    height: 100%;
+  }
+
+  #shopify-section-{{ section_id }} .cis__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: {{ img_fit }};
+  }
+
+  /* ── Hide nav when static ──────────────────────────── */
+  {% if is_static %}
+    @media screen and (min-width: 750px) {
+      #shopify-section-{{ section_id }} .cis__nav,
+      #shopify-section-{{ section_id }} .cis__nav-bottom {
+        display: none;
+      }
+    }
+  {% endif %}
+  {% if is_static_mobile %}
+    @media screen and (max-width: 749px) {
+      #shopify-section-{{ section_id }} .cis__nav,
+      #shopify-section-{{ section_id }} .cis__nav-bottom {
+        display: none;
+      }
+    }
+  {% endif %}
+</style>
+
+<section class="cis" data-cis-section="{{ section_id }}">
+  <div class="cis__container--{{ section.settings.section_width }}">
+
+    {%- if heading != blank -%}
+      <div class="cis__header">
+        <h2 class="cis__heading">{{ heading | escape }}</h2>
+
+        {% if nav_position == 'top' %}
+          <div class="cis__nav" data-cis-nav>
+            <button class="cis__nav-btn" data-cis-prev aria-label="Previous">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="cis__nav-btn" data-cis-next aria-label="Next">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        {% endif %}
+      </div>
+    {%- elsif nav_position == 'top' -%}
+      <div class="cis__header" style="justify-content: flex-end;">
+        <div class="cis__nav" data-cis-nav>
+          <button class="cis__nav-btn" data-cis-prev aria-label="Previous">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="cis__nav-btn" data-cis-next aria-label="Next">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if block_count > 0 -%}
+      <div class="cis__track" data-cis-track>
+        {%- for block in section.blocks -%}
+          {%- assign link_url = block.settings.image_link -%}
+          <div class="cis__slide" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              {%- if link_url != blank -%}
+                <a href="{{ link_url }}" class="cis__slide-link">
+              {%- endif -%}
+              {{
+                block.settings.image
+                | image_url: height: img_height, crop: 'center'
+                | image_tag: loading: 'lazy', class: 'cis__img', widths: '200, 300, 400, 500, 600, 800, 1000, 1200'
+              }}
+              {%- if link_url != blank -%}
+                </a>
+              {%- endif -%}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'cis__img' }}
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {% if nav_position == 'bottom' %}
+      <div class="cis__nav-bottom" data-cis-nav>
+        <button class="cis__nav-btn" data-cis-prev aria-label="Previous">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="cis__nav-btn" data-cis-next aria-label="Next">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<script>
+  (function () {
+    var SECTION_ID = '{{ section_id }}';
+    var section = document.querySelector('[data-cis-section="' + SECTION_ID + '"]');
+    if (!section) return;
+
+    var track = section.querySelector('[data-cis-track]');
+    var prevBtn = section.querySelector('[data-cis-prev]');
+    var nextBtn = section.querySelector('[data-cis-next]');
+
+    if (!track || !prevBtn || !nextBtn) return;
+
+    function getScrollAmount() {
+      var firstSlide = track.querySelector('.cis__slide');
+      if (!firstSlide) return 300;
+      var style = getComputedStyle(track);
+      var gap = parseFloat(style.columnGap) || 0;
+      return firstSlide.offsetWidth + gap;
+    }
+
+    prevBtn.addEventListener('click', function () {
+      track.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', function () {
+      track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Coops Image Slider",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "id": "heading",
+      "type": "text",
+      "label": "Heading"
+    },
+    {
+      "id": "heading_color",
+      "type": "color",
+      "label": "Heading color",
+      "default": "#111111"
+    },
+    {
+      "id": "heading_weight",
+      "type": "select",
+      "label": "Heading weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra-bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "id": "bg_color",
+      "type": "color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "id": "padding_top",
+      "type": "range",
+      "label": "Section top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "id": "padding_bottom",
+      "type": "range",
+      "label": "Section bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "id": "section_width",
+      "type": "select",
+      "label": "Section width",
+      "options": [
+        { "value": "page-width", "label": "Theme default" },
+        { "value": "full-width", "label": "Full width" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "id": "custom_max_width",
+      "type": "range",
+      "label": "Custom max width",
+      "min": 600,
+      "max": 2000,
+      "step": 50,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+    {
+      "id": "slides_per_view",
+      "type": "range",
+      "label": "Images per view (desktop)",
+      "info": "If this is greater than or equal to the number of images, the slider becomes a static grid.",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "id": "slides_per_view_mobile",
+      "type": "range",
+      "label": "Images per view (mobile)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "id": "image_height",
+      "type": "range",
+      "label": "Image height (desktop)",
+      "min": 150,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "id": "image_height_mobile",
+      "type": "range",
+      "label": "Image height (mobile)",
+      "min": 100,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "id": "image_gap",
+      "type": "range",
+      "label": "Space between images",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "id": "image_radius",
+      "type": "range",
+      "label": "Image border radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "id": "image_fit",
+      "type": "select",
+      "label": "Image fit",
+      "options": [
+        { "value": "cover", "label": "Cover (fill & crop)" },
+        { "value": "contain", "label": "Contain (fit inside)" }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "id": "nav_position",
+      "type": "select",
+      "label": "Arrow position",
+      "options": [
+        { "value": "none", "label": "None (no arrows)" },
+        { "value": "top", "label": "Top (next to heading)" },
+        { "value": "bottom", "label": "Bottom (under images)" }
+      ],
+      "default": "bottom"
+    },
+    {
+      "id": "nav_alignment",
+      "type": "select",
+      "label": "Bottom arrow alignment",
+      "info": "Only applies when arrows are at bottom.",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "id": "nav_color",
+      "type": "color",
+      "label": "Arrow button color",
+      "default": "#333333"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "id": "image",
+          "type": "image_picker",
+          "label": "Image"
+        },
+        {
+          "id": "image_link",
+          "type": "url",
+          "label": "Image link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Coops Image Slider",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}
