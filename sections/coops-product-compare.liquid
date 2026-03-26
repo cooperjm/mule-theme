@@ -1,0 +1,1053 @@
+{% style %}
+  /* ── Section Padding ── */
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  /* ── Section Wrapper ── */
+  .coops-product-compare-{{ section.id }} {
+    position: relative;
+    width: 100%;
+    background: {{ section.settings.background_color }};
+  }
+
+  /* ── Header ── */
+  .coops-product-compare-{{ section.id }} .coops-pc__header {
+    max-width: var(--page-width, 1200px);
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .coops-product-compare-{{ section.id }} .coops-pc__heading {
+    font-size: {{ section.settings.heading_size_mobile }}px;
+    font-weight: {{ section.settings.heading_weight }};
+    color: {{ section.settings.heading_color }};
+    line-height: 1.2;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  @media screen and (min-width: 750px) {
+    .coops-product-compare-{{ section.id }} .coops-pc__heading {
+      font-size: {{ section.settings.heading_size }}px;
+    }
+  }
+
+  .coops-product-compare-{{ section.id }} .coops-pc__subheading {
+    font-size: {{ section.settings.subheading_size_mobile }}px;
+    color: {{ section.settings.subheading_color }};
+    font-weight: {{ section.settings.subheading_weight }};
+    line-height: 1.4;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  @media screen and (min-width: 750px) {
+    .coops-product-compare-{{ section.id }} .coops-pc__subheading {
+      font-size: {{ section.settings.subheading_size }}px;
+    }
+  }
+
+  /* ── Columns Grid ── */
+  .coops-product-compare-{{ section.id }} .coops-pc__grid {
+    max-width: var(--page-width, 1200px);
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: {{ section.settings.column_gap }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .coops-product-compare-{{ section.id }} .coops-pc__grid {
+      grid-template-columns: repeat({{ section.blocks.size | at_most: 2 }}, 1fr);
+    }
+  }
+
+  /* ── Column Card ── */
+  .coops-product-compare-{{ section.id }} .coops-pc__card {
+    background: {{ section.settings.card_background }};
+    border: {{ section.settings.card_border_width }}px solid {{ section.settings.card_border_color }};
+    border-radius: {{ section.settings.card_border_radius }}px;
+    padding: {{ section.settings.card_padding }}px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* ── Image Wrapper ── */
+  .coops-product-compare-{{ section.id }} .coops-pc__image-wrap {
+    position: relative;
+    width: {{ section.settings.image_size }}px;
+    height: {{ section.settings.image_size }}px;
+    max-width: 100%;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto 24px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .coops-product-compare-{{ section.id }} .coops-pc__image-wrap img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: {{ section.settings.image_fit }};
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Accent line behind image */
+  .coops-product-compare-{{ section.id }} .coops-pc__accent-line {
+    position: absolute;
+    z-index: 1;
+  }
+
+  .coops-product-compare-{{ section.id }} .coops-pc__accent-line--vertical {
+    left: 15%;
+    top: 5%;
+    width: 4px;
+    height: 90%;
+  }
+
+  .coops-product-compare-{{ section.id }} .coops-pc__accent-line--horizontal {
+    top: 15%;
+    right: 5%;
+    height: 4px;
+    width: 60%;
+  }
+
+  /* ── Title ── */
+  .coops-product-compare-{{ section.id }} .coops-pc__title {
+    font-size: {{ section.settings.title_size_mobile }}px;
+    font-weight: {{ section.settings.title_weight }};
+    color: {{ section.settings.title_color }};
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin: 0 0 12px 0;
+    line-height: 1.2;
+  }
+
+  @media screen and (min-width: 750px) {
+    .coops-product-compare-{{ section.id }} .coops-pc__title {
+      font-size: {{ section.settings.title_size }}px;
+    }
+  }
+
+  /* ── Subtitle ── */
+  .coops-product-compare-{{ section.id }} .coops-pc__subtitle-label {
+    font-size: {{ section.settings.subtitle_size_mobile }}px;
+    color: {{ section.settings.subtitle_color }};
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 4px 0;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  @media screen and (min-width: 750px) {
+    .coops-product-compare-{{ section.id }} .coops-pc__subtitle-label {
+      font-size: {{ section.settings.subtitle_size }}px;
+    }
+  }
+
+  .coops-product-compare-{{ section.id }} .coops-pc__subtitle-desc {
+    font-size: {{ section.settings.subtitle_desc_size_mobile }}px;
+    color: {{ section.settings.title_color }};
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin: 0 0 20px 0;
+    line-height: 1.3;
+  }
+
+  @media screen and (min-width: 750px) {
+    .coops-product-compare-{{ section.id }} .coops-pc__subtitle-desc {
+      font-size: {{ section.settings.subtitle_desc_size }}px;
+    }
+  }
+
+  /* ── Feature List ── */
+  .coops-product-compare-{{ section.id }} .coops-pc__features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px 0;
+    width: 100%;
+    text-align: left;
+  }
+
+  .coops-product-compare-{{ section.id }} .coops-pc__feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 5px 0;
+    font-size: {{ section.settings.feature_size_mobile }}px;
+    color: {{ section.settings.feature_color }};
+    line-height: 1.4;
+  }
+
+  @media screen and (min-width: 750px) {
+    .coops-product-compare-{{ section.id }} .coops-pc__feature {
+      font-size: {{ section.settings.feature_size }}px;
+    }
+  }
+
+  .coops-product-compare-{{ section.id }} .coops-pc__check {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .coops-product-compare-{{ section.id }} .coops-pc__check svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* ── Button ── */
+  .coops-product-compare-{{ section.id }} .coops-pc__button {
+    display: inline-block;
+    background-color: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    border: {{ section.settings.button_border_width }}px solid {{ section.settings.button_border_color }};
+    border-radius: {{ section.settings.button_border_radius }}px;
+    padding: {{ section.settings.button_padding_y }}px {{ section.settings.button_padding_x }}px;
+    font-size: {{ section.settings.button_font_size }}px;
+    font-weight: {{ section.settings.button_font_weight }};
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    white-space: nowrap;
+    width: fit-content;
+    margin-top: auto;
+  }
+
+  .coops-product-compare-{{ section.id }} .coops-pc__button:hover {
+    opacity: 0.85;
+    transform: scale(1.02);
+  }
+
+  /* ── Gallery Images ── */
+  .coops-product-compare-{{ section.id }} .coops-pc__gallery {
+    display: flex;
+    gap: {{ section.settings.gallery_column_gap }}px;
+    width: 100%;
+    margin-top: {{ section.settings.gallery_row_gap }}px;
+  }
+
+  .coops-product-compare-{{ section.id }} .coops-pc__gallery-img {
+    flex: 1 1 0;
+    height: {{ section.settings.gallery_height }}px;
+    overflow: hidden;
+    border-radius: {{ section.settings.gallery_border_radius }}px;
+  }
+
+  .coops-product-compare-{{ section.id }} .coops-pc__gallery-img img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+{% endstyle %}
+
+<section class="coops-product-compare-{{ section.id }} section-{{ section.id }}-padding">
+  {%- comment -%} Section Header {%- endcomment -%}
+  {% if section.settings.heading_text != blank or section.settings.subheading_text != blank %}
+    <div class="coops-pc__header">
+      {% if section.settings.heading_text != blank %}
+        <h2 class="coops-pc__heading">{{ section.settings.heading_text | escape }}</h2>
+      {% endif %}
+      {% if section.settings.subheading_text != blank %}
+        <p class="coops-pc__subheading">{{ section.settings.subheading_text | escape }}</p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {%- comment -%} Comparison Columns {%- endcomment -%}
+  <div class="coops-pc__grid">
+    {% for block in section.blocks %}
+      <div class="coops-pc__column" {{ block.shopify_attributes }}>
+        <div class="coops-pc__card">
+
+        {%- comment -%} Product Image with accent line {%- endcomment -%}
+        {% if block.settings.image != blank %}
+          <div class="coops-pc__image-wrap">
+            <div
+              class="coops-pc__accent-line coops-pc__accent-line--{{ block.settings.accent_position }}"
+              style="background: {{ block.settings.accent_color }};"
+            ></div>
+            {{
+              block.settings.image
+              | image_url: width: 600
+              | image_tag: loading: 'lazy', alt: block.settings.title
+            }}
+          </div>
+        {% endif %}
+
+        {%- comment -%} Title {%- endcomment -%}
+        {% if block.settings.title != blank %}
+          <h3 class="coops-pc__title">{{ block.settings.title | escape }}</h3>
+        {% endif %}
+
+        {%- comment -%} Subtitle {%- endcomment -%}
+        {% if block.settings.subtitle_label != blank %}
+          <p class="coops-pc__subtitle-label">{{ block.settings.subtitle_label | escape }}</p>
+        {% endif %}
+        {% if block.settings.subtitle_desc != blank %}
+          <p class="coops-pc__subtitle-desc">{{ block.settings.subtitle_desc | escape }}</p>
+        {% endif %}
+
+        {%- comment -%} Feature List {%- endcomment -%}
+        {% assign features = "" %}
+        {% for i in (1..8) %}
+          {% assign feature_key = "feature_" | append: i %}
+          {% assign feature_val = block.settings[feature_key] %}
+          {% if feature_val != blank %}
+            {% if features != "" %}
+              {% assign features = features | append: "|||" | append: feature_val %}
+            {% else %}
+              {% assign features = feature_val %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+
+        {% if features != "" %}
+          {% assign feature_list = features | split: "|||" %}
+          <ul class="coops-pc__features">
+            {% for feature in feature_list %}
+              <li class="coops-pc__feature">
+                <span class="coops-pc__check">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10240 10240">
+                    <g fill="#fbfbfb"><path d="M0 7665 l0 -2575 23 0 c22 0 934 908 3945 3930 l1151 1155 2523 -2523 c2276 -2275 2527 -2523 2561 -2529 l37 -6 0 2562 0 2561 -5120 0 -5120 0 0 -2575z"/><path d="M3254 7118 c-1004 -1003 -1865 -1863 -1915 -1912 -75 -76 -89 -95 -89 -122 0 -30 127 -158 1598 -1616 878 -871 1738 -1722 1909 -1891 l312 -308 69 3 69 3 1067 1061 c1003 999 1066 1063 1066 1096 0 30 -11 45 -87 119 -226 218 -1368 1325 -1793 1738 -457 444 -476 461 -512 461 -37 0 -56 -17 -636 -594 l-597 -594 -75 71 c-41 39 -155 149 -252 245 -144 141 -176 177 -169 190 6 9 401 408 878 885 l869 868 390 -378 c656 -636 1364 -1323 1904 -1849 656 -638 598 -586 653 -582 44 3 47 6 566 520 488 484 521 519 521 551 0 33 -61 96 -1062 1095 -585 583 -1447 1442 -1917 1908 -853 849 -853 849 -897 852 l-45 3 -1825 -1823z"/><path d="M0 2540 l0 -2540 2560 0 c2112 0 2560 2 2560 13 0 7 -78 90 -172 183 -95 93 -209 205 -253 249 -45 44 -375 372 -735 730 -360 357 -1389 1382 -2286 2277 -1162 1161 -1637 1628 -1652 1628 l-22 0 0 -2540z"/><path d="M9820 4703 c-201 -201 -573 -573 -827 -826 -490 -488 -486 -484 -445 -533 17 -21 870 -849 1265 -1229 l198 -189 -263 -263 -262 -262 -141 137 c-375 365 -1195 1156 -1281 1235 -95 88 65 230 -1507 -1336 -1181 -1176 -1388 -1386 -1387 -1409 l0 -28 2535 0 2535 0 0 2535 0 2535 -27 -1 c-23 -1 -96 -69 -393 -366z"/></g>
+                    <g fill="{{ section.settings.checkmark_color }}"><path d="M3946 9058 c-2169 -2177 -3931 -3938 -3938 -3938 -5 0 -8 -13 -8 -28 0 -25 229 -257 1637 -1663 901 -899 1933 -1927 2293 -2284 360 -358 682 -677 715 -711 33 -33 146 -145 251 -247 l192 -187 61 0 c45 0 60 3 55 12 -5 7 497 514 1382 1395 1180 1175 1392 1382 1407 1373 14 -9 17 -6 17 19 0 25 -44 71 -331 345 -284 271 -336 316 -361 316 -26 0 -29 -2 -18 -15 11 -13 -149 -176 -1055 -1078 -1016 -1011 -1070 -1062 -1107 -1065 -38 -3 -40 -2 -351 305 -467 461 -3383 3352 -3450 3420 l-57 59 89 89 c2809 2807 3743 3736 3755 3733 8 -2 398 -385 868 -852 1331 -1324 2978 -2968 2978 -2973 0 -10 -1043 -1038 -1057 -1041 -8 -2 -20 2 -28 8 -13 10 -15 8 -15 -17 0 -26 42 -71 324 -346 293 -286 327 -317 357 -317 22 0 30 3 23 10 -10 10 128 148 1304 1319 l362 360 0 45 c0 39 -3 46 -23 51 -13 4 -1139 1122 -2553 2536 -1391 1391 -2536 2529 -2544 2529 -8 0 -537 -523 -1174 -1162z"/></g>
+                    <g fill="#000001"><path d="M4051 5966 c-679 -680 -901 -908 -895 -918 18 -31 550 -538 561 -536 6 2 284 274 617 606 333 331 609 602 614 602 4 0 221 -208 482 -461 1125 -1094 1717 -1666 2040 -1974 190 -180 404 -385 475 -454 72 -70 242 -234 380 -366 301 -289 793 -765 1001 -967 83 -82 155 -148 160 -148 5 0 139 130 297 288 l288 288 -218 210 c-332 319 -1223 1184 -1448 1404 -110 108 -353 345 -540 526 -187 181 -508 493 -715 694 -366 357 -968 942 -1774 1723 -220 213 -405 387 -411 387 -6 0 -417 -407 -914 -904z"/></g>
+                  </svg>
+                </span>
+                <span>{{ feature | escape }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        {%- comment -%} CTA Button {%- endcomment -%}
+        {% if block.settings.button_text != blank %}
+          <a
+            href="{{ block.settings.button_link }}"
+            class="coops-pc__button"
+          >
+            {{ block.settings.button_text | escape }}
+          </a>
+        {% endif %}
+
+        </div>
+
+        {%- comment -%} Gallery Images (below card) {%- endcomment -%}
+        {% if block.settings.gallery_image_1 != blank or block.settings.gallery_image_2 != blank %}
+          <div class="coops-pc__gallery">
+            {% if block.settings.gallery_image_1 != blank %}
+              <div class="coops-pc__gallery-img">
+                {{
+                  block.settings.gallery_image_1
+                  | image_url: width: 600
+                  | image_tag: loading: 'lazy', alt: block.settings.title
+                }}
+              </div>
+            {% endif %}
+            {% if block.settings.gallery_image_2 != blank %}
+              <div class="coops-pc__gallery-img">
+                {{
+                  block.settings.gallery_image_2
+                  | image_url: width: 600
+                  | image_tag: loading: 'lazy', alt: block.settings.title
+                }}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Coop's Product Compare",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading Text",
+      "default": "NOT SURE WHICH FAN IS RIGHT FOR YOU?"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 14,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 12,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 22
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black" }
+      ],
+      "default": "900"
+    },
+    {
+      "type": "header",
+      "content": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "subheading_text",
+      "label": "Subheading Text",
+      "default": "SEE THE BENEFITS OF WALL MOUNT AND CEILING MOUNT OPTIONS"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 10,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "subheading_size_mobile",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading Size (Mobile)",
+      "default": 13
+    },
+    {
+      "type": "select",
+      "id": "subheading_weight",
+      "label": "Subheading Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Columns"
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Column Gap",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card Background Color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "range",
+      "id": "card_border_width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Border Width",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Padding",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Gallery Images"
+    },
+    {
+      "type": "range",
+      "id": "gallery_height",
+      "min": 80,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Gallery Image Height",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "gallery_column_gap",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Gallery Column Gap",
+      "info": "Horizontal space between the two gallery images.",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "gallery_row_gap",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Gallery Row Gap",
+      "info": "Vertical space between the card and gallery images.",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "gallery_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Gallery Border Radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "range",
+      "id": "image_size",
+      "min": 100,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Image Size (Width & Height)",
+      "default": 280,
+      "info": "Images are displayed at a 1:1 aspect ratio."
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image Fit",
+      "info": "Contain shows the full image. Cover fills the square and may crop.",
+      "options": [
+        { "value": "contain", "label": "Contain" },
+        { "value": "cover", "label": "Cover" }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "header",
+      "content": "Column Titles"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 14,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Title Size (Desktop)",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Title Size (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title Weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black" }
+      ],
+      "default": "800"
+    },
+    {
+      "type": "header",
+      "content": "Subtitles"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Label Color",
+      "default": "#555555"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle Label Size (Desktop)",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_mobile",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle Label Size (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "subtitle_desc_size",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle Description Size (Desktop)",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "subtitle_desc_size_mobile",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle Description Size (Mobile)",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "Features"
+    },
+    {
+      "type": "color",
+      "id": "checkmark_color",
+      "label": "Checkmark Color",
+      "default": "#FDBF06"
+    },
+    {
+      "type": "color",
+      "id": "feature_color",
+      "label": "Feature Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "feature_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Feature Text Size (Desktop)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "feature_size_mobile",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Feature Text Size (Mobile)",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#FDBF06"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#FDBF06"
+    },
+    {
+      "type": "range",
+      "id": "button_border_width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Border Width",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Border Radius",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "button_padding_x",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Horizontal Padding",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "button_padding_y",
+      "min": 6,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Vertical Padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Font Size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "button_font_weight",
+      "label": "Button Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Comparison Column",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Accent Line Color",
+          "default": "#FDBF06"
+        },
+        {
+          "type": "select",
+          "id": "accent_position",
+          "label": "Accent Line Position",
+          "options": [
+            { "value": "vertical", "label": "Vertical (Left)" },
+            { "value": "horizontal", "label": "Horizontal (Top)" }
+          ],
+          "default": "vertical"
+        },
+        {
+          "type": "header",
+          "content": "Title"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Column Title",
+          "default": "Wall Mount"
+        },
+        {
+          "type": "header",
+          "content": "Subtitle"
+        },
+        {
+          "type": "text",
+          "id": "subtitle_label",
+          "label": "Subtitle Label",
+          "default": "GREAT FOR:"
+        },
+        {
+          "type": "text",
+          "id": "subtitle_desc",
+          "label": "Subtitle Description",
+          "default": "Large Shops With Multiple Fans"
+        },
+        {
+          "type": "header",
+          "content": "Features"
+        },
+        {
+          "type": "text",
+          "id": "feature_1",
+          "label": "Feature 1",
+          "default": "Low Noise Output"
+        },
+        {
+          "type": "text",
+          "id": "feature_2",
+          "label": "Feature 2",
+          "default": "No Assembly Required"
+        },
+        {
+          "type": "text",
+          "id": "feature_3",
+          "label": "Feature 3",
+          "default": "Close Proximity to Wall Outlets"
+        },
+        {
+          "type": "text",
+          "id": "feature_4",
+          "label": "Feature 4",
+          "default": "120 Degree Left/Right Articulation"
+        },
+        {
+          "type": "text",
+          "id": "feature_5",
+          "label": "Feature 5",
+          "default": "Easily Adjustable"
+        },
+        {
+          "type": "text",
+          "id": "feature_6",
+          "label": "Feature 6",
+          "default": "Remote Control Compatible (on select models)"
+        },
+        {
+          "type": "text",
+          "id": "feature_7",
+          "label": "Feature 7"
+        },
+        {
+          "type": "text",
+          "id": "feature_8",
+          "label": "Feature 8"
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Shop Wall Mount"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "header",
+          "content": "Gallery Images"
+        },
+        {
+          "type": "image_picker",
+          "id": "gallery_image_1",
+          "label": "Gallery Image 1 (Left)"
+        },
+        {
+          "type": "image_picker",
+          "id": "gallery_image_2",
+          "label": "Gallery Image 2 (Right)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Coop's Product Compare",
+      "blocks": [
+        {
+          "type": "column",
+          "settings": {
+            "title": "Wall Mount",
+            "accent_position": "vertical",
+            "subtitle_label": "GREAT FOR:",
+            "subtitle_desc": "Large Shops With Multiple Fans",
+            "feature_1": "Low Noise Output",
+            "feature_2": "No Assembly Required",
+            "feature_3": "Close Proximity to Wall Outlets",
+            "feature_4": "120 Degree Left/Right Articulation",
+            "feature_5": "Easily Adjustable",
+            "feature_6": "Remote Control Compatible (on select models)",
+            "button_text": "Shop Wall Mount"
+          }
+        },
+        {
+          "type": "column",
+          "settings": {
+            "title": "Ceiling Mount",
+            "accent_position": "horizontal",
+            "subtitle_label": "GREAT FOR:",
+            "subtitle_desc": "Small Shops With Limited Space",
+            "feature_1": "Low Noise Output",
+            "feature_2": "Space Saving Design",
+            "feature_3": "Adjustable Height Mounting",
+            "feature_4": "360 Degree Left/Right Articulation",
+            "feature_5": "Maximum Directional Positioning",
+            "feature_6": "Remote Control Compatible (on select models)",
+            "button_text": "Shop Ceiling Mount"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
