@@ -70,12 +70,20 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: {{ section.settings.column_gap }}px;
+    box-sizing: border-box;
   }
 
   @media screen and (min-width: 750px) {
     .coops-product-compare-{{ section.id }} .coops-pc__grid {
       grid-template-columns: repeat({{ section.blocks.size | at_most: 2 }}, 1fr);
     }
+  }
+
+  /* ── Column Wrapper ── */
+  .coops-product-compare-{{ section.id }} .coops-pc__column {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
 
   /* ── Column Card ── */
@@ -88,6 +96,7 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    box-sizing: border-box;
   }
 
   /* ── Image Wrapper ── */
