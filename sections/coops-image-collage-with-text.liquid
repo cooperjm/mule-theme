@@ -1,0 +1,553 @@
+{% style %}
+  /* ── Section Padding ── */
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    background-color: {{ section.settings.background_color }};
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  /* ── Layout Wrapper ── */
+  .coops-collage-text-{{ section.id }} {
+    max-width: var(--page-width, 1200px);
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+  }
+
+  @media screen and (min-width: 750px) {
+    .coops-collage-text-{{ section.id }} {
+      flex-direction: {% if section.settings.layout == 'image_right' %}row-reverse{% else %}row{% endif %};
+      align-items: center;
+      gap: 60px;
+    }
+  }
+
+  /* ── Columns ── */
+  .coops-collage-text-{{ section.id }} .coops-collage__media,
+  .coops-collage-text-{{ section.id }} .coops-collage__content {
+    width: 100%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .coops-collage-text-{{ section.id }} .coops-collage__media {
+      width: 55%;
+      flex-shrink: 0;
+    }
+    .coops-collage-text-{{ section.id }} .coops-collage__content {
+      width: 45%;
+      flex-shrink: 0;
+    }
+  }
+
+  /* ── Image Grid ── */
+  .coops-collage-text-{{ section.id }} .coops-collage__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: {{ section.settings.image_gap }}px;
+  }
+
+  .coops-collage-text-{{ section.id }} .coops-collage__item {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: {{ section.settings.image_radius }}px;
+  }
+
+  .coops-collage-text-{{ section.id }} .coops-collage__item--large {
+    grid-column: 1 / -1;
+  }
+
+  .coops-collage-text-{{ section.id }} .coops-collage__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ── Content ── */
+  .coops-collage-text-{{ section.id }} .coops-collage__heading {
+    margin: 0 0 16px 0;
+    font-size: {{ section.settings.heading_size_mobile }}px;
+    font-weight: {{ section.settings.heading_weight }};
+    color: {{ section.settings.heading_color }};
+    line-height: 1.15;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  @media screen and (min-width: 750px) {
+    .coops-collage-text-{{ section.id }} .coops-collage__heading {
+      font-size: {{ section.settings.heading_size }}px;
+    }
+  }
+
+  .coops-collage-text-{{ section.id }} .coops-collage__subheading {
+    margin: 0 0 24px 0;
+    font-size: {{ section.settings.subheading_size }}px;
+    font-weight: {{ section.settings.subheading_weight }};
+    color: {{ section.settings.subheading_color }};
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  /* ── Checklist ── */
+  .coops-collage-text-{{ section.id }} .coops-collage__list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 32px 0;
+  }
+
+  .coops-collage-text-{{ section.id }} .coops-collage__list-item {
+    position: relative;
+    padding-left: 32px;
+    margin-bottom: 16px;
+    font-size: {{ section.settings.list_size }}px;
+    font-weight: {{ section.settings.list_weight }};
+    color: {{ section.settings.list_color }};
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+  }
+
+  .coops-collage-text-{{ section.id }} .coops-collage__list-icon {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: {{ section.settings.checkmark_size }}px;
+    height: {{ section.settings.checkmark_size }}px;
+    flex-shrink: 0;
+  }
+
+  .coops-collage-text-{{ section.id }} .coops-collage__list-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* ── Footer text ── */
+  .coops-collage-text-{{ section.id }} .coops-collage__footer {
+    font-size: {{ section.settings.footer_size }}px;
+    color: {{ section.settings.footer_color }};
+    line-height: 1.4;
+    font-style: italic;
+    margin: 0;
+  }
+{% endstyle %}
+
+<div class="section-{{ section.id }}-padding">
+  <div class="coops-collage-text-{{ section.id }}">
+    
+    {%- comment -%} Left Column (Images) {%- endcomment -%}
+    <div class="coops-collage__media">
+      <div class="coops-collage__grid">
+        {%- comment -%} Main Large Image {%- endcomment -%}
+        <div class="coops-collage__item coops-collage__item--large">
+          {% if section.settings.image_1 != blank %}
+            {{ section.settings.image_1 | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'coops-collage__img', alt: section.settings.heading }}
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'coops-collage__img placeholder-svg' }}
+          {% endif %}
+        </div>
+        
+        {%- comment -%} Small Image Left {%- endcomment -%}
+        <div class="coops-collage__item">
+          {% if section.settings.image_2 != blank %}
+            {{ section.settings.image_2 | image_url: width: 600 | image_tag: loading: 'lazy', class: 'coops-collage__img' }}
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'coops-collage__img placeholder-svg' }}
+          {% endif %}
+        </div>
+
+        {%- comment -%} Small Image Right {%- endcomment -%}
+        <div class="coops-collage__item">
+          {% if section.settings.image_3 != blank %}
+            {{ section.settings.image_3 | image_url: width: 600 | image_tag: loading: 'lazy', class: 'coops-collage__img' }}
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'coops-collage__img placeholder-svg' }}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%} Right Column (Content) {%- endcomment -%}
+    <div class="coops-collage__content">
+      {% if section.settings.heading != blank %}
+        <h2 class="coops-collage__heading">{{ section.settings.heading | escape }}</h2>
+      {% endif %}
+
+      {% if section.settings.subheading != blank %}
+        <p class="coops-collage__subheading">{{ section.settings.subheading | escape }}</p>
+      {% endif %}
+
+      {% if section.blocks.size > 0 %}
+        <ul class="coops-collage__list">
+          {% for block in section.blocks %}
+            <li class="coops-collage__list-item" {{ block.shopify_attributes }}>
+              <span class="coops-collage__list-icon">
+                {% if block.settings.custom_icon_svg != blank %}
+                  {{ block.settings.custom_icon_svg }}
+                {% else %}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10240 10240">
+                    <g fill="{{ section.settings.diamond_color }}"><path d="M3946 9058 c-2169 -2177 -3931 -3938 -3938 -3938 -5 0 -8 -13 -8 -28 0 -25 229 -257 1637 -1663 901 -899 1933 -1927 2293 -2284 360 -358 682 -677 715 -711 33 -33 146 -145 251 -247 l192 -187 61 0 c45 0 60 3 55 12 -5 7 497 514 1382 1395 1180 1175 1392 1382 1407 1373 14 -9 17 -6 17 19 0 25 -44 71 -331 345 -284 271 -336 316 -361 316 -26 0 -29 -2 -18 -15 11 -13 -149 -176 -1055 -1078 -1016 -1011 -1070 -1062 -1107 -1065 -38 -3 -40 -2 -351 305 -467 461 -3383 3352 -3450 3420 l-57 59 89 89 c2809 2807 3743 3736 3755 3733 8 -2 398 -385 868 -852 1331 -1324 2978 -2968 2978 -2973 0 -10 -1043 -1038 -1057 -1041 -8 -2 -20 2 -28 8 -13 10 -15 8 -15 -17 0 -26 42 -71 324 -346 293 -286 327 -317 357 -317 22 0 30 3 23 10 -10 10 128 148 1304 1319 l362 360 0 45 c0 39 -3 46 -23 51 -13 4 -1139 1122 -2553 2536 -1391 1391 -2536 2529 -2544 2529 -8 0 -537 -523 -1174 -1162z"/></g>
+                    <g fill="{{ section.settings.checkmark_color }}"><path d="M4051 5966 c-679 -680 -901 -908 -895 -918 18 -31 550 -538 561 -536 6 2 284 274 617 606 333 331 609 602 614 602 4 0 221 -208 482 -461 1125 -1094 1717 -1666 2040 -1974 190 -180 404 -385 475 -454 72 -70 242 -234 380 -366 301 -289 793 -765 1001 -967 83 -82 155 -148 160 -148 5 0 139 130 297 288 l288 288 -218 210 c-332 319 -1223 1184 -1448 1404 -110 108 -353 345 -540 526 -187 181 -508 493 -715 694 -366 357 -968 942 -1774 1723 -220 213 -405 387 -411 387 -6 0 -417 -407 -914 -904z"/></g>
+                  </svg>
+                {% endif %}
+              </span>
+              {{ block.settings.text }}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if section.settings.footer_text != blank %}
+        <div class="coops-collage__footer">
+          {{ section.settings.footer_text }}
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Coop's Collage w/ Text",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f4f4f4"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Desktop Image Position",
+      "options": [
+        { "value": "image_left", "label": "Image Left" },
+        { "value": "image_right", "label": "Image Right" }
+      ],
+      "default": "image_left"
+    },
+    {
+      "type": "header",
+      "content": "Image Grid"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Large Top Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Bottom Left Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Bottom Right Image"
+    },
+    {
+      "type": "range",
+      "id": "image_gap",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Space between images",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Image Corner Radius",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading Text",
+      "default": "5-IN-1 MOBILE WORKSHOP"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 20,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Weight",
+      "options": [
+        { "value": "500", "label": "Medium" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black" }
+      ],
+      "default": "800"
+    },
+    {
+      "type": "header",
+      "content": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading Text",
+      "default": "PERFECT COMPANION FOR:"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading Size",
+      "default": 18
+    },
+    {
+      "type": "select",
+      "id": "subheading_weight",
+      "label": "Subheading Weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "header",
+      "content": "Checklist Items"
+    },
+    {
+      "type": "color",
+      "id": "list_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "list_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Text Size",
+      "default": 18
+    },
+    {
+      "type": "select",
+      "id": "list_weight",
+      "label": "Text Weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "header",
+      "content": "Checkmark Icons"
+    },
+    {
+      "type": "color",
+      "id": "diamond_color",
+      "label": "Diamond Background Color",
+      "default": "#FDBF06"
+    },
+    {
+      "type": "color",
+      "id": "checkmark_color",
+      "label": "Checkmark Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "checkmark_size",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Checkmark Size",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Footer Text"
+    },
+    {
+      "type": "richtext",
+      "id": "footer_text",
+      "label": "Footer Note",
+      "default": "<p><i>*Note: The Mobile Workshop is not rated for damp or wet use.</i></p>"
+    },
+    {
+      "type": "color",
+      "id": "footer_color",
+      "label": "Footer Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "footer_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Footer Size",
+      "default": 14
+    }
+  ],
+  "blocks": [
+    {
+      "type": "checklist_item",
+      "name": "Checklist Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "List item"
+        },
+        {
+          "type": "html",
+          "id": "custom_icon_svg",
+          "label": "Custom Icon SVG",
+          "info": "Leave blank to use the default diamond checkmark."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Coop's Collage w/ Text",
+      "blocks": [
+        {
+          "type": "checklist_item",
+          "settings": {
+            "text": "Painters"
+          }
+        },
+        {
+          "type": "checklist_item",
+          "settings": {
+            "text": "Electricians"
+          }
+        },
+        {
+          "type": "checklist_item",
+          "settings": {
+            "text": "Contractors"
+          }
+        },
+        {
+          "type": "checklist_item",
+          "settings": {
+            "text": "Auto Repair"
+          }
+        },
+        {
+          "type": "checklist_item",
+          "settings": {
+            "text": "Facilities Maintenance"
+          }
+        },
+        {
+          "type": "checklist_item",
+          "settings": {
+            "text": "Gig Workers"
+          }
+        },
+        {
+          "type": "checklist_item",
+          "settings": {
+            "text": "Many More Uses"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
