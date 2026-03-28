@@ -1,0 +1,307 @@
+{%- style -%}
+  .coops-videos-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .coops-videos__heading {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+  }
+
+  /* GRID LAYOUT */
+  .coops-videos__layout--grid {
+    display: grid;
+    gap: {{ section.settings.gap }}px;
+    grid-template-columns: repeat({{ section.settings.mobile_columns }}, 1fr);
+  }
+
+  /* SLIDER LAYOUT */
+  .coops-videos__layout--slider {
+    display: flex;
+    overflow-x: auto;
+    gap: {{ section.settings.gap }}px;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding-bottom: 20px; /* Space for scrollbar */
+  }
+  .coops-videos__layout--slider::-webkit-scrollbar {
+    height: 8px;
+  }
+  .coops-videos__layout--slider::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+  .coops-videos__layout--slider::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+  .coops-videos__layout--slider .coops-videos__item {
+    flex: 0 0 calc((100% - ({{ section.settings.gap }}px * ({{ section.settings.mobile_columns }} - 1))) / {{ section.settings.mobile_columns }});
+    scroll-snap-align: start;
+    min-width: 250px; /* sensible minimum */
+  }
+
+  /* MEDIA QUERIES FOR DESKTOP COLUMNS */
+  @media screen and (min-width: 769px) {
+    .coops-videos__layout--grid {
+      grid-template-columns: repeat({{ section.settings.desktop_columns }}, 1fr);
+    }
+    .coops-videos__layout--slider .coops-videos__item {
+      flex: 0 0 calc((100% - ({{ section.settings.gap }}px * ({{ section.settings.desktop_columns }} - 1))) / {{ section.settings.desktop_columns }});
+    }
+  }
+
+  /* VIDEO WRAPPER Aspect Ratio */
+  .coops-video-wrapper {
+    position: relative;
+    width: 100%;
+    /* padding-bottom applied inline per block */
+    background: #000;
+    border-radius: {{ section.settings.border_radius }}px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  .coops-video-wrapper iframe,
+  .coops-video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: none;
+  }
+  .coops-video-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f4f4;
+    color: #ccc;
+  }
+  .coops-video-title {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: 600;
+  }
+{%- endstyle -%}
+
+<div class="coops-videos-{{ section.id }}">
+  {%- if section.settings.title != blank -%}
+    <h2 class="coops-videos__heading">{{ section.settings.title | escape }}</h2>
+  {%- endif -%}
+
+  <div class="coops-videos__layout--{{ section.settings.layout }}">
+    {%- for block in section.blocks -%}
+      <div class="coops-videos__item" {{ block.shopify_attributes }}>
+        <div class="coops-video-wrapper" style="padding-bottom: {{ block.settings.aspect_ratio }}%;">
+          {%- if block.settings.video_file != blank -%}
+            {{ block.settings.video_file | video_tag: image_size: '1100x', loop: false, controls: true, muted: false }}
+
+          {%- elsif block.settings.video_url != blank -%}
+            {%- if block.settings.video_url.type == 'youtube' -%}
+              <iframe
+                src="https://www.youtube.com/embed/{{ block.settings.video_url.id }}?rel=0&modestbranding=1&playsinline=1&iv_load_policy=3"
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+              ></iframe>
+            {%- elsif block.settings.video_url.type == 'vimeo' -%}
+              <iframe
+                src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?byline=0&portrait=0&title=0"
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+              ></iframe>
+            {%- endif -%}
+
+          {%- else -%}
+            <div class="coops-video-placeholder">
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if block.settings.title != blank -%}
+          <div class="coops-video-title">{{ block.settings.title }}</div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Coops Videos",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Featured Videos"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout Style",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid (Rows & Columns)"
+        },
+        {
+          "value": "slider",
+          "label": "Carousel / Slider"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Videos per row (Desktop)",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Videos per row (Mobile)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 Video"
+        },
+        {
+          "value": "2",
+          "label": "2 Videos"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Spacing between videos",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Video Border Radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video_file",
+          "label": "Shopify-hosted Video",
+          "info": "Upload an MP4 file. This overrides the YouTube/Vimeo link below."
+        },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "label": "YouTube or Vimeo Link",
+          "accept": ["youtube", "vimeo"],
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Video Title (Optional)",
+          "info": "Displays underneath the video"
+        },
+        {
+          "type": "select",
+          "id": "aspect_ratio",
+          "label": "Video Aspect Ratio",
+          "options": [
+            {
+              "value": "56.25",
+              "label": "16:9 (Landscape / YouTube)"
+            },
+            {
+              "value": "100",
+              "label": "1:1 (Square)"
+            },
+            {
+              "value": "125",
+              "label": "4:5 (Portrait)"
+            },
+            {
+              "value": "177.77",
+              "label": "9:16 (Vertical / TikTok)"
+            }
+          ],
+          "default": "56.25"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Coops Videos",
+      "blocks": [
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
