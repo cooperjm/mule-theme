@@ -1,0 +1,819 @@
+{% style %}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .coops-dynamic-gallery-{{ section.id }} {
+    width: 100%;
+    margin: 0 auto;
+    font-family: inherit;
+    overflow: hidden; /* prevents carousel horizontal scroll from blowing out page width */
+  }
+
+  .cdg-header-{{ section.id }} {
+    text-align: {{ section.settings.text_alignment }};
+    margin-bottom: 2rem;
+  }
+  .cdg-heading-{{ section.id }} {
+    font-size: 2.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+  .cdg-subheading-{{ section.id }} {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* Shared Item Styles */
+  .cdg-item {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    text-decoration: none;
+    border-radius: {{ section.settings.border_radius }}px;
+  }
+  .cdg-item img, .cdg-item svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    transition: transform 0.4s ease;
+  }
+  
+  {% if section.settings.image_ratio != 'adapt' and section.settings.layout != 'masonry' and section.settings.layout != 'custom_masonry' %}
+    .cdg-item img, .cdg-item svg {
+      object-fit: {{ section.settings.image_fit }};
+      {% if section.settings.image_ratio == 'portrait' %}
+         aspect-ratio: 2 / 3;
+      {% elsif section.settings.image_ratio == 'square' %}
+         aspect-ratio: 1 / 1;
+      {% elsif section.settings.image_ratio == 'landscape' %}
+         aspect-ratio: 4 / 3;
+      {% endif %}
+    }
+  {% endif %}
+
+  .cdg-item:hover img {
+    {% if section.settings.hover_zoom %}
+      transform: scale(1.05);
+    {% endif %}
+  }
+
+  /* Caption Styles */
+  .cdg-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-align: {{ section.settings.text_alignment }};
+    pointer-events: none;
+    /* Optional: Hide caption until hover */
+    {% if section.settings.caption_hover_only %}
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    {% endif %}
+  }
+  
+  {% if section.settings.caption_hover_only %}
+  .cdg-item:hover .cdg-caption {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  {% endif %}
+
+  /* --- 1. GRID LAYOUT --- */
+  .cdg-layout-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+    gap: {{ section.settings.gap }}px;
+  }
+  .cdg-layout-grid .cdg-item {
+    grid-column: span var(--col-span-mobile, 1);
+  }
+  @media screen and (min-width: 750px) {
+    .cdg-layout-grid {
+      grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    }
+    .cdg-layout-grid .cdg-item {
+      grid-column: span var(--col-span-desktop, 1);
+    }
+  }
+
+  /* --- 2. MASONRY LAYOUT (EQUAL COLUMNS) --- */
+  .cdg-layout-masonry {
+    column-count: {{ section.settings.columns_mobile }};
+    column-gap: {{ section.settings.gap }}px;
+  }
+  .cdg-layout-masonry .cdg-item {
+    break-inside: avoid;
+    margin-bottom: {{ section.settings.gap }}px;
+  }
+  .cdg-layout-masonry .cdg-item img {
+    height: auto; /* override aspect ratio for masonry */
+    aspect-ratio: auto !important; 
+  }
+  @media screen and (min-width: 750px) {
+    .cdg-layout-masonry {
+      column-count: {{ section.settings.columns_desktop }};
+    }
+  }
+
+  /* --- 2B. CUSTOM MASONRY LAYOUT (CUSTOM WIDTHS) --- */
+  .cdg-layout-custom_masonry {
+    display: grid;
+    grid-template-columns: {{ section.settings.masonry_cols_mobile }};
+    gap: {{ section.settings.gap }}px;
+    align-items: start;
+  }
+  .cdg-masonry-column {
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.gap }}px;
+  }
+  .cdg-layout-custom_masonry .cdg-item img {
+    height: auto; /* override aspect ratio for masonry */
+    aspect-ratio: auto !important; 
+  }
+  @media screen and (min-width: 750px) {
+    .cdg-layout-custom_masonry {
+      grid-template-columns: {{ section.settings.masonry_cols_desktop }};
+    }
+  }
+
+  /* --- 3. CAROUSEL LAYOUT --- */
+  .cdg-layout-carousel-container {
+      position: relative;
+  }
+  .cdg-layout-carousel {
+    display: flex;
+    gap: {{ section.settings.gap }}px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; /* Hide standard scrollbar */
+    padding-bottom: 10px;
+  }
+  .cdg-layout-carousel::-webkit-scrollbar {
+    display: none;
+  }
+  .cdg-layout-carousel .cdg-item {
+    scroll-snap-align: start;
+    --item-w: calc((100% - ({{ section.settings.gap }}px * {{ section.settings.columns_mobile | minus: 1 }})) / {{ section.settings.columns_mobile }});
+    flex: 0 0 calc((var(--item-w) * var(--col-span-mobile, 1)) + ({{ section.settings.gap }}px * (var(--col-span-mobile, 1) - 1)));
+  }
+  @media screen and (min-width: 750px) {
+    .cdg-layout-carousel .cdg-item {
+      --item-w: calc((100% - ({{ section.settings.gap }}px * {{ section.settings.columns_desktop | minus: 1 }})) / {{ section.settings.columns_desktop }});
+      flex: 0 0 calc((var(--item-w) * var(--col-span-desktop, 1)) + ({{ section.settings.gap }}px * (var(--col-span-desktop, 1) - 1)));
+    }
+  }
+
+  /* Carousel Navigation Buttons */
+  .cdg-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    color: #000;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.9;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .cdg-nav-btn:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.05);
+  }
+  .cdg-nav-prev { left: 10px; }
+  .cdg-nav-next { right: 10px; }
+  .cdg-nav-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    background: transparent;
+  }
+
+  /* --- 4. COLLAGE LAYOUT --- */
+  .cdg-layout-collage {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: {{ section.settings.gap }}px;
+  }
+  .cdg-layout-collage .cdg-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: {{ section.settings.image_fit | default: 'cover' }};
+      aspect-ratio: auto;
+  }
+  @media screen and (min-width: 750px) {
+    .cdg-layout-collage {
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: minmax(200px, auto);
+    }
+    .cdg-layout-collage .cdg-item {
+        min-height: 200px;
+    }
+    .cdg-layout-collage .cdg-item:first-child {
+      grid-column: 1 / span 2;
+      grid-row: 1 / span 2;
+    }
+  }
+
+  /* --- 5. LIGHTBOX LAYOUT --- */
+  .cdg-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.92);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  }
+  .cdg-lightbox.is-open {
+    display: flex;
+  }
+  .cdg-lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 4px;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+    cursor: default;
+  }
+  .cdg-lightbox.is-open .cdg-lightbox-img {
+    transform: scale(1);
+  }
+  .cdg-lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    z-index: 2;
+  }
+  .cdg-lightbox-close:hover {
+    background: rgba(255,255,255,0.3);
+  }
+  .cdg-lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    z-index: 2;
+  }
+  .cdg-lightbox-nav:hover {
+    background: rgba(255,255,255,0.3);
+  }
+  .cdg-lightbox-prev { left: 20px; }
+  .cdg-lightbox-next { right: 20px; }
+
+  .cdg-item[data-cdg-lightbox] {
+    cursor: zoom-in;
+  }
+{% endstyle %}
+
+<div class="coops-dynamic-gallery-{{ section.id }} section-{{ section.id }}-padding" data-cdg-section="{{ section.id }}" data-cdg-lightbox-enabled="{{ section.settings.enable_lightbox }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}" style="{% unless section.settings.full_width %}max-width: var(--page-width, 1400px); margin: 0 auto; padding: 0 1.5rem;{% endunless %}">
+    
+    {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+      <div class="cdg-header-{{ section.id }}"{% if section.settings.full_width %} style="padding: 0 1.5rem;"{% endif %}>
+        {%- if section.settings.heading != blank -%}
+          <h2 class="cdg-heading-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="cdg-subheading-{{ section.id }}">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {% assign layout_class = 'cdg-layout-' | append: section.settings.layout %}
+
+    {% if section.settings.layout == 'carousel' %}
+    <div class="cdg-layout-carousel-container">
+      {% if section.blocks.size > section.settings.columns_desktop %}
+        <button class="cdg-nav-btn cdg-nav-prev" onclick="scrollGallery('{{ section.id }}', -1)" aria-label="Previous">
+          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      {% endif %}
+    {% endif %}
+
+    <div id="Gallery-{{ section.id }}" class="{{ layout_class }}" data-cdg-track>
+      {% if section.settings.layout == 'custom_masonry' %}
+        {% assign desktop_cols = section.settings.masonry_cols_desktop | split: ' ' %}
+        {% assign col_count = desktop_cols.size %}
+        {% for i in (1..col_count) %}
+          <div class="cdg-masonry-column">
+            {% for block in section.blocks %}
+              {% assign col_index = forloop.index0 | modulo: col_count | plus: 1 %}
+              {% if col_index == i %}
+                {% assign is_link = false %}
+                {% if block.settings.link != blank %}
+                  {% assign is_link = true %}
+                {% endif %}
+                
+                {% assign lightbox_url = blank %}
+                {% if section.settings.enable_lightbox and is_link == false and block.settings.image != blank %}
+                  {% assign lightbox_url = block.settings.image | image_url: width: 2000 %}
+                {% endif %}
+
+                {% if is_link %}
+                  <a href="{{ block.settings.link }}" class="cdg-item" style="--col-span-desktop: {{ block.settings.column_span }}; --col-span-mobile: {{ block.settings.column_span_mobile }};" {{ block.shopify_attributes }}>
+                {% else %}
+                  <div class="cdg-item" style="--col-span-desktop: {{ block.settings.column_span }}; --col-span-mobile: {{ block.settings.column_span_mobile }};" {% if lightbox_url != blank %}data-cdg-lightbox="{{ lightbox_url }}"{% endif %} {{ block.shopify_attributes }}>
+                {% endif %}
+                
+                  {% if block.settings.image != blank %}
+                    {% assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840' %}
+                    {{ block.settings.image | image_url: width: 2000 | image_tag: loading: 'lazy', sizes: '100vw', widths: widths, alt: block.settings.image.alt | default: block.settings.caption | escape }}
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                  
+                  {% if block.settings.caption != blank %}
+                    <div class="cdg-caption">
+                      {{ block.settings.caption | escape }}
+                    </div>
+                  {% endif %}
+                  
+                {% if is_link %}
+                  </a>
+                {% else %}
+                  </div>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endfor %}
+      {% else %}
+        {% for block in section.blocks %}
+          {% assign is_link = false %}
+          {% if block.settings.link != blank %}
+            {% assign is_link = true %}
+          {% endif %}
+          
+          {% assign lightbox_url = blank %}
+          {% if section.settings.enable_lightbox and is_link == false and block.settings.image != blank %}
+            {% assign lightbox_url = block.settings.image | image_url: width: 2000 %}
+          {% endif %}
+
+          {% if is_link %}
+            <a href="{{ block.settings.link }}" class="cdg-item" style="--col-span-desktop: {{ block.settings.column_span }}; --col-span-mobile: {{ block.settings.column_span_mobile }};" {{ block.shopify_attributes }}>
+          {% else %}
+            <div class="cdg-item" style="--col-span-desktop: {{ block.settings.column_span }}; --col-span-mobile: {{ block.settings.column_span_mobile }};" {% if lightbox_url != blank %}data-cdg-lightbox="{{ lightbox_url }}"{% endif %} {{ block.shopify_attributes }}>
+          {% endif %}
+          
+            {% if block.settings.image != blank %}
+              {% assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840' %}
+              {{ block.settings.image | image_url: width: 2000 | image_tag: loading: 'lazy', sizes: '100vw', widths: widths, alt: block.settings.image.alt | default: block.settings.caption | escape }}
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+            
+            {% if block.settings.caption != blank %}
+              <div class="cdg-caption">
+                {{ block.settings.caption | escape }}
+              </div>
+            {% endif %}
+            
+          {% if is_link %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    {% if section.settings.layout == 'carousel' %}
+      {% if section.blocks.size > section.settings.columns_desktop %}
+        <button class="cdg-nav-btn cdg-nav-next" onclick="scrollGallery('{{ section.id }}', 1)" aria-label="Next">
+          <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      {% endif %}
+    </div> <!-- Close carousel container -->
+    {% endif %}
+
+  </div>
+  
+  {%- if section.settings.enable_lightbox -%}
+    <div class="cdg-lightbox" data-cdg-lightbox-overlay>
+      <button class="cdg-lightbox-close" data-cdg-lightbox-close aria-label="Close">&times;</button>
+      <button class="cdg-lightbox-nav cdg-lightbox-prev" data-cdg-lightbox-prev aria-label="Previous image">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <img class="cdg-lightbox-img" data-cdg-lightbox-img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000'%3E%3C/svg%3E" alt="" width="1000" height="1000">
+      <button class="cdg-lightbox-nav cdg-lightbox-next" data-cdg-lightbox-next aria-label="Next image">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  {%- endif -%}
+  
+</div>
+
+<script>
+  function scrollGallery(sectionId, direction) {
+    const gallery = document.getElementById('Gallery-' + sectionId);
+    if(!gallery) return;
+    
+    // Calculate scroll amount based on first item width + gap
+    const item = gallery.querySelector('.cdg-item');
+    if(!item) return;
+    
+    const gap = parseInt(window.getComputedStyle(gallery).gap) || 0;
+    const scrollAmount = item.offsetWidth + gap;
+    
+    gallery.scrollBy({
+      left: scrollAmount * direction,
+      behavior: 'smooth'
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const section = document.querySelector('[data-cdg-section="{{ section.id }}"]');
+    if (!section) return;
+
+    if (section.dataset.cdgLightboxEnabled === 'true') {
+      const track = section.querySelector('[data-cdg-track]');
+      const overlay = section.querySelector('[data-cdg-lightbox-overlay]');
+      const lbImg = section.querySelector('[data-cdg-lightbox-img]');
+      const lbClose = section.querySelector('[data-cdg-lightbox-close]');
+      const lbPrev = section.querySelector('[data-cdg-lightbox-prev]');
+      const lbNext = section.querySelector('[data-cdg-lightbox-next]');
+
+      if (!overlay || !lbImg || !track) return;
+
+      let lbImages = [];
+      let currentIdx = 0;
+
+      function collectImages() {
+        const seen = new Set();
+        lbImages = [];
+        track.querySelectorAll('.cdg-item[data-cdg-lightbox]').forEach(function(item) {
+          const url = item.getAttribute('data-cdg-lightbox');
+          if (url && !seen.has(url)) {
+            seen.add(url);
+            lbImages.push(url);
+          }
+        });
+      }
+
+      function openLightbox(url) {
+        collectImages();
+        currentIdx = lbImages.indexOf(url);
+        if (currentIdx === -1) currentIdx = 0;
+        lbImg.src = lbImages[currentIdx];
+        overlay.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        overlay.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
+
+      function showImage(idx) {
+        if (lbImages.length === 0) return;
+        currentIdx = (idx + lbImages.length) % lbImages.length;
+        lbImg.src = lbImages[currentIdx];
+      }
+
+      track.addEventListener('click', function(e) {
+        const item = e.target.closest('.cdg-item[data-cdg-lightbox]');
+        if (!item) return;
+        
+        const url = item.getAttribute('data-cdg-lightbox');
+        if(url) {
+          e.preventDefault();
+          openLightbox(url);
+        }
+      });
+
+      lbClose.addEventListener('click', closeLightbox);
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closeLightbox();
+      });
+
+      if (lbPrev) {
+        lbPrev.addEventListener('click', function(e) {
+          e.stopPropagation();
+          showImage(currentIdx - 1);
+        });
+      }
+      if (lbNext) {
+        lbNext.addEventListener('click', function(e) {
+          e.stopPropagation();
+          showImage(currentIdx + 1);
+        });
+      }
+
+      document.addEventListener('keydown', function(e) {
+        if (!overlay.classList.contains('is-open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') showImage(currentIdx - 1);
+        if (e.key === 'ArrowRight') showImage(currentIdx + 1);
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Coop's Dynamic Gallery",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop Our Gallery"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Explore different styles."
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Make section full width",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Gallery Type",
+      "options": [
+        { "value": "grid", "label": "Standard Grid" },
+        { "value": "masonry", "label": "Masonry (Equal Columns)" },
+        { "value": "custom_masonry", "label": "Masonry (Custom Widths)" },
+        { "value": "carousel", "label": "Swipable Carousel" },
+        { "value": "collage", "label": "Collage (Featured Large Image)" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_lightbox",
+      "label": "Enable Lightbox",
+      "info": "Clicking an image expands it full-screen. Will be overridden if the image block has a custom Link URL.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Columns (Desktop)",
+      "default": 3,
+      "info": "Grid, Equal Masonry, and Carousel layouts only."
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (Mobile)",
+      "options": [
+        { "value": "1", "label": "1 Column" },
+        { "value": "2", "label": "2 Columns" }
+      ],
+      "default": "1",
+      "info": "Grid, Equal Masonry, and Carousel layouts only."
+    },
+    {
+      "type": "header",
+      "content": "Masonry Layout Options"
+    },
+    {
+      "type": "text",
+      "id": "masonry_cols_desktop",
+      "label": "Custom Masonry Columns (Desktop)",
+      "default": "1fr 1fr 1fr",
+      "info": "Define column widths separated by spaces (e.g. '1fr 2fr' for a 33% / 66% split). The number of items dictates the number of columns."
+    },
+    {
+      "type": "text",
+      "id": "masonry_cols_mobile",
+      "label": "Custom Masonry Columns (Mobile)",
+      "default": "1fr",
+      "info": "Define column widths for mobile screens (e.g. '1fr' or '1fr 1fr')."
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Image Spacing (Gap)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Image Corner Radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Image Dimensions"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image Fit",
+      "options": [
+        { "value": "cover", "label": "Cover (Fills area, crops edges)" },
+        { "value": "contain", "label": "Contain (Shows full image)" }
+      ],
+      "default": "cover",
+      "info": "Choose how the image fills its container (n/a for Masonry)."
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image Aspect Ratio",
+      "options": [
+        { "value": "adapt", "label": "Adapt to Image" },
+        { "value": "portrait", "label": "Portrait (2:3)" },
+        { "value": "square", "label": "Square (1:1)" },
+        { "value": "landscape", "label": "Landscape (4:3)" }
+      ],
+      "default": "square",
+      "info": "Forces Grid and Carousel images to a uniform shape. Masonry always adapts to image."
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_zoom",
+      "label": "Enable Image Zoom on Hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "caption_hover_only",
+      "label": "Show Captions Only On Hover",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Image Link (Optional)",
+          "info": "Overrides the lightbox feature if filled."
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption (Optional)",
+          "info": "Appears over the bottom of the image."
+        },
+        {
+          "type": "header",
+          "content": "Column Sizing"
+        },
+        {
+          "type": "range",
+          "id": "column_span",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "label": "Column Span (Desktop)",
+          "default": 1,
+          "info": "How many columns this image takes up. Applies to Grid and Carousel layouts."
+        },
+        {
+          "type": "select",
+          "id": "column_span_mobile",
+          "label": "Column Span (Mobile)",
+          "options": [
+            { "value": "1", "label": "1 Column" },
+            { "value": "2", "label": "2 Columns" }
+          ],
+          "default": "1",
+          "info": "How many columns this image takes up on mobile."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Coop's Dynamic Gallery",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}
