@@ -32732,7 +32732,11 @@ class ProductDetails {
       this.$productAtcButton.text(this.context.product_unavailable);
       this.$productAtcButton.addClass('disabled').prop('disabled', true);
     } else if (variant.available) {
-      if (this.$productAtcButton[0].hasAttribute('data-product-atc-preorder')) {
+      const customAddToCartText = this.$productAtcButton.attr('data-product-atc-custom-text');
+
+      if (customAddToCartText) {
+        this.$productAtcButton.text(customAddToCartText);
+      } else if (this.$productAtcButton[0].hasAttribute('data-product-atc-preorder')) {
         this.$productAtcButton.text(this.context.product_preorder);
       } else {
         this.$productAtcButton.text(this.context.product_available);

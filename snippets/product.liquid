@@ -34,6 +34,9 @@
 
   @param gallery_click_to_zoom {String}
     This is the click to zoom setting, which is either 'disabled', 'mobile', 'desktop', or 'always'
+
+  @param use_theme_gallery {Boolean}
+    If true, use the theme product gallery instead of the custom gallery
 {% endcomment %}
 
 {{ 'product.css' | asset_url | stylesheet_tag }}
@@ -44,6 +47,7 @@
   assign onboarding = onboarding | default: false
   assign layout = layout | default: nil
   assign is_featured_product = is_featured_product | default: false
+  assign use_theme_gallery = use_theme_gallery | default: false
 
   if layout == 'layout--three-col'
     assign product_form = true
@@ -111,9 +115,7 @@
 
 <article class="product--outer">
 
-  {% render 'product-image-gallery' %}
-
-  <div class="old-gallery" style="display: none;">
+  {% if use_theme_gallery %}
     {%
       render 'product-gallery',
       product: product,
@@ -124,7 +126,22 @@
       gallery_click_to_zoom: gallery_click_to_zoom,
       gallery_hover_zoom: gallery_hover_zoom
     %}
-  </div>
+  {% else %}
+    {% render 'product-image-gallery' %}
+
+    <div class="old-gallery" style="display: none;">
+      {%
+        render 'product-gallery',
+        product: product,
+        select_first_available_variant: select_first_available_variant,
+        aspect_ratio: gallery_aspect_ratio,
+        thumbnail_position: gallery_thumbnail_position,
+        image_crop: gallery_image_crop,
+        gallery_click_to_zoom: gallery_click_to_zoom,
+        gallery_hover_zoom: gallery_hover_zoom
+      %}
+    </div>
+  {% endif %}
 
   <div class="product-main">
     <div class="product-details" data-product-details>
@@ -349,6 +366,79 @@
                 </div>
               {% endunless %}
 
+            {% when 'remote_selector' %}
+              {% liquid
+                assign active_option = block.settings.active_option
+                assign show_no_remote = false
+                assign show_with_remote = false
+
+                if block.settings.no_remote_label != blank
+                  if block.settings.no_remote_link != blank or active_option == 'no_remote'
+                    assign show_no_remote = true
+                  endif
+                endif
+
+                if block.settings.with_remote_label != blank
+                  if block.settings.with_remote_link != blank or active_option == 'with_remote'
+                    assign show_with_remote = true
+                  endif
+                endif
+              %}
+
+              {% if show_no_remote or show_with_remote %}
+                <div class="coops-product-remote">
+                  {% if block.settings.label != blank %}
+                    <span class="coops-product-remote__label">
+                      {{ block.settings.label | escape }}
+                    </span>
+                  {% endif %}
+
+                  <div class="coops-product-remote__options">
+                    {% if show_no_remote %}
+                      {% if block.settings.no_remote_link != blank and active_option != 'no_remote' %}
+                        <a
+                          class="coops-product-remote__option"
+                          href="{{ block.settings.no_remote_link }}"
+                        >
+                          {{ block.settings.no_remote_label | escape }}
+                        </a>
+                      {% else %}
+                        <span
+                          class="
+                            coops-product-remote__option
+                            {% if active_option == 'no_remote' %}coops-product-remote__option--active{% endif %}
+                          "
+                          {% if active_option == 'no_remote' %}aria-current="page"{% endif %}
+                        >
+                          {{ block.settings.no_remote_label | escape }}
+                        </span>
+                      {% endif %}
+                    {% endif %}
+
+                    {% if show_with_remote %}
+                      {% if block.settings.with_remote_link != blank and active_option != 'with_remote' %}
+                        <a
+                          class="coops-product-remote__option"
+                          href="{{ block.settings.with_remote_link }}"
+                        >
+                          {{ block.settings.with_remote_label | escape }}
+                        </a>
+                      {% else %}
+                        <span
+                          class="
+                            coops-product-remote__option
+                            {% if active_option == 'with_remote' %}coops-product-remote__option--active{% endif %}
+                          "
+                          {% if active_option == 'with_remote' %}aria-current="page"{% endif %}
+                        >
+                          {{ block.settings.with_remote_label | escape }}
+                        </span>
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+
             {% when 'price' %}
               <div
                 class="product-pricing"
@@ -439,6 +529,7 @@
                       enable_local_pickup: enable_local_pickup,
                       show_recipient_form: show_recipient_form,
                       show_dynamic_checkout_button: show_dynamic_checkout_button,
+                      custom_add_to_cart_text: block.settings.add_to_cart_text,
                       selected_variant: selected_variant,
                       is_product_modal: is_product_modal,
                     %}
@@ -474,6 +565,106 @@
               {% if block.settings.custom_liquid != blank %}
                 <div class="custom-liquid">
                   {{ block.settings.custom_liquid }}
+                </div>
+              {% endif %}
+
+            {% when 'desc_specs' %}
+              {% liquid
+                assign description_content = block.settings.description_text
+                assign specifications_content = block.settings.specifications_text
+                assign tab_group_name = 'coops-product-tabs-' | append: section.id | append: '-' | append: block.id
+                assign first_tab = 'description'
+
+                if block.settings.use_product_description and product.description != blank
+                  assign description_content = product.description
+                endif
+
+                if description_content == blank and specifications_content != blank
+                  assign first_tab = 'specifications'
+                endif
+              %}
+
+              {% if description_content != blank or specifications_content != blank %}
+                <div class="coops-product-tabs" data-coops-product-tabs>
+                  {% if description_content != blank %}
+                    <input
+                      class="coops-product-tabs__radio"
+                      id="coops-description-tab-{{ section.id }}-{{ block.id }}"
+                      name="{{ tab_group_name }}"
+                      type="radio"
+                      {% if first_tab == 'description' %}checked{% endif %}
+                    >
+
+                    <label
+                      class="coops-product-tabs__label"
+                      for="coops-description-tab-{{ section.id }}-{{ block.id }}"
+                    >
+                      {{ block.settings.description_heading | escape }}
+                    </label>
+
+                    <div class="coops-product-tabs__panel" tabindex="0">
+                      <div
+                        class="coops-product-tabs__content rte"
+                        data-coops-tabs-content
+                        data-collapsed-height="{{ block.settings.collapsed_height }}"
+                      >
+                        {{ description_content }}
+                      </div>
+
+                      {% if block.settings.enable_read_more %}
+                        <button
+                          class="coops-product-tabs__read-more"
+                          type="button"
+                          data-coops-tabs-read-more
+                          data-read-more-text="{{ block.settings.read_more_text | escape }}"
+                          data-read-less-text="{{ block.settings.read_less_text | escape }}"
+                          hidden
+                        >
+                          {{ block.settings.read_more_text | escape }}
+                        </button>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+
+                  {% if specifications_content != blank %}
+                    <input
+                      class="coops-product-tabs__radio"
+                      id="coops-specifications-tab-{{ section.id }}-{{ block.id }}"
+                      name="{{ tab_group_name }}"
+                      type="radio"
+                      {% if first_tab == 'specifications' %}checked{% endif %}
+                    >
+
+                    <label
+                      class="coops-product-tabs__label"
+                      for="coops-specifications-tab-{{ section.id }}-{{ block.id }}"
+                    >
+                      {{ block.settings.specifications_heading | escape }}
+                    </label>
+
+                    <div class="coops-product-tabs__panel" tabindex="0">
+                      <div
+                        class="coops-product-tabs__content rte"
+                        data-coops-tabs-content
+                        data-collapsed-height="{{ block.settings.collapsed_height }}"
+                      >
+                        {{ specifications_content }}
+                      </div>
+
+                      {% if block.settings.enable_read_more %}
+                        <button
+                          class="coops-product-tabs__read-more"
+                          type="button"
+                          data-coops-tabs-read-more
+                          data-read-more-text="{{ block.settings.read_more_text | escape }}"
+                          data-read-less-text="{{ block.settings.read_less_text | escape }}"
+                          hidden
+                        >
+                          {{ block.settings.read_more_text | escape }}
+                        </button>
+                      {% endif %}
+                    </div>
+                  {% endif %}
                 </div>
               {% endif %}
 

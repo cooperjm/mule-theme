@@ -152,6 +152,7 @@
   {% assign product_smart_buttons = false %}
 {% endif %}
 
+{% assign custom_add_to_cart_text = custom_add_to_cart_text | default: blank %}
 {% assign product_form_class = 'option-style-' | append: settings.product_option_style %}
 
 {% form 'product', product, class: product_form_class, data-product-form: '' %}
@@ -664,13 +665,18 @@
           disabled
         {% endif %}
         data-product-atc
+        {% if custom_add_to_cart_text != blank %}
+          data-product-atc-custom-text="{{ custom_add_to_cart_text | escape }}"
+        {% endif %}
         {% if product.template_suffix contains 'pre-order' %}
           data-product-atc-preorder
         {% endif %}
       >
         <span class="atc-button--text">
           {% unless selected_variant and selected_variant.available == false %}
-          {% if product.template_suffix contains 'pre-order' %}
+          {% if custom_add_to_cart_text != blank %}
+              {{ custom_add_to_cart_text | escape }}
+            {% elsif product.template_suffix contains 'pre-order' %}
               {{ 'product.buttons.pre_order' | t }}
             {% else %}
               {{ 'product.buttons.add_to_cart' | t }}

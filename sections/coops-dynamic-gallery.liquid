@@ -14,7 +14,7 @@
     width: 100%;
     margin: 0 auto;
     font-family: inherit;
-    overflow: hidden; /* prevents carousel horizontal scroll from blowing out page width */
+    overflow: hidden; 
   }
 
   .cdg-header-{{ section.id }} {
@@ -35,38 +35,51 @@
     line-height: 1.4;
   }
 
-  /* Shared Item Styles */
-  .cdg-item {
+  /* Grid Layout (Masonry.js) */
+  .cdg-grid-{{ section.id }} {
+    --gap: {{ section.settings.gap }}px;
+    --cols-mobile: {{ section.settings.columns_mobile }};
+    --cols-desktop: {{ section.settings.columns_desktop }};
+    
+    /* Calculate basic mobile unit width */
+    --item-w-mobile: calc((100% - (var(--gap) * (var(--cols-mobile) - 1))) / var(--cols-mobile));
+    /* Calculate basic desktop unit width */
+    --item-w-desktop: calc((100% - (var(--gap) * (var(--cols-desktop) - 1))) / var(--cols-desktop));
+    
+    position: relative; /* required by Masonry */
+  }
+
+  .cdg-grid-sizer-{{ section.id }} { width: var(--item-w-mobile); }
+  .cdg-gutter-sizer-{{ section.id }} { width: var(--gap); }
+
+  .cdg-item-{{ section.id }} {
+    width: calc(var(--item-w-mobile) * var(--span-mobile) + var(--gap) * (var(--span-mobile) - 1));
+    margin-bottom: var(--gap);
     position: relative;
     display: block;
-    width: 100%;
-    height: 100%;
     overflow: hidden;
     text-decoration: none;
     border-radius: {{ section.settings.border_radius }}px;
   }
-  .cdg-item img, .cdg-item svg {
+  
+  @media screen and (min-width: 750px) {
+    .cdg-grid-sizer-{{ section.id }} { width: var(--item-w-desktop); }
+    .cdg-item-{{ section.id }} {
+      width: calc(var(--item-w-desktop) * var(--span-desktop) + var(--gap) * (var(--span-desktop) - 1));
+    }
+  }
+
+  /* Item Content Styles */
+  .cdg-item-{{ section.id }} img, 
+  .cdg-item-{{ section.id }} svg {
     display: block;
     width: 100%;
-    height: 100%;
+    height: auto;
     background-color: #f4f4f4;
     transition: transform 0.4s ease;
   }
-  
-  {% if section.settings.image_ratio != 'adapt' and section.settings.layout != 'masonry' and section.settings.layout != 'custom_masonry' %}
-    .cdg-item img, .cdg-item svg {
-      object-fit: {{ section.settings.image_fit }};
-      {% if section.settings.image_ratio == 'portrait' %}
-         aspect-ratio: 2 / 3;
-      {% elsif section.settings.image_ratio == 'square' %}
-         aspect-ratio: 1 / 1;
-      {% elsif section.settings.image_ratio == 'landscape' %}
-         aspect-ratio: 4 / 3;
-      {% endif %}
-    }
-  {% endif %}
 
-  .cdg-item:hover img {
+  .cdg-item-{{ section.id }}:hover img {
     {% if section.settings.hover_zoom %}
       transform: scale(1.05);
     {% endif %}
@@ -85,7 +98,6 @@
     font-size: 1.1rem;
     text-align: {{ section.settings.text_alignment }};
     pointer-events: none;
-    /* Optional: Hide caption until hover */
     {% if section.settings.caption_hover_only %}
       opacity: 0;
       transform: translateY(10px);
@@ -94,160 +106,13 @@
   }
   
   {% if section.settings.caption_hover_only %}
-  .cdg-item:hover .cdg-caption {
+  .cdg-item-{{ section.id }}:hover .cdg-caption {
     opacity: 1;
     transform: translateY(0);
   }
   {% endif %}
 
-  /* --- 1. GRID LAYOUT --- */
-  .cdg-layout-grid {
-    display: grid;
-    grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
-    gap: {{ section.settings.gap }}px;
-  }
-  .cdg-layout-grid .cdg-item {
-    grid-column: span var(--col-span-mobile, 1);
-  }
-  @media screen and (min-width: 750px) {
-    .cdg-layout-grid {
-      grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
-    }
-    .cdg-layout-grid .cdg-item {
-      grid-column: span var(--col-span-desktop, 1);
-    }
-  }
-
-  /* --- 2. MASONRY LAYOUT (EQUAL COLUMNS) --- */
-  .cdg-layout-masonry {
-    column-count: {{ section.settings.columns_mobile }};
-    column-gap: {{ section.settings.gap }}px;
-  }
-  .cdg-layout-masonry .cdg-item {
-    break-inside: avoid;
-    margin-bottom: {{ section.settings.gap }}px;
-  }
-  .cdg-layout-masonry .cdg-item img {
-    height: auto; /* override aspect ratio for masonry */
-    aspect-ratio: auto !important; 
-  }
-  @media screen and (min-width: 750px) {
-    .cdg-layout-masonry {
-      column-count: {{ section.settings.columns_desktop }};
-    }
-  }
-
-  /* --- 2B. CUSTOM MASONRY LAYOUT (CUSTOM WIDTHS) --- */
-  .cdg-layout-custom_masonry {
-    display: grid;
-    grid-template-columns: {{ section.settings.masonry_cols_mobile }};
-    gap: {{ section.settings.gap }}px;
-    align-items: start;
-  }
-  .cdg-masonry-column {
-    display: flex;
-    flex-direction: column;
-    gap: {{ section.settings.gap }}px;
-  }
-  .cdg-layout-custom_masonry .cdg-item img {
-    height: auto; /* override aspect ratio for masonry */
-    aspect-ratio: auto !important; 
-  }
-  @media screen and (min-width: 750px) {
-    .cdg-layout-custom_masonry {
-      grid-template-columns: {{ section.settings.masonry_cols_desktop }};
-    }
-  }
-
-  /* --- 3. CAROUSEL LAYOUT --- */
-  .cdg-layout-carousel-container {
-      position: relative;
-  }
-  .cdg-layout-carousel {
-    display: flex;
-    gap: {{ section.settings.gap }}px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none; /* Hide standard scrollbar */
-    padding-bottom: 10px;
-  }
-  .cdg-layout-carousel::-webkit-scrollbar {
-    display: none;
-  }
-  .cdg-layout-carousel .cdg-item {
-    scroll-snap-align: start;
-    --item-w: calc((100% - ({{ section.settings.gap }}px * {{ section.settings.columns_mobile | minus: 1 }})) / {{ section.settings.columns_mobile }});
-    flex: 0 0 calc((var(--item-w) * var(--col-span-mobile, 1)) + ({{ section.settings.gap }}px * (var(--col-span-mobile, 1) - 1)));
-  }
-  @media screen and (min-width: 750px) {
-    .cdg-layout-carousel .cdg-item {
-      --item-w: calc((100% - ({{ section.settings.gap }}px * {{ section.settings.columns_desktop | minus: 1 }})) / {{ section.settings.columns_desktop }});
-      flex: 0 0 calc((var(--item-w) * var(--col-span-desktop, 1)) + ({{ section.settings.gap }}px * (var(--col-span-desktop, 1) - 1)));
-    }
-  }
-
-  /* Carousel Navigation Buttons */
-  .cdg-nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    color: #000;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    opacity: 0.9;
-    transition: opacity 0.2s, transform 0.2s;
-  }
-  .cdg-nav-btn:hover {
-    opacity: 1;
-    transform: translateY(-50%) scale(1.05);
-  }
-  .cdg-nav-prev { left: 10px; }
-  .cdg-nav-next { right: 10px; }
-  .cdg-nav-btn svg {
-    width: 20px;
-    height: 20px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    background: transparent;
-  }
-
-  /* --- 4. COLLAGE LAYOUT --- */
-  .cdg-layout-collage {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: {{ section.settings.gap }}px;
-  }
-  .cdg-layout-collage .cdg-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: {{ section.settings.image_fit | default: 'cover' }};
-      aspect-ratio: auto;
-  }
-  @media screen and (min-width: 750px) {
-    .cdg-layout-collage {
-      grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: minmax(200px, auto);
-    }
-    .cdg-layout-collage .cdg-item {
-        min-height: 200px;
-    }
-    .cdg-layout-collage .cdg-item:first-child {
-      grid-column: 1 / span 2;
-      grid-row: 1 / span 2;
-    }
-  }
-
-  /* --- 5. LIGHTBOX LAYOUT --- */
+  /* Lightbox Styles */
   .cdg-lightbox {
     position: fixed;
     inset: 0;
@@ -317,10 +182,14 @@
   .cdg-lightbox-prev { left: 20px; }
   .cdg-lightbox-next { right: 20px; }
 
-  .cdg-item[data-cdg-lightbox] {
+  .cdg-item-{{ section.id }}[data-cdg-lightbox] {
     cursor: zoom-in;
   }
 {% endstyle %}
+
+<!-- Load Masonry & imagesLoaded -->
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" defer></script>
 
 <div class="coops-dynamic-gallery-{{ section.id }} section-{{ section.id }}-padding" data-cdg-section="{{ section.id }}" data-cdg-lightbox-enabled="{{ section.settings.enable_lightbox }}">
   <div class="{% unless section.settings.full_width %}page-width{% endunless %}" style="{% unless section.settings.full_width %}max-width: var(--page-width, 1400px); margin: 0 auto; padding: 0 1.5rem;{% endunless %}">
@@ -336,113 +205,62 @@
       </div>
     {%- endif -%}
 
-    {% assign layout_class = 'cdg-layout-' | append: section.settings.layout %}
+    <div id="cdg-grid-{{ section.id }}" class="cdg-grid-{{ section.id }}">
+      
+      <!-- Masonry Sizers -->
+      <div class="cdg-grid-sizer-{{ section.id }}"></div>
+      <div class="cdg-gutter-sizer-{{ section.id }}"></div>
 
-    {% if section.settings.layout == 'carousel' %}
-    <div class="cdg-layout-carousel-container">
-      {% if section.blocks.size > section.settings.columns_desktop %}
-        <button class="cdg-nav-btn cdg-nav-prev" onclick="scrollGallery('{{ section.id }}', -1)" aria-label="Previous">
-          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      {% endif %}
-    {% endif %}
+      <!-- Items -->
+      {% for block in section.blocks %}
+        {% assign is_link = false %}
+        {% if block.settings.link != blank %}
+          {% assign is_link = true %}
+        {% endif %}
+        
+        {% assign lightbox_url = blank %}
+        {% if section.settings.enable_lightbox and is_link == false and block.settings.image != blank %}
+          {% assign lightbox_url = block.settings.image | image_url: width: 2000 %}
+        {% endif %}
 
-    <div id="Gallery-{{ section.id }}" class="{{ layout_class }}" data-cdg-track>
-      {% if section.settings.layout == 'custom_masonry' %}
-        {% assign desktop_cols = section.settings.masonry_cols_desktop | split: ' ' %}
-        {% assign col_count = desktop_cols.size %}
-        {% for i in (1..col_count) %}
-          <div class="cdg-masonry-column">
-            {% for block in section.blocks %}
-              {% assign col_index = forloop.index0 | modulo: col_count | plus: 1 %}
-              {% if col_index == i %}
-                {% assign is_link = false %}
-                {% if block.settings.link != blank %}
-                  {% assign is_link = true %}
-                {% endif %}
-                
-                {% assign lightbox_url = blank %}
-                {% if section.settings.enable_lightbox and is_link == false and block.settings.image != blank %}
-                  {% assign lightbox_url = block.settings.image | image_url: width: 2000 %}
-                {% endif %}
+        {% assign span_desk = block.settings.column_span %}
+        {% if span_desk > section.settings.columns_desktop %}
+          {% assign span_desk = section.settings.columns_desktop %}
+        {% endif %}
+        
+        {% assign span_mob = block.settings.column_span_mobile | plus: 0 %}
+        {% assign cols_mob = section.settings.columns_mobile | plus: 0 %}
+        {% if span_mob > cols_mob %}
+          {% assign span_mob = cols_mob %}
+        {% endif %}
 
-                {% if is_link %}
-                  <a href="{{ block.settings.link }}" class="cdg-item" style="--col-span-desktop: {{ block.settings.column_span }}; --col-span-mobile: {{ block.settings.column_span_mobile }};" {{ block.shopify_attributes }}>
-                {% else %}
-                  <div class="cdg-item" style="--col-span-desktop: {{ block.settings.column_span }}; --col-span-mobile: {{ block.settings.column_span_mobile }};" {% if lightbox_url != blank %}data-cdg-lightbox="{{ lightbox_url }}"{% endif %} {{ block.shopify_attributes }}>
-                {% endif %}
-                
-                  {% if block.settings.image != blank %}
-                    {% assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840' %}
-                    {{ block.settings.image | image_url: width: 2000 | image_tag: loading: 'lazy', sizes: '100vw', widths: widths, alt: block.settings.image.alt | default: block.settings.caption | escape }}
-                  {% else %}
-                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                  {% endif %}
-                  
-                  {% if block.settings.caption != blank %}
-                    <div class="cdg-caption">
-                      {{ block.settings.caption | escape }}
-                    </div>
-                  {% endif %}
-                  
-                {% if is_link %}
-                  </a>
-                {% else %}
-                  </div>
-                {% endif %}
-              {% endif %}
-            {% endfor %}
-          </div>
-        {% endfor %}
-      {% else %}
-        {% for block in section.blocks %}
-          {% assign is_link = false %}
-          {% if block.settings.link != blank %}
-            {% assign is_link = true %}
+        {% if is_link %}
+          <a href="{{ block.settings.link }}" class="cdg-item-{{ section.id }}" style="--span-desktop: {{ span_desk }}; --span-mobile: {{ span_mob }};" {{ block.shopify_attributes }}>
+        {% else %}
+          <div class="cdg-item-{{ section.id }}" style="--span-desktop: {{ span_desk }}; --span-mobile: {{ span_mob }};" {% if lightbox_url != blank %}data-cdg-lightbox="{{ lightbox_url }}"{% endif %} {{ block.shopify_attributes }}>
+        {% endif %}
+        
+          {% if block.settings.image != blank %}
+            {% assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840' %}
+            {{ block.settings.image | image_url: width: 2000 | image_tag: loading: 'lazy', sizes: '100vw', widths: widths, alt: block.settings.image.alt | default: block.settings.caption | escape }}
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           {% endif %}
           
-          {% assign lightbox_url = blank %}
-          {% if section.settings.enable_lightbox and is_link == false and block.settings.image != blank %}
-            {% assign lightbox_url = block.settings.image | image_url: width: 2000 %}
-          {% endif %}
-
-          {% if is_link %}
-            <a href="{{ block.settings.link }}" class="cdg-item" style="--col-span-desktop: {{ block.settings.column_span }}; --col-span-mobile: {{ block.settings.column_span_mobile }};" {{ block.shopify_attributes }}>
-          {% else %}
-            <div class="cdg-item" style="--col-span-desktop: {{ block.settings.column_span }}; --col-span-mobile: {{ block.settings.column_span_mobile }};" {% if lightbox_url != blank %}data-cdg-lightbox="{{ lightbox_url }}"{% endif %} {{ block.shopify_attributes }}>
-          {% endif %}
-          
-            {% if block.settings.image != blank %}
-              {% assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840' %}
-              {{ block.settings.image | image_url: width: 2000 | image_tag: loading: 'lazy', sizes: '100vw', widths: widths, alt: block.settings.image.alt | default: block.settings.caption | escape }}
-            {% else %}
-              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-            {% endif %}
-            
-            {% if block.settings.caption != blank %}
-              <div class="cdg-caption">
-                {{ block.settings.caption | escape }}
-              </div>
-            {% endif %}
-            
-          {% if is_link %}
-            </a>
-          {% else %}
+          {% if block.settings.caption != blank %}
+            <div class="cdg-caption">
+              {{ block.settings.caption | escape }}
             </div>
           {% endif %}
-        {% endfor %}
-      {% endif %}
+          
+        {% if is_link %}
+          </a>
+        {% else %}
+          </div>
+        {% endif %}
+      {% endfor %}
+      
     </div>
-
-    {% if section.settings.layout == 'carousel' %}
-      {% if section.blocks.size > section.settings.columns_desktop %}
-        <button class="cdg-nav-btn cdg-nav-next" onclick="scrollGallery('{{ section.id }}', 1)" aria-label="Next">
-          <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      {% endif %}
-    </div> <!-- Close carousel container -->
-    {% endif %}
-
   </div>
   
   {%- if section.settings.enable_lightbox -%}
@@ -465,36 +283,47 @@
 </div>
 
 <script>
-  function scrollGallery(sectionId, direction) {
-    const gallery = document.getElementById('Gallery-' + sectionId);
-    if(!gallery) return;
-    
-    // Calculate scroll amount based on first item width + gap
-    const item = gallery.querySelector('.cdg-item');
-    if(!item) return;
-    
-    const gap = parseInt(window.getComputedStyle(gallery).gap) || 0;
-    const scrollAmount = item.offsetWidth + gap;
-    
-    gallery.scrollBy({
-      left: scrollAmount * direction,
-      behavior: 'smooth'
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
+  function initGallery_{{ section.id | replace: "-", "_" }}() {
     const section = document.querySelector('[data-cdg-section="{{ section.id }}"]');
     if (!section) return;
 
+    // 1. Initialize Masonry+imagesLoaded setup
+    var initMasonry = function() {
+      if (typeof Masonry !== 'undefined' && typeof imagesLoaded !== 'undefined') {
+        var grid = document.querySelector('#cdg-grid-{{ section.id }}');
+        if (grid) {
+           if (grid.masonryInstance) {
+             grid.masonryInstance.destroy();
+           }
+           var msnry = new Masonry(grid, {
+            itemSelector: '.cdg-item-{{ section.id }}',
+            columnWidth: '.cdg-grid-sizer-{{ section.id }}',
+            gutter: '.cdg-gutter-sizer-{{ section.id }}',
+            percentPosition: true,
+            horizontalOrder: true
+          });
+          grid.masonryInstance = msnry;
+
+          // Re-layout Masonry after each image loads
+          imagesLoaded(grid).on('progress', function() {
+            msnry.layout();
+          });
+        }
+      } else {
+        setTimeout(initMasonry, 50);
+      }
+    };
+    initMasonry();
+
+    // 2. Initialize Lightbox
     if (section.dataset.cdgLightboxEnabled === 'true') {
-      const track = section.querySelector('[data-cdg-track]');
       const overlay = section.querySelector('[data-cdg-lightbox-overlay]');
       const lbImg = section.querySelector('[data-cdg-lightbox-img]');
       const lbClose = section.querySelector('[data-cdg-lightbox-close]');
       const lbPrev = section.querySelector('[data-cdg-lightbox-prev]');
       const lbNext = section.querySelector('[data-cdg-lightbox-next]');
 
-      if (!overlay || !lbImg || !track) return;
+      if (!overlay || !lbImg) return;
 
       let lbImages = [];
       let currentIdx = 0;
@@ -502,7 +331,11 @@
       function collectImages() {
         const seen = new Set();
         lbImages = [];
-        track.querySelectorAll('.cdg-item[data-cdg-lightbox]').forEach(function(item) {
+        const grid = document.querySelector('#cdg-grid-{{ section.id }}');
+        if (!grid) return;
+        
+        // Query elements directly from the DOM structure
+        grid.querySelectorAll('.cdg-item-{{ section.id }}[data-cdg-lightbox]').forEach(function(item) {
           const url = item.getAttribute('data-cdg-lightbox');
           if (url && !seen.has(url)) {
             seen.add(url);
@@ -531,43 +364,65 @@
         lbImg.src = lbImages[currentIdx];
       }
 
-      track.addEventListener('click', function(e) {
-        const item = e.target.closest('.cdg-item[data-cdg-lightbox]');
-        if (!item) return;
-        
-        const url = item.getAttribute('data-cdg-lightbox');
-        if(url) {
-          e.preventDefault();
-          openLightbox(url);
+      // Add single event listener to the grid
+      const grid = document.querySelector('#cdg-grid-{{ section.id }}');
+      if (grid) {
+        if(!grid.dataset.lbInit) {
+          grid.addEventListener('click', function(e) {
+            const item = e.target.closest('.cdg-item-{{ section.id }}[data-cdg-lightbox]');
+            if (!item) return;
+            
+            const url = item.getAttribute('data-cdg-lightbox');
+            if(url) {
+              e.preventDefault();
+              openLightbox(url);
+            }
+          });
+          grid.dataset.lbInit = 'true';
         }
-      });
-
-      lbClose.addEventListener('click', closeLightbox);
-      overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) closeLightbox();
-      });
-
-      if (lbPrev) {
-        lbPrev.addEventListener('click', function(e) {
-          e.stopPropagation();
-          showImage(currentIdx - 1);
-        });
-      }
-      if (lbNext) {
-        lbNext.addEventListener('click', function(e) {
-          e.stopPropagation();
-          showImage(currentIdx + 1);
-        });
       }
 
-      document.addEventListener('keydown', function(e) {
-        if (!overlay.classList.contains('is-open')) return;
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowLeft') showImage(currentIdx - 1);
-        if (e.key === 'ArrowRight') showImage(currentIdx + 1);
-      });
+      if(!overlay.dataset.lbInit) {
+        lbClose.addEventListener('click', closeLightbox);
+        overlay.addEventListener('click', function(e) {
+          if (e.target === overlay) closeLightbox();
+        });
+  
+        if (lbPrev) {
+          lbPrev.addEventListener('click', function(e) {
+            e.stopPropagation();
+            showImage(currentIdx - 1);
+          });
+        }
+        if (lbNext) {
+          lbNext.addEventListener('click', function(e) {
+            e.stopPropagation();
+            showImage(currentIdx + 1);
+          });
+        }
+  
+        document.addEventListener('keydown', function(e) {
+          if (!overlay.classList.contains('is-open')) return;
+          if (e.key === 'Escape') closeLightbox();
+          if (e.key === 'ArrowLeft') showImage(currentIdx - 1);
+          if (e.key === 'ArrowRight') showImage(currentIdx + 1);
+        });
+        
+        overlay.dataset.lbInit = 'true';
+      }
     }
-  });
+  }
+
+  document.addEventListener('DOMContentLoaded', initGallery_{{ section.id | replace: "-", "_" }});
+  
+  // Theme Editor hook
+  if (window.Shopify && Shopify.designMode) {
+    document.addEventListener('shopify:section:load', function(event) {
+      if (event.detail.sectionId === '{{ section.id }}') {
+        initGallery_{{ section.id | replace: "-", "_" }}();
+      }
+    });
+  }
 </script>
 
 {% schema %}
@@ -610,19 +465,6 @@
       "default": false
     },
     {
-      "type": "select",
-      "id": "layout",
-      "label": "Gallery Type",
-      "options": [
-        { "value": "grid", "label": "Standard Grid" },
-        { "value": "masonry", "label": "Masonry (Equal Columns)" },
-        { "value": "custom_masonry", "label": "Masonry (Custom Widths)" },
-        { "value": "carousel", "label": "Swipable Carousel" },
-        { "value": "collage", "label": "Collage (Featured Large Image)" }
-      ],
-      "default": "grid"
-    },
-    {
       "type": "checkbox",
       "id": "enable_lightbox",
       "label": "Enable Lightbox",
@@ -636,8 +478,7 @@
       "max": 6,
       "step": 1,
       "label": "Columns (Desktop)",
-      "default": 3,
-      "info": "Grid, Equal Masonry, and Carousel layouts only."
+      "default": 3
     },
     {
       "type": "select",
@@ -647,26 +488,7 @@
         { "value": "1", "label": "1 Column" },
         { "value": "2", "label": "2 Columns" }
       ],
-      "default": "1",
-      "info": "Grid, Equal Masonry, and Carousel layouts only."
-    },
-    {
-      "type": "header",
-      "content": "Masonry Layout Options"
-    },
-    {
-      "type": "text",
-      "id": "masonry_cols_desktop",
-      "label": "Custom Masonry Columns (Desktop)",
-      "default": "1fr 1fr 1fr",
-      "info": "Define column widths separated by spaces (e.g. '1fr 2fr' for a 33% / 66% split). The number of items dictates the number of columns."
-    },
-    {
-      "type": "text",
-      "id": "masonry_cols_mobile",
-      "label": "Custom Masonry Columns (Mobile)",
-      "default": "1fr",
-      "info": "Define column widths for mobile screens (e.g. '1fr' or '1fr 1fr')."
+      "default": "1"
     },
     {
       "type": "range",
@@ -687,34 +509,6 @@
       "unit": "px",
       "label": "Image Corner Radius",
       "default": 8
-    },
-    {
-      "type": "header",
-      "content": "Image Dimensions"
-    },
-    {
-      "type": "select",
-      "id": "image_fit",
-      "label": "Image Fit",
-      "options": [
-        { "value": "cover", "label": "Cover (Fills area, crops edges)" },
-        { "value": "contain", "label": "Contain (Shows full image)" }
-      ],
-      "default": "cover",
-      "info": "Choose how the image fills its container (n/a for Masonry)."
-    },
-    {
-      "type": "select",
-      "id": "image_ratio",
-      "label": "Image Aspect Ratio",
-      "options": [
-        { "value": "adapt", "label": "Adapt to Image" },
-        { "value": "portrait", "label": "Portrait (2:3)" },
-        { "value": "square", "label": "Square (1:1)" },
-        { "value": "landscape", "label": "Landscape (4:3)" }
-      ],
-      "default": "square",
-      "info": "Forces Grid and Carousel images to a uniform shape. Masonry always adapts to image."
     },
     {
       "type": "checkbox",
@@ -787,7 +581,7 @@
           "step": 1,
           "label": "Column Span (Desktop)",
           "default": 1,
-          "info": "How many columns this image takes up. Applies to Grid and Carousel layouts."
+          "info": "How many columns this image takes up."
         },
         {
           "type": "select",
@@ -808,7 +602,7 @@
       "name": "Coop's Dynamic Gallery",
       "blocks": [
         { "type": "image" },
-        { "type": "image" },
+        { "type": "image", "settings": { "column_span": 2 } },
         { "type": "image" },
         { "type": "image" },
         { "type": "image" }

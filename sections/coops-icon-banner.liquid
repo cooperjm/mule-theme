@@ -1,4 +1,6 @@
 {% style %}
+  {% assign banner_style = section.settings.banner_style | default: 'stacked' %}
+
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -81,13 +83,82 @@
   .coops-icon-banner-text {
     font-size: {{ section.settings.text_size }}rem;
     font-weight: {{ section.settings.text_weight }};
-    line-height: 1.3;
+    line-height: {{ section.settings.text_line_height }};
     margin: 0;
     opacity: {{ section.settings.text_opacity | divided_by: 100.0 }};
   }
+
+  .coops-icon-banner-subheader {
+    font-size: {{ section.settings.subheader_size }}rem;
+    font-weight: {{ section.settings.subheader_weight }};
+    line-height: {{ section.settings.subheader_line_height }};
+    margin: {{ section.settings.text_spacing }}px 0 0;
+    color: {{ section.settings.subheader_color }};
+    opacity: {{ section.settings.subheader_opacity | divided_by: 100.0 }};
+  }
+
+  .coops-icon-banner-{{ section.id }}.coops-icon-banner--horizontal .coops-icon-banner-content {
+    max-width: 1920px;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 32px;
+    padding-left: clamp(2rem, 4vw, 5rem);
+    padding-right: clamp(2rem, 4vw, 5rem);
+  }
+
+  .coops-icon-banner-{{ section.id }}.coops-icon-banner--horizontal .coops-icon-banner-item {
+    flex: 1 1 250px;
+    max-width: none;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
+    gap: 22px;
+  }
+
+  .coops-icon-banner-{{ section.id }}.coops-icon-banner--horizontal .coops-icon-banner-icon {
+    flex: 0 0 auto;
+    margin-bottom: 0;
+  }
+
+  .coops-icon-banner-{{ section.id }}.coops-icon-banner--horizontal .coops-icon-banner-copy {
+    min-width: 0;
+  }
+
+  .coops-icon-banner-{{ section.id }}.coops-icon-banner--horizontal .coops-icon-banner-text {
+    font-family: {{ settings.type_heading.family | append: ',' | append: settings.type_heading.fallback_families }};
+    text-transform: uppercase;
+    letter-spacing: 0;
+  }
+
+  @media screen and (max-width: 989px) {
+    .coops-icon-banner-{{ section.id }}.coops-icon-banner--horizontal .coops-icon-banner-content {
+      justify-content: center;
+    }
+
+    .coops-icon-banner-{{ section.id }}.coops-icon-banner--horizontal .coops-icon-banner-item {
+      flex: 1 1 320px;
+      justify-content: flex-start;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .coops-icon-banner-{{ section.id }}.coops-icon-banner--horizontal .coops-icon-banner-content {
+      align-items: stretch;
+      gap: 24px;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+
+    .coops-icon-banner-{{ section.id }}.coops-icon-banner--horizontal .coops-icon-banner-item {
+      flex-basis: 100%;
+      justify-content: flex-start;
+      gap: 18px;
+    }
+  }
 {% endstyle %}
 
-<div class="coops-icon-banner-{{ section.id }} section-{{ section.id }}-padding">
+<div class="coops-icon-banner-{{ section.id }} coops-icon-banner--{{ banner_style }} section-{{ section.id }}-padding">
   {% if section.settings.background_image != blank %}
     {{
       section.settings.background_image
@@ -113,9 +184,14 @@
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           {% endif %}
         </div>
-        {% if block.settings.title != blank %}
-          <p class="coops-icon-banner-text">{{ block.settings.title | escape }}</p>
-        {% endif %}
+        <div class="coops-icon-banner-copy">
+          {% if block.settings.title != blank %}
+            <p class="coops-icon-banner-text">{{ block.settings.title | escape }}</p>
+          {% endif %}
+          {% if block.settings.subheader != blank %}
+            <p class="coops-icon-banner-subheader">{{ block.settings.subheader | escape }}</p>
+          {% endif %}
+        </div>
       </div>
     {% endfor %}
   </div>
@@ -127,6 +203,16 @@
   "tag": "section",
   "class": "section",
   "settings": [
+    {
+      "type": "select",
+      "id": "banner_style",
+      "label": "Banner style",
+      "options": [
+        { "value": "stacked", "label": "Stacked icons" },
+        { "value": "horizontal", "label": "Horizontal icons with subheader" }
+      ],
+      "default": "stacked"
+    },
     {
       "type": "range",
       "id": "padding_top",
@@ -195,6 +281,15 @@
       "default": 1.6
     },
     {
+      "type": "range",
+      "id": "text_line_height",
+      "min": 0.8,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Text Line Height",
+      "default": 1.3
+    },
+    {
       "type": "select",
       "id": "text_weight",
       "label": "Text Weight",
@@ -207,6 +302,64 @@
         { "value": "800", "label": "Extra Bold" }
       ],
       "default": "500"
+    },
+    {
+      "type": "color",
+      "id": "subheader_color",
+      "label": "Subheader Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "subheader_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Subheader Opacity",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "subheader_size",
+      "min": 0.8,
+      "max": 2.0,
+      "step": 0.1,
+      "unit": "rem",
+      "label": "Subheader Size",
+      "default": 1.0
+    },
+    {
+      "type": "range",
+      "id": "subheader_line_height",
+      "min": 0.8,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Subheader Line Height",
+      "default": 1.2
+    },
+    {
+      "type": "range",
+      "id": "text_spacing",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Spacing Between Text",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "subheader_weight",
+      "label": "Subheader Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
     }
   ],
   "blocks": [
@@ -241,6 +394,11 @@
           "id": "title",
           "label": "Text",
           "default": "Icon Text"
+        },
+        {
+          "type": "text",
+          "id": "subheader",
+          "label": "Subheader"
         }
       ]
     }
