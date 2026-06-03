@@ -45,6 +45,71 @@ html, body {
 
 </style>
 
+<style>
+  /* Product Request Form Custom Button Style */
+  .product__container .product-block--request_quote {
+    border-top: none;
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+
+  .product__container .product-request-form__disclosure {
+    border-bottom: none;
+  }
+
+  .product__container .product-request-form__heading {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    min-width: 172px;
+    max-width: 430px;
+    min-height: 44px;
+    padding: var(--button-padding-y, 9px) var(--button-padding-x, 28px);
+    border: 2px solid #181818;
+    border-radius: 999px;
+    background: #f7cd46;
+    box-shadow: none;
+    color: #181818;
+    font-family: Oswald, sans-serif;
+    font-size: var(--button-text-size, 20px);
+    font-weight: 700;
+    line-height: 1;
+    text-transform: capitalize;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    margin-bottom: 20px;
+    list-style: none;
+  }
+
+  .product__container .product-request-form__heading:hover,
+  .product__container .product-request-form__heading:focus {
+    border-color: #181818 !important;
+    background: #f7cd46 !important;
+    box-shadow: none !important;
+    color: #181818;
+    opacity: 0.9;
+  }
+
+  .product__container .product-request-form__heading .icon-chevron-down {
+    display: none !important;
+  }
+
+  .product__container .product-request-form__heading-icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #181818;
+  }
+
+  .product__container .product-request-form__heading-icon {
+    width: 22px;
+    height: 22px;
+    display: block;
+  }
+</style>
+
 <script
   type="application/json"
   data-section-type="static-product"
@@ -89,6 +154,7 @@ html, body {
   {%
     render 'product',
     is_product_modal: false,
+    is_coops_product: true,
     show_dynamic_checkout_button: settings.show_dynamic_checkout_button,
     select_first_available_variant: settings.select_first_available_variant,
     gallery_aspect_ratio: section.settings.gallery_aspect_ratio,
@@ -791,7 +857,7 @@ html, body {
           "type": "text",
           "id": "title",
           "label": "t:sections.product.blocks.request_quote.title.label",
-          "default": "Request a quote"
+          "default": "Looking to place a larger order?"
         },
         {
           "type": "checkbox",
@@ -804,6 +870,46 @@ html, body {
           "id": "show_message",
           "label": "t:sections.product.blocks.request_quote.message.label",
           "default": true
+        },
+        {
+          "type": "header",
+          "content": "Button Customization"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_box_icon",
+          "label": "Show Box Icon",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "button_text_size",
+          "label": "Button Text Size",
+          "min": 12,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "button_padding_y",
+          "label": "Button Vertical Padding",
+          "min": 2,
+          "max": 30,
+          "step": 1,
+          "unit": "px",
+          "default": 9
+        },
+        {
+          "type": "range",
+          "id": "button_padding_x",
+          "label": "Button Horizontal Padding",
+          "min": 10,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "default": 28
         }
       ]
     }

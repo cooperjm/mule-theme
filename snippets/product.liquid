@@ -43,7 +43,7 @@
 {% endcomment %}
 
 {{ 'product.css' | asset_url | stylesheet_tag }}
-{{ 'product.js' | asset_url | script_tag }}
+<script src="{{ 'product.js' | asset_url }}" defer></script>
 
 
 {% liquid
@@ -209,7 +209,7 @@
                   <div class="highlight">
                     {% if block.settings.image_feat_1 %}
                     <div class="image">
-                      <img src="{{ block.settings.image_feat_1 | img_url: 'original' }}" alt="Logo highlight">
+                      <img src="{{ block.settings.image_feat_1 | img_url: 'original' }}" alt="Logo highlight" width="{{ block.settings.image_feat_1.width }}" height="{{ block.settings.image_feat_1.height }}">
                     </div>
                     {% endif %}
                     <div class="cont-text"> 
@@ -230,7 +230,7 @@
                   <div class="highlight">
                     {% if block.settings.image_feat_2 %}
                     <div class="image">
-                      <img src="{{ block.settings.image_feat_2 | img_url: 'original' }}" alt="Logo highlight">
+                      <img src="{{ block.settings.image_feat_2 | img_url: 'original' }}" alt="Logo highlight" width="{{ block.settings.image_feat_2.width }}" height="{{ block.settings.image_feat_2.height }}">
                     </div>
                     {% endif %}
                     <div class="cont-text"> 
@@ -251,7 +251,7 @@
                   <div class="highlight">
                     {% if block.settings.image_feat_3 %}
                     <div class="image">
-                      <img src="{{ block.settings.image_feat_3 | img_url: 'original' }}" alt="Logo highlight">
+                      <img src="{{ block.settings.image_feat_3 | img_url: 'original' }}" alt="Logo highlight" width="{{ block.settings.image_feat_3.width }}" height="{{ block.settings.image_feat_3.height }}">
                     </div>
                     {% endif %}
                     <div class="cont-text"> 
@@ -828,6 +828,11 @@
                 show_message: block.settings.show_message,
                 selected_variant: selected_variant,
                 sku: sku,
+                is_coops_product: is_coops_product,
+                show_box_icon: block.settings.show_box_icon,
+                button_text_size: block.settings.button_text_size,
+                button_padding_y: block.settings.button_padding_y,
+                button_padding_x: block.settings.button_padding_x
               %}
           {% endcase %}
         </div>

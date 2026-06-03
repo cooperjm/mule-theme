@@ -18,7 +18,7 @@
     The variant SKU
 {% endcomment %}
 
-{% if heading != blank %}
+{% if heading != blank or is_coops_product %}
   {% form 'contact', class: 'product-request-form', id: 'product-request-form', data-product-request-form: '' %}
     {% if form.posted_successfully? %}
       {% assign posted = true %}
@@ -35,8 +35,41 @@
         </div>
       {% endif %}
 
-      <summary class="product-request-form__heading">
-        <span>{{- heading | escape -}}</span>
+      {%- liquid
+        assign display_box_icon = show_box_icon
+        if display_box_icon == nil
+          if is_coops_product
+            assign display_box_icon = true
+          else
+            assign display_box_icon = false
+          endif
+        endif
+      -%}
+
+      <summary
+        class="product-request-form__heading"
+        style="
+          {% if button_text_size != blank %}--button-text-size: {{ button_text_size }}px;{% endif %}
+          {% if button_padding_y != blank %}--button-padding-y: {{ button_padding_y }}px;{% endif %}
+          {% if button_padding_x != blank %}--button-padding-x: {{ button_padding_x }}px;{% endif %}
+        "
+      >
+        {%- if display_box_icon -%}
+          <span class="product-request-form__heading-icon-wrapper">
+            {% render 'icon-library', id: 'icon-delivery-package', icon_class: 'product-request-form__heading-icon' %}
+          </span>
+        {%- endif -%}
+        <span class="product-request-form__heading-text">
+          {%- assign use_default_heading = false -%}
+          {%- if heading == 'Request a quote' or heading == 'Request A Quote' or heading == blank -%}
+            {%- assign use_default_heading = true -%}
+          {%- endif -%}
+          {%- if is_coops_product and use_default_heading -%}
+            Looking to place a larger order?
+          {%- else -%}
+            {{- heading | escape -}}
+          {%- endif -%}
+        </span>
         {% render 'icon-chevron-down-small' %}
       </summary>
 
