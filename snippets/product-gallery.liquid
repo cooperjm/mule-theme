@@ -19,6 +19,9 @@
 
   @param gallery_click_to_zoom {String}
     This is the click to zoom setting, which is either 'disabled', 'mobile', 'desktop', or 'always'
+
+  @param show_gallery_arrows {Boolean}
+    If true, show previous and next controls for the gallery
 {% endcomment %}
 
 {% assign onboarding = false %}
@@ -63,6 +66,31 @@
     aspect_ratio: aspect_ratio,
     image_crop: image_crop
   %}
+
+  {% if show_gallery_arrows and onboarding == false and product.media.size > 1 %}
+    <div class="coops-product-gallery-arrows" data-coops-product-gallery-arrows>
+      <button
+        class="coops-product-gallery-arrow coops-product-gallery-arrow--previous"
+        type="button"
+        aria-label="Previous product image"
+        data-coops-product-gallery-arrow="previous"
+      >
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+          <path d="M15 5L8 12L15 19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button
+        class="coops-product-gallery-arrow coops-product-gallery-arrow--next"
+        type="button"
+        aria-label="Next product image"
+        data-coops-product-gallery-arrow="next"
+      >
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+          <path d="M9 5L16 12L9 19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  {% endif %}
 
   {% assign first_model = product.media | where: "media_type", "model" | first %}
   {% if selected_media.media_type == 'model' %}

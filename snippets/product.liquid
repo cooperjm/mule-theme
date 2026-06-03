@@ -37,6 +37,9 @@
 
   @param use_theme_gallery {Boolean}
     If true, use the theme product gallery instead of the custom gallery
+
+  @param show_gallery_arrows {Boolean}
+    If true, show section-scoped gallery arrow controls
 {% endcomment %}
 
 {{ 'product.css' | asset_url | stylesheet_tag }}
@@ -48,6 +51,7 @@
   assign layout = layout | default: nil
   assign is_featured_product = is_featured_product | default: false
   assign use_theme_gallery = use_theme_gallery | default: false
+  assign show_gallery_arrows = show_gallery_arrows | default: false
 
   if layout == 'layout--three-col'
     assign product_form = true
@@ -124,7 +128,8 @@
       thumbnail_position: gallery_thumbnail_position,
       image_crop: gallery_image_crop,
       gallery_click_to_zoom: gallery_click_to_zoom,
-      gallery_hover_zoom: gallery_hover_zoom
+      gallery_hover_zoom: gallery_hover_zoom,
+      show_gallery_arrows: show_gallery_arrows
     %}
   {% else %}
     {% render 'product-image-gallery' %}
@@ -371,15 +376,49 @@
                 assign active_option = block.settings.active_option
                 assign show_no_remote = false
                 assign show_with_remote = false
+                assign no_remote_is_active = false
+                assign with_remote_is_active = false
+                assign matched_remote_link = false
+                assign current_product_handle = product.handle
+                assign current_product_path = '/products/' | append: current_product_handle
+                assign current_product_path_with_slash = current_product_path | append: '/'
+                assign no_remote_link_path = block.settings.no_remote_link | replace: shop.url, '' | split: '?' | first | split: '#' | first
+                assign with_remote_link_path = block.settings.with_remote_link | replace: shop.url, '' | split: '?' | first | split: '#' | first
+                assign no_remote_link_handle = no_remote_link_path | split: 'products/' | last | split: '/' | first
+                assign with_remote_link_handle = with_remote_link_path | split: 'products/' | last | split: '/' | first
+
+                if block.settings.no_remote_link != blank
+                  if no_remote_link_path == current_product_path or no_remote_link_path == current_product_path_with_slash or no_remote_link_handle == current_product_handle
+                    assign no_remote_is_active = true
+                    assign with_remote_is_active = false
+                    assign matched_remote_link = true
+                  endif
+                endif
+
+                if block.settings.with_remote_link != blank
+                  if with_remote_link_path == current_product_path or with_remote_link_path == current_product_path_with_slash or with_remote_link_handle == current_product_handle
+                    assign no_remote_is_active = false
+                    assign with_remote_is_active = true
+                    assign matched_remote_link = true
+                  endif
+                endif
+
+                if matched_remote_link == false and active_option == 'no_remote'
+                  assign no_remote_is_active = true
+                endif
+
+                if matched_remote_link == false and active_option == 'with_remote'
+                  assign with_remote_is_active = true
+                endif
 
                 if block.settings.no_remote_label != blank
-                  if block.settings.no_remote_link != blank or active_option == 'no_remote'
+                  if block.settings.no_remote_link != blank or no_remote_is_active
                     assign show_no_remote = true
                   endif
                 endif
 
                 if block.settings.with_remote_label != blank
-                  if block.settings.with_remote_link != blank or active_option == 'with_remote'
+                  if block.settings.with_remote_link != blank or with_remote_is_active
                     assign show_with_remote = true
                   endif
                 endif
@@ -395,20 +434,23 @@
 
                   <div class="coops-product-remote__options">
                     {% if show_no_remote %}
-                      {% if block.settings.no_remote_link != blank and active_option != 'no_remote' %}
+                      {% capture no_remote_classes %}
+                        coops-product-remote__option
+                        {% if no_remote_is_active %}coops-product-remote__option--active{% else %}coops-product-remote__option--inactive{% endif %}
+                      {% endcapture %}
+
+                      {% if block.settings.no_remote_link != blank %}
                         <a
-                          class="coops-product-remote__option"
+                          class="{{ no_remote_classes | strip }}"
                           href="{{ block.settings.no_remote_link }}"
+                          {% if no_remote_is_active %}aria-current="page"{% endif %}
                         >
                           {{ block.settings.no_remote_label | escape }}
                         </a>
                       {% else %}
                         <span
-                          class="
-                            coops-product-remote__option
-                            {% if active_option == 'no_remote' %}coops-product-remote__option--active{% endif %}
-                          "
-                          {% if active_option == 'no_remote' %}aria-current="page"{% endif %}
+                          class="{{ no_remote_classes | strip }}"
+                          {% if no_remote_is_active %}aria-current="page"{% endif %}
                         >
                           {{ block.settings.no_remote_label | escape }}
                         </span>
@@ -416,20 +458,23 @@
                     {% endif %}
 
                     {% if show_with_remote %}
-                      {% if block.settings.with_remote_link != blank and active_option != 'with_remote' %}
+                      {% capture with_remote_classes %}
+                        coops-product-remote__option
+                        {% if with_remote_is_active %}coops-product-remote__option--active{% else %}coops-product-remote__option--inactive{% endif %}
+                      {% endcapture %}
+
+                      {% if block.settings.with_remote_link != blank %}
                         <a
-                          class="coops-product-remote__option"
+                          class="{{ with_remote_classes | strip }}"
                           href="{{ block.settings.with_remote_link }}"
+                          {% if with_remote_is_active %}aria-current="page"{% endif %}
                         >
                           {{ block.settings.with_remote_label | escape }}
                         </a>
                       {% else %}
                         <span
-                          class="
-                            coops-product-remote__option
-                            {% if active_option == 'with_remote' %}coops-product-remote__option--active{% endif %}
-                          "
-                          {% if active_option == 'with_remote' %}aria-current="page"{% endif %}
+                          class="{{ with_remote_classes | strip }}"
+                          {% if with_remote_is_active %}aria-current="page"{% endif %}
                         >
                           {{ block.settings.with_remote_label | escape }}
                         </span>
