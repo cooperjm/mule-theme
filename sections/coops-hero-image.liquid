@@ -1,7 +1,8 @@
 {%- style -%}
+  {%- assign desktop_ratio = section.settings.image.aspect_ratio | default: 2.0 -%}
+  {%- assign mobile_ratio = section.settings.image_mobile.aspect_ratio | default: desktop_ratio -%}
+
   {%- if section.settings.section_height == 'adapt' -%}
-    {%- assign desktop_ratio = section.settings.image.aspect_ratio | default: 2.0 -%}
-    {%- assign mobile_ratio = section.settings.image_mobile.aspect_ratio | default: desktop_ratio -%}
     .coops-hero-{{ section.id }}.hero--adapt {
       aspect-ratio: {{ desktop_ratio }};
     }
@@ -139,6 +140,7 @@
       flex-direction: column;
       align-items: stretch;
       min-height: auto !important;
+      aspect-ratio: auto !important;
     }
     .coops-hero-{{ section.id }}.hero--text-below-mobile .coops-hero__bg {
       position: relative;
