@@ -4,4 +4,8 @@
 # Shopify CLI
 .shopify/
 
+.git
 
+.claude
+
+.superpowers
