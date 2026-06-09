@@ -50,7 +50,7 @@ html, body {
     background: #fff;
   }
 
-  .coops-product-information {
+  .coops-product-information.product__container.product__container--two-columns {
     --coops-gallery-column-width: {{ section.settings.gallery_column_width | default: 38 }}%;
     --coops-product-column-width: {{ section.settings.product_column_width | default: 62 }}%;
     max-width: {{ section.settings.section_max_width | default: 1500 }}px;
@@ -547,13 +547,25 @@ html, body {
 
   @media screen and (max-width: 719px) {
     .coops-product-information {
-      padding: 32px 16px 48px;
+      padding: 18px 16px 48px;
     }
 
     .coops-product-information .product--outer {
       display: flex;
       flex-direction: column;
-      gap: 28px;
+      gap: 12px;
+    }
+
+    .coops-product-information .product--outer > .product-block {
+      margin-bottom: 0;
+    }
+
+    .coops-product-information .product--outer > .product-block--sku {
+      margin-bottom: 0;
+    }
+
+    .coops-product-information .product-gallery {
+      margin-top: 4px;
     }
 
     .coops-product-information .product-gallery,
@@ -577,6 +589,7 @@ html, body {
       font-size: 38px;
       line-height: 1.08;
       text-align: left;
+      margin-bottom: 0;
     }
 
     .coops-product-information .product-sku {

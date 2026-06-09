@@ -10,29 +10,68 @@ document.addEventListener('DOMContentLoaded', function() {
     var priceElement = document.querySelector('.price.product__price');
 
     function moveTitleAboveGallery() {
-    var windowWidth = window.innerWidth;
+        if (!productGallery) {
+            return;
+        }
+
+        var windowWidth = window.innerWidth;
 
         if (windowWidth <= 768) {
             var container = productGallery.parentNode;
+            if (!container) return;
         
-            if (productTitle) {
+            if (productTitle && productTitle.parentNode !== container) {
                 container.insertBefore(productTitle, productGallery);
             }
         
-            if (productSKU) {
+            if (productSKU && productSKU.parentNode !== container) {
                 container.insertBefore(productSKU, productGallery);
             }
         
-            if (productTagline) {
+            if (productTagline && productTagline.parentNode !== container) {
                 container.insertBefore(productTagline, productGallery);
             }
         
-            if (productTagline2) {
+            if (productTagline2 && productTagline2.parentNode !== container) {
                 container.insertBefore(productTagline2, productGallery);
             }
         
-            if (productApp) {
+            if (productApp && productApp.parentNode !== container) {
                 container.insertBefore(productApp, productGallery);
+            }
+        } else {
+            var productDetails = document.querySelector('[data-product-details]');
+            if (productDetails) {
+                var referenceNode = null;
+                var children = productDetails.children;
+                for (var i = 0; i < children.length; i++) {
+                    var child = children[i];
+                    if (!child.classList.contains('product-block--title') &&
+                        !child.classList.contains('product-block--sku') &&
+                        !child.classList.contains('product-block--prd_tagline') &&
+                        !child.classList.contains('product-block--prd_tagline_2') &&
+                        !child.classList.contains('product-app') &&
+                        !child.classList.contains('product-block--app')) {
+                        referenceNode = child;
+                        break;
+                    }
+                }
+
+                if (productTitle && productTitle.parentNode !== productDetails) {
+                    productDetails.insertBefore(productTitle, referenceNode);
+                }
+                if (productSKU && productSKU.parentNode !== productDetails) {
+                    productDetails.insertBefore(productSKU, referenceNode);
+                }
+                if (productTagline && productTagline.parentNode !== productDetails) {
+                    productDetails.insertBefore(productTagline, referenceNode);
+                }
+                if (productTagline2 && productTagline2.parentNode !== productDetails) {
+                    productDetails.insertBefore(productTagline2, referenceNode);
+                }
+                if (productApp && productApp.parentNode !== productDetails) {
+                    productDetails.insertBefore(productApp, referenceNode);
+                }
             }
         }
     }
