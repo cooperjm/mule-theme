@@ -134,6 +134,26 @@
     .heading--small { font-size: 2rem; }
     .coops-hero__buttons { flex-direction: column; width: 100%; }
     .coops-hero-btn { width: 100%; }
+
+    .coops-hero-{{ section.id }}.hero--text-below-mobile {
+      flex-direction: column;
+      align-items: stretch;
+      min-height: auto !important;
+    }
+    .coops-hero-{{ section.id }}.hero--text-below-mobile .coops-hero__bg {
+      position: relative;
+      width: 100%;
+      height: auto;
+      aspect-ratio: {{ mobile_ratio }};
+      min-height: auto;
+    }
+    .coops-hero-{{ section.id }}.hero--text-below-mobile .coops-hero__overlay {
+      display: none;
+    }
+    .coops-hero-{{ section.id }}.hero--text-below-mobile .coops-hero__content {
+      position: relative;
+      padding: 30px 20px;
+    }
   }
 {%- endstyle -%}
 
