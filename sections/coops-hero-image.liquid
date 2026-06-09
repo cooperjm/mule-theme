@@ -137,7 +137,7 @@
   }
 {%- endstyle -%}
 
-<div class="coops-hero-{{ section.id }} hero--{{ section.settings.section_height }}">
+<div class="coops-hero-{{ section.id }} hero--{{ section.settings.section_height }}{% if section.settings.show_text_below_mobile %} hero--text-below-mobile{% endif %}">
   <!-- Background Images -->
   <div class="coops-hero__bg">
     {%- if section.settings.image != blank -%}
