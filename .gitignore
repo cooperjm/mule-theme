@@ -1,11 +1,21 @@
-# macOS
+# macOS / Windows OS files
 .DS_Store
+Thumbs.db
+desktop.ini
 
-# Shopify CLI
+# Common Editor / IDE directories
+.vscode/
+.idea/
+*.swp
+
+# Shopify CLI & AI/agent tools
 .shopify/
+.claude/
+.superpowers/
 
-.git
+# Theme Kit (Uncomment if you use Theme Kit to pull/push)
+# config.yml
 
-.claude
-
-.superpowers
+# Shopify Theme Editor Settings
+# (Uncomment the line below if you want to prevent local updates from overwriting live merchant settings)
+# config/settings_data.json
