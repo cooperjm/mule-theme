@@ -8,10 +8,7 @@
         <p>{{ section.settings.subheading }}</p>
       </div>
       <div class="form-content">
-        {%
-          render 'newsletter',
-          form_id: form_id
-        %}
+        {% render 'newsletter', form_id: form_id %}
       </div>
     </div>
   </div>
@@ -19,15 +16,16 @@
 
 <style>
   #newsletter-banner {
-    background-image: url('{{ section.settings.background_image | image_url }}') ;
+    background-image: url('{{ section.settings.background_image | image_url }}');
   }
 
   @media (max-width: 930px) {
     #newsletter-banner {
       background-image: url('{{ section.settings.background_image_mobile | image_url }}');
-      padding-bottom: 270px;
-      background-size: contain;
-      background-position: bottom;
+      background-size: cover;
+      background-position: center;
+      padding-top: 60px;
+      padding-bottom: 60px;
     }
   }
 </style>
