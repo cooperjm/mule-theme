@@ -115,16 +115,51 @@
     height: 100%;
     display: block;
   }
+
+  {% for block in section.blocks %}
+    .coops-grid-content-{{ section.id }} .coops-grid-content__card--{{ block.id }} {
+      padding: {{ block.settings.card_padding_top_mobile | default: block.settings.block_padding }}px {{ block.settings.card_padding_right_mobile | default: block.settings.block_padding }}px {{ block.settings.card_padding_bottom_mobile | default: block.settings.block_padding }}px {{ block.settings.card_padding_left_mobile | default: block.settings.block_padding }}px;
+    }
+
+    .coops-grid-content-{{ section.id }} .coops-grid-content__card--{{ block.id }} .coops-grid-content__icon {
+      width: {{ block.settings.icon_width_mobile | default: block.settings.icon_width }}px;
+    }
+
+    .coops-grid-content-{{ section.id }} .coops-grid-content__card--{{ block.id }} .coops-grid-content__heading {
+      font-size: {{ block.settings.heading_size_mobile | default: block.settings.heading_size }}px;
+    }
+
+    .coops-grid-content-{{ section.id }} .coops-grid-content__card--{{ block.id }} .coops-grid-content__body {
+      font-size: {{ block.settings.body_size_mobile | default: block.settings.body_size }}px;
+    }
+
+    @media screen and (min-width: 750px) {
+      .coops-grid-content-{{ section.id }} .coops-grid-content__card--{{ block.id }} {
+        padding: {{ block.settings.card_padding_top | default: block.settings.block_padding }}px {{ block.settings.card_padding_right | default: block.settings.block_padding }}px {{ block.settings.card_padding_bottom | default: block.settings.block_padding }}px {{ block.settings.card_padding_left | default: block.settings.block_padding }}px;
+      }
+
+      .coops-grid-content-{{ section.id }} .coops-grid-content__card--{{ block.id }} .coops-grid-content__icon {
+        width: {{ block.settings.icon_width }}px;
+      }
+
+      .coops-grid-content-{{ section.id }} .coops-grid-content__card--{{ block.id }} .coops-grid-content__heading {
+        font-size: {{ block.settings.heading_size }}px;
+      }
+
+      .coops-grid-content-{{ section.id }} .coops-grid-content__card--{{ block.id }} .coops-grid-content__body {
+        font-size: {{ block.settings.body_size }}px;
+      }
+    }
+  {% endfor %}
 {% endstyle %}
 
 <div class="coops-grid-content-{{ section.id }} section-{{ section.id }}-padding">
   <div class="coops-grid-content__grid">
     {% for block in section.blocks %}
       <div
-        class="coops-grid-content__card"
+        class="coops-grid-content__card coops-grid-content__card--{{ block.id }}"
         style="
           background-color: {{ block.settings.background_color }};
-          padding: {{ block.settings.block_padding }}px;
           justify-content: {{ block.settings.content_alignment }};
         "
         {{ block.shopify_attributes }}
@@ -132,7 +167,7 @@
         <div class="coops-grid-content__card-inner" style="max-width: {{ block.settings.content_width }}%;">
         {%- comment -%} Icon {%- endcomment -%}
         {% if block.settings.svg_code != blank or block.settings.icon_image != blank %}
-          <div class="coops-grid-content__icon" style="width: {{ block.settings.icon_width }}px;">
+          <div class="coops-grid-content__icon">
             {% if block.settings.svg_code != blank %}
               {{ block.settings.svg_code }}
             {% elsif block.settings.icon_image != blank %}
@@ -151,7 +186,6 @@
             class="coops-grid-content__heading"
             style="
               color: {{ block.settings.heading_color }};
-              font-size: {{ block.settings.heading_size }}px;
               font-weight: {{ block.settings.heading_weight }};
             "
           >
@@ -175,7 +209,6 @@
             class="coops-grid-content__body"
             style="
               color: {{ block.settings.body_color }};
-              font-size: {{ block.settings.body_size }}px;
             "
           >
             {% if block.settings.show_bullet_icons %}
@@ -295,6 +328,16 @@
           "default": 60
         },
         {
+          "type": "range",
+          "id": "icon_width_mobile",
+          "min": 20,
+          "max": 200,
+          "step": 5,
+          "unit": "px",
+          "label": "Icon Width (Mobile)",
+          "default": 60
+        },
+        {
           "type": "header",
           "content": "Heading"
         },
@@ -318,6 +361,16 @@
           "step": 1,
           "unit": "px",
           "label": "Heading Size",
+          "default": 28
+        },
+        {
+          "type": "range",
+          "id": "heading_size_mobile",
+          "min": 12,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading Size (Mobile)",
           "default": 28
         },
         {
@@ -358,6 +411,16 @@
           "step": 1,
           "unit": "px",
           "label": "Body Font Size",
+          "default": 15
+        },
+        {
+          "type": "range",
+          "id": "body_size_mobile",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Body Font Size (Mobile)",
           "default": 15
         },
         {
@@ -412,7 +475,96 @@
           "max": 80,
           "step": 2,
           "unit": "px",
-          "label": "Block Padding",
+          "label": "Block Padding Fallback",
+          "default": 40,
+          "info": "Used as a fallback for older saved blocks before individual side padding is saved."
+        },
+        {
+          "type": "header",
+          "content": "Desktop Card Padding"
+        },
+        {
+          "type": "range",
+          "id": "card_padding_top",
+          "min": 0,
+          "max": 120,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding Top (Desktop)",
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "card_padding_right",
+          "min": 0,
+          "max": 120,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding Right (Desktop)",
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "card_padding_bottom",
+          "min": 0,
+          "max": 120,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding Bottom (Desktop)",
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "card_padding_left",
+          "min": 0,
+          "max": 120,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding Left (Desktop)",
+          "default": 40
+        },
+        {
+          "type": "header",
+          "content": "Mobile Card Padding"
+        },
+        {
+          "type": "range",
+          "id": "card_padding_top_mobile",
+          "min": 0,
+          "max": 120,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding Top (Mobile)",
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "card_padding_right_mobile",
+          "min": 0,
+          "max": 120,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding Right (Mobile)",
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "card_padding_bottom_mobile",
+          "min": 0,
+          "max": 120,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding Bottom (Mobile)",
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "card_padding_left_mobile",
+          "min": 0,
+          "max": 120,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding Left (Mobile)",
           "default": 40
         },
         {
